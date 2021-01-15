@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import { updateUserInfo, logout } from './redux/actions.js';
 import UserForm from './components/UserForm';
 import Home from './components/Home';
 import UserPage from './components/UserPage';
@@ -12,44 +13,49 @@ import './App.css';
 
 class App extends Component {
 
-  selectRoute = (page) => {
-    switch (page) {
-        case "Home":
-          this.props.history.push('/home')
-          return
-        case "My Sharecipe Page": 
-          return <UserPage />
-        case "Favorites":
-          return <FavoritesPage />
-        case "Recipes":
-          return <RecipesPage />
-        case "Users":
-          return <UsersPage />
+  state = { page: null }
+
+  selectMenuItem = (menuItem) => {
+    switch (menuItem) {
         case "Settings":
-          this.props.history.push('/settings')
+          this.setState({ page: null }, () => this.props.history.push('/settings'))
           return
         case "Logout":
-          this.props.logout()
+          
+          this.setState({ page: null }, () => this.props.logout())
           localStorage.clear()
           return
         default:
-          console.log("default")
+          this.setState({ page: menuItem }, () => this.props.history.push('/home'))
           return
     }
   }
 
-  renderForm = (formType) => {
-    if (formType !== "Settings") { this.props.renderPage(formType) }
-    return <UserForm handleSubmit={this.handleSubmit}/>
+  renderPage = () => {
+    switch (this.state.page) {
+      case "My Sharecipe Page": 
+        return <UserPage />
+      case "Favorites":
+        return <FavoritesPage />
+      case "Recipes":
+        return <RecipesPage />
+      case "Users":
+        return <UsersPage />
+      default:
+        return <Home />
+    }
   }
 
-  handleSubmit = (data) => {
-    switch (this.props.page) {
+  renderForm = (formType) => {
+    return <UserForm handleSubmit={this.handleSubmit} form={formType}/>
+  }
+
+  handleSubmit = (formType, data) => {
+    switch (formType) {
       case "Sign In":
         this.handleAuthFetch(data, "http://localhost:3000/login", "POST")
         return
       case "Sign Up":
-        console.log(data)
         this.handleAuthFetch(data, "http://localhost:3000/users", "POST")
         return
       case "Settings":
@@ -83,43 +89,35 @@ class App extends Component {
     })
     .then(action => {
       if (action && action.payload) {
-        if (action.payload.token) {
-          localStorage.setItem('jwt', action.payload.token)
-          this.props.history.push('/home')
-        } else {
+        action.payload.token ? 
+          localStorage.setItem('jwt', action.payload.token) : 
           alert("Account successfully updated.")
-          this.props.history.push('/home')
-        }
+        this.props.history.push('/home')
       }
     })
 
   }
 
-  renderHome = () => {
-    return <Home />
-  }
-
   render() {
-    // const userPath = "/" + this.props.username
     return (
       <div className="App">
-        <TopBar selectRoute={this.selectRoute}/>
+        {this.props.user ? <TopBar selectMenuItem={this.selectMenuItem}/> : null}
         <Switch>
 
           <Route exact path="/">
-            <Route path="/" exact component={() => this.renderForm("Sign In")} />
+            {!!localStorage.getItem('jwt') ? <Redirect to="/home" /> : <Route path="/" exact component={() => this.renderForm("Sign In")} />}
           </Route>
 
           <Route exact path="/signup">
-            <Route path="/signup" exact component={() => this.renderForm("Sign Up")} />
+            {!!localStorage.getItem('jwt') ? <Redirect to="/home" /> : <Route path="/signup" exact component={() => this.renderForm("Sign Up")} /> }
           </Route>
 
           <Route exact path="/settings">
-            <Route path="/settings" exact component={() => this.renderForm("Settings")} />
+            {!!localStorage.getItem('jwt') ? <Route path="/settings" exact component={() => this.renderForm("Settings")} /> : <Redirect to="/" />}
           </Route>
 
           <Route exact path="/home">
-            {!!localStorage.getItem('jwt') ? <Route path="/home" exact component={this.renderHome}/> : <Redirect to="/" />}
+            {!!localStorage.getItem('jwt') ? <Route path="/home" exact component={this.renderPage}/> : <Redirect to="/" />}
           </Route>
 
         </Switch>
@@ -128,15 +126,14 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ page, user }) => {
-  return { page, user }
+const mapStateToProps = ({ user }) => {
+  return { user }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    renderPage: (page) => dispatch({ type: "RENDER_PAGE", payload: page }),
-    updateUserInfo: (userInfo) => dispatch({ type: "UPDATE_USER_INFO", payload: userInfo }),
-    logout: () => dispatch({ type: "LOGOUT" })
+    updateUserInfo: (info) => dispatch(updateUserInfo(info)),
+    logout: () => dispatch(logout())
   }
 }
 

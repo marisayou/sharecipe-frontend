@@ -68,7 +68,7 @@ export default function TopBar(props) {
       {/* <AppBar position="static" color="secondary"> */}
         {/* <div>LOGO</div> */}
         <Toolbar>
-          <Menu selectRoute={props.selectRoute}/>
+          <Menu selectMenuItem={props.selectMenuItem}/>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

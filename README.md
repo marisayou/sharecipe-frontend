@@ -73,6 +73,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 yarn add redux
 yarn add react-redux
+yarn add redux-thunk
 yarn add react-dom
 yarn add react-router-dom
 yarn add @material-ui/core

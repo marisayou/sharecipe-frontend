@@ -1,112 +1,118 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Button, Grid, Typography, TextField } from "@material-ui/core";
 import '../css/UserForm.css';
 
-const UserForm = (props) => {
-    const dispatch = useDispatch()
-    const page = useSelector(state => state.page)
-    const username = useSelector(state => state.username)
-    const password = useSelector(state => state.password)
-    const passwordConfirmation = useSelector(state => state.passwordConfirmation) 
-    const name = useSelector(state => state.name)
+class UserForm extends Component {
 
-    const handleSubmit = (e) => {
+    state = {
+        name: this.props.user ? this.props.user.name : "",
+        username: this.props.user ? this.props.user.username : "",
+        password: "",
+        passwordConfirmation: ""
+    }
+
+    handleSubmit = (e) => {
         e.preventDefault()
 
-        // Check password confirmation
-        if (e.target.passwordConfirmation && e.target.password.value !== e.target.passwordConfirmation.value) {
+        // Check password confirmation in Sign Up and Settings
+        if (this.props.form !== "Sign In" && this.state.password !== this.state.passwordConfirmation) {
             alert("Password confirmation does not match. Please try again.")
             return
         }
 
         let data
-        switch (page) {
+        switch (this.props.form) {
             case "Sign In":
                 data = {
-                    username: e.target.username.value,
-                    password: e.target.password.value
+                    username: this.state.username,
+                    password: this.state.password
                 }
                 break
             case "Settings":
                 data = {
-                    name: e.target.name.value,
-                    password: e.target.password.value
+                    name: this.state.name,
+                    password: this.state.password
                 }
                 break
             case "Sign Up":
                 data = {
-                    name: e.target.name.value,
-                    username: e.target.username.value,
-                    password: e.target.password.value
+                    name: this.state.name,
+                    username: this.state.username,
+                    password: this.state.password
                 }
                 break
             default:
                 return
         }
-        props.handleSubmit(data)
+        this.props.handleSubmit(this.props.form, data)
     }
 
-    const handleInputChange = (e) => {
+    handleInputChange = (e) => {
         const inputField = e.target.getAttribute('name')
-        dispatch({ type: "HANDLE_INPUT_CHANGE", payload: {inputField: inputField, value: e.target.value }})
+        this.setState({ [inputField]: e.target.value})
     }
     
-    return (
-        <div id="user-form">
-            <Grid container direction="row" justify="center" alignItems="center">
-                <Grid item>
-                    <Grid container direction="column" justify="center">
-                        <Grid item>
-                            <Typography component="h1">
-                                {page}
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <form onSubmit={handleSubmit}>
-                                <Grid container direction="column" justify="center">
+    render() {
+        return (
+            <div id="user-form">
+                <Grid container direction="row" justify="center" alignItems="center">
+                    <Grid item>
+                        <Grid container direction="column" justify="center">
+                            <Grid item>
+                                <Typography component="h1">
+                                    {this.props.form}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <form onSubmit={this.handleSubmit}>
+                                    <Grid container direction="column" justify="center">
+                                        {/* username */}
+                                        <Grid item>
+                                            {this.props.form === "Sign Up" || this.props.form === "Sign In" ?
+                                                <TextField id="standard-required" label="Username" name="username" value={this.state.username} onChange={this.handleInputChange} required/> :
+                                                <TextField id="standard-disabled" label="Username" name="username" value={this.state.username} onChange={this.handleInputChange} required disabled/>
+                                            }
+                                        </Grid>
+                                        
+                                        {/* name */}
+                                        {this.props.form === "Sign Up" || this.props.form === "Settings" ?
+                                        (<Grid item>
+                                            <TextField id="standard-required" label="Name" name="name" value={this.state.name} required 
+                                            onChange={this.handleInputChange}/>
+                                        </Grid>) :
+                                        null}
+                                        
+                                        {/* password */}
+                                        <Grid item>
+                                            <TextField id="standard-password-input" type="password" label="Password" name="password" value={this.state.password} required onChange={this.handleInputChange}/>
+                                        </Grid>
+                                        
+                                        {/* password confirmation */}
+                                        {this.props.form === "Sign Up" || this.props.form === "Settings" ?
+                                        (<Grid item>
+                                            <TextField id="standard-password-input" type="password" label="Confirm Password" name="passwordConfirmation" value={this.state.passwordConfirmation} required onChange={this.handleInputChange}/>
+                                        </Grid>) :
+                                        null}
 
-                                    <Grid item>
-                                        {page === "Sign Up" || page === "Sign In" ?
-                                            <TextField id="standard-required" label="Username" name="username" value={username} onChange={handleInputChange} required/> :
-                                            <TextField id="standard-disabled" label="Username" name="username" value={username} onChange={handleInputChange} disabled/>
-                                        }
-                                    </Grid>
-
-                                    {page === "Sign Up" || page === "Settings" ?
-                                    (<Grid item>
-                                        <TextField id="standard-required" label="Name" name="name" value={name} required 
-                                        onChange={handleInputChange}/>
-                                    </Grid>) :
-                                    null}
-                                    
-                                    
-                                {/* </Grid>
-                                <Grid container direction="column"> */}
-                                    <Grid item>
-                                        <TextField id="standard-password-input" type="password" label="Password" name="password" value={password} required onChange={handleInputChange}/>
-                                    </Grid>
-
-                                    {page === "Sign Up" || page === "Settings" ?
-                                    (<Grid item>
-                                        <TextField id="standard-password-input" type="password" label="Confirm Password" name="passwordConfirmation" value={passwordConfirmation} required onChange={handleInputChange}/>
-                                    </Grid>) :
-                                    null}
-                                {/* </Grid>
-                                <Grid container direction="row" justify="center"> */}
-                                    <Grid item>
-                                        <Grid container direction="row" justify="center">
-                                            <Button type="submit">Submit</Button>
+                                        <Grid item>
+                                            <Grid container direction="row" justify="center">
+                                                <Button type="submit">Submit</Button>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
-                                </Grid>
-                            </form>
+                                </form>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-        </div>
-    )
+            </div>
+        )
+    }
 }
 
-export default UserForm
+const mapStateToProps = ({ user }) => {
+    return { user }
+  }
+
+export default connect(mapStateToProps)(UserForm)

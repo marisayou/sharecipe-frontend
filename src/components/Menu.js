@@ -11,7 +11,6 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from '@material-ui/icons/Menu';
 
-
 const Menu = (props) => {
   const openMenu = useSelector(state => state.openMenu)
   const dispatch = useDispatch()
@@ -31,29 +30,23 @@ const Menu = (props) => {
         {["Home", "My Sharecipe Page", "Favorites", "Recipes", "Users"].map((text, index) => (
           <ListItem button key={text} 
             onClick={() => {
-              dispatch({type: "RENDER_PAGE", payload: text})
-              props.selectRoute(text)
+              props.selectMenuItem(text)
             }}
           >
-            <ListItemIcon>
+            {/* <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
+            </ListItemIcon> */}
             <ListItemText primary={text} />
           </ListItem>
-        ))}
+        ))}    
       </List>
       <Divider />
       <List>
         {["Settings", "Logout"].map((text, index) => (
-          <ListItem button key={text} 
-            onClick={() => {
-              dispatch({type: "RENDER_PAGE", payload: text})
-              props.selectRoute(text)
-            }}
-          >
-            <ListItemIcon>
+          <ListItem button key={text} onClick={() => { props.selectMenuItem(text) }}>
+            {/* <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
+            </ListItemIcon> */}
             <ListItemText primary={text} />
           </ListItem>
         ))}
