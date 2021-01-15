@@ -1,12 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Control } from 'react-redux-form';
-import {
-    Button,
-    Grid,
-    Typography,
-    TextField
-} from "@material-ui/core";
+import { Button, Grid, Typography, TextField } from "@material-ui/core";
 import '../css/UserForm.css';
 
 const UserForm = (props) => {
@@ -25,7 +19,6 @@ const UserForm = (props) => {
             alert("Password confirmation does not match. Please try again.")
             return
         }
-
 
         let data
         switch (page) {

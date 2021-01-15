@@ -24,8 +24,10 @@ export default function appReducer(state = initialState, action) {
         case "UPDATE_USER_INFO":
             console.log(action.payload)
             return action.payload.token ?
-            { ...state, user: action.payload.user, token: action.payload.token, name: action.payload.user.name, password: "", passwordConfirmation: "" } :
-            { ...state, user: action.payload.user, name: action.payload.user.name, password: "", passwordConfirmation: "" }
+            { ...state, user: action.payload.user, token: action.payload.token, name: action.payload.user.name, username: action.payload.user.username, password: "", passwordConfirmation: "" } :
+            { ...state, user: action.payload.user, name: action.payload.user.name, username: action.payload.user.username, password: "", passwordConfirmation: "" }
+        case "LOGOUT":
+            return initialState
         default:
             return state
     }

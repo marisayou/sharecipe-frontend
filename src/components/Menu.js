@@ -32,7 +32,7 @@ const Menu = (props) => {
           <ListItem button key={text} 
             onClick={() => {
               dispatch({type: "RENDER_PAGE", payload: text})
-              props.renderPage(text)
+              props.selectRoute(text)
             }}
           >
             <ListItemIcon>
@@ -48,7 +48,7 @@ const Menu = (props) => {
           <ListItem button key={text} 
             onClick={() => {
               dispatch({type: "RENDER_PAGE", payload: text})
-              props.renderPage(text)
+              props.selectRoute(text)
             }}
           >
             <ListItemIcon>

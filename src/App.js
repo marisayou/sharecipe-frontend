@@ -11,7 +11,8 @@ import TopBar from './components/TopBar';
 import './App.css';
 
 class App extends Component {
-  renderPage = (page) => {
+
+  selectRoute = (page) => {
     switch (page) {
         case "Home":
           this.props.history.push('/home')
@@ -28,10 +29,9 @@ class App extends Component {
           this.props.history.push('/settings')
           return
         case "Logout":
-          return <div>Logout</div>
-          // this.props.updateUserInfo()
-          // this.props.history.push('/')
-          // return
+          this.props.logout()
+          localStorage.clear()
+          return
         default:
           console.log("default")
           return
@@ -61,9 +61,6 @@ class App extends Component {
   }
 
   handleAuthFetch = (data, request, method) => {
-    console.log(data);
-    console.log(request);
-    console.log(method);
     fetch(request, {
       method: method,
       headers: { 
@@ -76,7 +73,6 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(data => {
-      console.log(data)
       if (data.error) { 
         alert(data.error) 
         return 
@@ -107,7 +103,7 @@ class App extends Component {
     // const userPath = "/" + this.props.username
     return (
       <div className="App">
-        <TopBar renderPage={this.renderPage}/>
+        <TopBar selectRoute={this.selectRoute}/>
         <Switch>
 
           <Route exact path="/">
@@ -123,7 +119,6 @@ class App extends Component {
           </Route>
 
           <Route exact path="/home">
-            {/* <Home path="/home" exact component={<Home />}/> */}
             {!!localStorage.getItem('jwt') ? <Route path="/home" exact component={this.renderHome}/> : <Redirect to="/" />}
           </Route>
 
@@ -140,7 +135,8 @@ const mapStateToProps = ({ page, user }) => {
 const mapDispatchToProps = dispatch => {
   return {
     renderPage: (page) => dispatch({ type: "RENDER_PAGE", payload: page }),
-    updateUserInfo: (userInfo) => dispatch({ type: "UPDATE_USER_INFO", payload: userInfo })
+    updateUserInfo: (userInfo) => dispatch({ type: "UPDATE_USER_INFO", payload: userInfo }),
+    logout: () => dispatch({ type: "LOGOUT" })
   }
 }
 
