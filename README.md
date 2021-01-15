@@ -69,3 +69,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 # sharecipe-frontend
+
+
+yarn add redux
+yarn add react-redux
+yarn add react-redux-form
+yarn add react-dom
+yarn add react-router-dom
+yarn add @material-ui/core
+yarn add @materials-ui/icons
