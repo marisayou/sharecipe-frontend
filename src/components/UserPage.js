@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Container, Grid, Button, Typography, CssBaseline } from "@material-ui/core";
+import ProfileInfo from './ProfileInfo';
 
 class UserPage extends Component {
 
-    // componentDidMount() {
-    //     fetch('http://localhost:3000/get_user', {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization' : `Bearer ${localStorage.getItem('jwt')}`
-    //         }
-    //     })
-    //     .then(res => res.json())
-    //     .then(user => {
-    //         this.props.handleRefresh(user)
-    //     })
-    // }
-
     render() {
-        return <div>{this.props.user.name}'s Page</div>
+        return (
+            <React.Fragment>
+                <CssBaseline />
+                <Container maxWidth="md">
+                    <Grid container direction="column" style={{ backgroundColor: '#cfe8fc', height: '100vh'}}>
+                        <Grid container item>
+                            <ProfileInfo />
+                        </Grid>
+
+                    </Grid>
+                </Container>
+            </React.Fragment>
+        )
+        
     }
 }
 
@@ -28,7 +29,7 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleRefresh: (user) => dispatch({ type: "UPDATE_USER_INFO", payload: user})
+        
     }
 }
 

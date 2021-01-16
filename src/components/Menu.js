@@ -1,5 +1,4 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { Component } from "react";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
@@ -11,30 +10,31 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from '@material-ui/icons/Menu';
 
-const Menu = (props) => {
-  const openMenu = useSelector(state => state.openMenu)
-  const dispatch = useDispatch()
+class Menu extends Component {
+  state = {
+    menu: false
+  }
 
-  const toggleDrawer = (open) => () => {
-    dispatch({type: "TOGGLE_MENU", payload: open})
+  toggleDrawer = (open) => {
+    this.setState({ menu: open })
   };
 
-  const list = () => (
+  list = () => (
     <div
       id="menu"
       role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
+      onClick={() => this.toggleDrawer(false)}
+      onKeyDown={() => this.toggleDrawer(false)}
     >
       <List>
-        {["Home", "My Sharecipe Page", "Favorites", "Recipes", "Users"].map((text, index) => (
+        {["Home", "My Sharecipe Page", "Favorites", "Recipes", "Users"].map((text) => (
           <ListItem button key={text} 
             onClick={() => {
-              props.selectMenuItem(text)
+              this.props.selectMenuItem(text)
             }}
           >
             {/* <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <InboxIcon />
             </ListItemIcon> */}
             <ListItemText primary={text} />
           </ListItem>
@@ -42,10 +42,10 @@ const Menu = (props) => {
       </List>
       <Divider />
       <List>
-        {["Settings", "Logout"].map((text, index) => (
-          <ListItem button key={text} onClick={() => { props.selectMenuItem(text) }}>
+        {["Settings", "Logout"].map((text) => (
+          <ListItem button key={text} onClick={() => { this.props.selectMenuItem(text) }}>
             {/* <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <MailIcon />
             </ListItemIcon> */}
             <ListItemText primary={text} />
           </ListItem>
@@ -54,20 +54,22 @@ const Menu = (props) => {
     </div>
   );
 
-  return (
-    // <div>
-        <React.Fragment key={"left"}>
-          <Button onClick={toggleDrawer(true)} id="menu-btn"><MenuIcon /></Button>
-          <Drawer
-            anchor={"left"}
-            open={openMenu}
-            onClose={toggleDrawer(false)}
-          >
-            {list("left")}
-          </Drawer>
-        </React.Fragment>
-    // </div>
-  );
+  render() {
+    console.log(this.state.menu)
+    return (
+      <React.Fragment key={"left"}>
+        <Button onClick={() => this.toggleDrawer(true)} id="menu-btn"><MenuIcon /></Button>
+        <Drawer
+          anchor={"left"}
+          open={this.state.menu}
+          onClose={() => this.toggleDrawer(false)}
+        >
+          {this.list("left")}
+        </Drawer>
+      </React.Fragment>
+
+    )
+  }
 }
 
 export default Menu

@@ -1,5 +1,4 @@
-
-// update user info on sign up, sign in, and user update
+// update user info and token on sign up, sign in, and user update
 export const updateUserInfo = (userInfo) => ({ type: "UPDATE_USER_INFO", payload: userInfo })
 
 // handle logout
