@@ -1,0 +1,71 @@
+
+#profile-photo-container {
+    width: 100%;
+}
+
+/* #profile-photo-container:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+} */
+
+#profile-photo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+#profile-username-div {
+    height: min-content;
+    display: flex;
+    justify-content: center;
+}
+
+#profile-username {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#edit-profile-div {
+    height: min-content;
+    display: flex;
+    justify-content: center;
+}
+
+/* #photo-padding {
+    margin-left: 8px;
+    margin-top: 8px;
+    margin-right: 8px;
+} 
+
+#profile-name {
+    text-align: center;
+    margin-top: 0;
+}  */
+
+.stat-qty {
+    text-align: center;
+}
+
+.stat-cnt {
+    text-align: center;
+} 
+
+#profile-name {
+    margin-left: 16px;
+    /* text-align: center; */
+    margin-bottom: 0;
+}
+
+#user-bio { 
+    margin-left: 16px;
+}
+
+#new-recipe-div{
+    width: 100%;
+}
+
+#new-recipe-btn {
+    width: 100%;
+}
