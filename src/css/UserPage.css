@@ -3,12 +3,6 @@
     width: 100%;
 }
 
-/* #profile-photo-container:after {
-    content: "";
-    display: block;
-    padding-bottom: 100%;
-} */
-
 #profile-photo {
     position: relative;
     width: 100%;
@@ -24,7 +18,7 @@
 
 #profile-username {
     margin-top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 }
 
 #edit-profile-div {
@@ -32,17 +26,6 @@
     display: flex;
     justify-content: center;
 }
-
-/* #photo-padding {
-    margin-left: 8px;
-    margin-top: 8px;
-    margin-right: 8px;
-} 
-
-#profile-name {
-    text-align: center;
-    margin-top: 0;
-}  */
 
 .stat-qty {
     text-align: center;
@@ -54,7 +37,6 @@
 
 #profile-name {
     margin-left: 16px;
-    /* text-align: center; */
     margin-bottom: 0;
 }
 
@@ -67,5 +49,6 @@
 }
 
 #new-recipe-btn {
-    width: 100%;
+    /* width: 100%; */
+    text-align: center;
 }

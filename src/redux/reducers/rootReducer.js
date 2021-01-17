@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 
 const initialState = {
     user: null,
-    token: null
+    token: null,
+    recipes: []
 }
 
 // const rootReducer = (state = initialState, action) => {
@@ -26,7 +27,12 @@ const initialState = {
 function userReducer(state = initialState.user, action) {
     switch (action.type) {
         case "UPDATE_USER_INFO":
-            return action.payload.user
+            return { 
+                id: action.payload.user.id,
+                name: action.payload.user.name, 
+                username: action.payload.user.username,
+                likeCount: action.payload.user.like_count
+            }
         case "LOGOUT":
             return null
         default:
@@ -45,9 +51,22 @@ function tokenReducer(state = initialState.token, action) {
     }
 }
 
+function recipesReducer(state = initialState.recipes, action) {
+    switch (action.type) {
+        case "UPDATE_USER_INFO":
+            const recipes = action.payload.user.recipes.map(rec => JSON.parse(rec.recipe))
+            return recipes
+        case "ADD_NEW_RECIPE":
+            return [...state, JSON.parse(action.payload)]
+        default: 
+            return state
+    }
+}
+
 const rootReducer = combineReducers({
     user: userReducer,
-    token: tokenReducer
+    token: tokenReducer,
+    recipes: recipesReducer
 })
 
 

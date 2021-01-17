@@ -18,3 +18,21 @@ export const getUser = () => {
         .then(user => dispatch({ type: "UPDATE_USER_INFO", payload: user }))
     }
 }
+
+// add new recipe when submitting recipe form
+export const addNewRecipe = (recipe, user_id) => {
+    return function (dispatch) {
+        fetch('http://localhost:3000/recipes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ user_id, recipe })
+        })
+        .then(res => res.json())
+        .then(recipe => dispatch({ type: "ADD_NEW_RECIPE", payload: recipe.recipe}))
+    }
+}
+
+

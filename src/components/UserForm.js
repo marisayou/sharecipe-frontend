@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, Typography, TextField } from "@material-ui/core";
+import { Button, Grid, TextField } from "@material-ui/core";
 import '../css/UserForm.css';
 
 class UserForm extends Component {
@@ -57,53 +57,47 @@ class UserForm extends Component {
         return (
             <div id="user-form">
                 <Grid container direction="row" justify="center" alignItems="center">
-                    <Grid item>
-                        <Grid container direction="column" justify="center">
-                            <Grid item>
-                                <Typography component="h1">
-                                    {this.props.form}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <form onSubmit={this.handleSubmit}>
-                                    <Grid container direction="column" justify="center">
-                                        {/* username */}
-                                        <Grid item>
-                                            {this.props.form === "Sign Up" || this.props.form === "Sign In" ?
-                                                <TextField id="standard-required" label="Username" name="username" value={this.state.username} onChange={this.handleInputChange} required/> :
-                                                <TextField id="standard-disabled" label="Username" name="username" value={this.state.username} onChange={this.handleInputChange} required disabled/>
-                                            }
-                                        </Grid>
-                                        
-                                        {/* name */}
-                                        {this.props.form === "Sign Up" || this.props.form === "Settings" ?
-                                        (<Grid item>
-                                            <TextField id="standard-required" label="Name" name="name" value={this.state.name} required 
-                                            onChange={this.handleInputChange}/>
-                                        </Grid>) :
-                                        null}
-                                        
-                                        {/* password */}
-                                        <Grid item>
-                                            <TextField id="standard-password-input" type="password" label="Password" name="password" value={this.state.password} required onChange={this.handleInputChange}/>
-                                        </Grid>
-                                        
-                                        {/* password confirmation */}
-                                        {this.props.form === "Sign Up" || this.props.form === "Settings" ?
-                                        (<Grid item>
-                                            <TextField id="standard-password-input" type="password" label="Confirm Password" name="passwordConfirmation" value={this.state.passwordConfirmation} required onChange={this.handleInputChange}/>
-                                        </Grid>) :
-                                        null}
-
-                                        <Grid item>
-                                            <Grid container direction="row" justify="center">
-                                                <Button type="submit">Submit</Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </form>
-                            </Grid>
+                    <Grid container item direction="column" justify="center">
+                        <Grid item>
+                            <h1>{this.props.form}</h1>
                         </Grid>
+                        <form onSubmit={this.handleSubmit}>
+                            <Grid container item direction="column" justify="center" alignItems="center" xs={12}>
+                            
+                            
+                                {/* username */}
+                                <Grid container item direction="row" xs={12} sm={8} md={6} justify="center">
+                                    {this.props.form === "Sign Up" || this.props.form === "Sign In" ?
+                                        <TextField className="textfield" label="Username" name="username" value={this.state.username} onChange={this.handleInputChange} required/> :
+                                        <TextField className="textfield" label="Username" name="username" value={this.state.username} onChange={this.handleInputChange} required disabled/>
+                                    }
+                                </Grid>
+                                
+                                {/* name */}
+                                {this.props.form === "Sign Up" || this.props.form === "Settings" ?
+                                (<Grid container item direction="row" xs={12} sm={8} md={6} justify="center">
+                                    <TextField className="textfield" label="Name" name="name" value={this.state.name} required 
+                                    onChange={this.handleInputChange}/>
+                                </Grid>) :
+                                null}
+                                
+                                {/* password */}
+                                <Grid container item direction="row" xs={12} sm={8} md={6} justify="center">
+                                    <TextField className="textfield" type="password" label="Password" name="password" value={this.state.password} required onChange={this.handleInputChange}/>
+                                </Grid>
+                                
+                                {/* password confirmation */}
+                                {this.props.form === "Sign Up" || this.props.form === "Settings" ?
+                                (<Grid container item direction="row" xs={12} sm={8} md={6} justify="center">
+                                    <TextField className="textfield" type="password" label="Confirm Password" name="passwordConfirmation" value={this.state.passwordConfirmation} required onChange={this.handleInputChange}/>
+                                </Grid>) :
+                                null}
+
+                                <Grid className="btn-container" container item direction="row" justify="center">
+                                    <Button variant="outlined" type="submit">Submit</Button>
+                                </Grid>
+                            </Grid>
+                        </form>
                     </Grid>
                 </Grid>
             </div>

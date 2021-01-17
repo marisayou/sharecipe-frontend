@@ -4,10 +4,7 @@ import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from '@material-ui/icons/Menu';
 
 class Menu extends Component {
@@ -33,9 +30,6 @@ class Menu extends Component {
               this.props.selectMenuItem(text)
             }}
           >
-            {/* <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon> */}
             <ListItemText primary={text} />
           </ListItem>
         ))}    
@@ -44,9 +38,6 @@ class Menu extends Component {
       <List>
         {["Settings", "Logout"].map((text) => (
           <ListItem button key={text} onClick={() => { this.props.selectMenuItem(text) }}>
-            {/* <ListItemIcon>
-              <MailIcon />
-            </ListItemIcon> */}
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -55,7 +46,6 @@ class Menu extends Component {
   );
 
   render() {
-    console.log(this.state.menu)
     return (
       <React.Fragment key={"left"}>
         <Button onClick={() => this.toggleDrawer(true)} id="menu-btn"><MenuIcon /></Button>

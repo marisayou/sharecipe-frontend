@@ -1,0 +1,23 @@
+.ingredient-input {
+    width: 40%;
+}
+
+.qty-input {
+    width: 20%;
+}
+
+.remove-ingredient {
+    position: absolute;
+}
+
+.recipe-form-btn {
+    width: 100%;
+}
+
+.btn-div {
+    width: 30%;
+}
+
+#add-ingredient-btn {
+    width: 100%;
+}
