@@ -35,4 +35,9 @@ export const addNewRecipe = (recipe, user_id) => {
     }
 }
 
+// determine which recipe page to render using its id 
+export const setCurrentRecipe = (recipe) => ({ type: "SET_CURRENT_RECIPE", payload: recipe })
 
+
+// select which view to render for userPage
+export const setUserPage = (page) => ({ type: "SET_USER_PAGE", payload: page })

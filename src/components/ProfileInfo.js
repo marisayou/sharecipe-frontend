@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button } from "@material-ui/core";
+import { setUserPage } from '../redux/actions';
 import '../css/UserPage.css'
 
 class ProfileInfo extends Component {
 
     render() {
-        console.log(this.props.user)
         return (
             <React.Fragment>
                 <Grid container spacing={1}>
@@ -61,7 +61,13 @@ class ProfileInfo extends Component {
                     </Grid>
                     <Grid container item direction="row" justify="center">
                         <Grid container item id="new-recipe-div" justify="center">
-                            <Button id="new-recipe-btn" variant="outlined" onClick={this.props.renderRecipeForm}>Add New Recipe</Button>
+                            <Button 
+                                id="new-recipe-btn" 
+                                variant="outlined" 
+                                onClick={() => this.props.setUserPage("form")}
+                            >
+                                Add New Recipe
+                            </Button>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -74,4 +80,10 @@ const mapStateToProps = ({ user, recipes }) => {
     return { user, recipes }
 }
 
-export default connect(mapStateToProps)(ProfileInfo)
+const mapDispatchToProps = dispatch => {
+    return {
+        setUserPage: (page) => dispatch(setUserPage(page))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo)

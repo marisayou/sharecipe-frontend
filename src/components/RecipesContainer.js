@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import RecipePreview from './RecipePreview';
 
 class RecipesContainer extends Component {

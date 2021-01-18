@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addNewRecipe } from '../redux/actions';
 import { Button, Grid, TextField, MenuItem } from "@material-ui/core";
+import { setUserPage } from '../redux/actions';
 import '../css/UserForm.css';
 import '../css/NewRecipeForm.css';
 
@@ -28,7 +29,7 @@ class NewRecipeForm extends Component {
         
         await this.props.addNewRecipe(recipe, this.props.user.id)
         // await this.createTags(tags)
-        this.props.closeRecipeForm()
+        this.props.setUserPage("profile")
     }
 
     // createTags = async (tags) => {
@@ -141,90 +142,87 @@ class NewRecipeForm extends Component {
     render() {
         return (
             <React.Fragment>
-                <Grid container direction="row" justify="center" alignItems="center">
-                    <Grid container item direction="column" justify="center" alignItems="center">
-                        <Grid item xs={12}>
-                            <h1>New Recipe</h1>
-                        </Grid>
-                        <form onSubmit={this.handleRecipeFormSubmit}>
-                            <Grid container item xs={12} direction="column" justify="center" alignItems="center" >
-                                <Grid container item direction="row" xs={12} justify="center">
-                                    <TextField
-                                        className="textfield" 
-                                        label="Title" 
-                                        value={this.state.title} 
-                                        onChange={(e) => this.handleFormChange(e, "title")}
-                                        required 
-                                    />
-                                </Grid>
-                                <br />
-                                <Grid container item direction="row" xs={12} justify="center">
-                                    <TextField 
-                                        className="textfield" 
-                                        variant="outlined"
-                                        label="Description" 
-                                        value={this.state.description} 
-                                        onChange={(e) => this.handleFormChange(e, "description")} 
-                                        multiline 
-                                        rows={3} 
-                                        required 
-                                    />
-                                </Grid>
-                                <br />
-                                <Grid container item direction="row" xs={12} justify="center">
-                                    {this.ingredientFields()}
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button 
-                                        id="add-ingredient-btn"
-                                        variant="outlined"
-                                        onClick={this.addIngredientField} 
-                                        disabled={this.state.ingredients.length === 0 ? false : 
-                                            !this.state.ingredients[this.state.ingredients.length-1].ingredient ||
-                                            !this.state.ingredients[this.state.ingredients.length-1].wholeNum||
-                                            !this.state.ingredients[this.state.ingredients.length-1].fracNum||
-                                            !this.state.ingredients[this.state.ingredients.length-1].unit}
-                                    >
-                                        Add Ingredient
-                                    </Button>
-                                </Grid>
-                                <br />
-                                <Grid container item direction="row" xs={12} justify="center">
-                                    <TextField 
-                                        className="textfield" 
-                                        variant="outlined"
-                                        label="Instructions" 
-                                        value={this.state.instructions} 
-                                        onChange={(e) => this.handleFormChange(e, "instructions")} 
-                                        multiline 
-                                        rows={5} 
-                                        required 
-                                    />
-                                </Grid>
-                                <br />  
-                                <Grid container item direction="row" xs={12} justify="center">
-                                    <TextField
-                                        className="textfield" 
-                                        variant="outlined"
-                                        label="Tags" 
-                                        value={this.state.tags} 
-                                        onChange={(e) => this.handleFormChange(e, "tags")}
-                                    />
-                                </Grid>
+                <Grid container item direction="column" justify="center" alignItems="center">
+                    <Grid item xs={12}>
+                        <h1>New Recipe</h1>
+                    </Grid>
+                    <form onSubmit={this.handleRecipeFormSubmit}>
+                        <Grid container item xs={12} direction="column" justify="center" alignItems="center" >
+                            <Grid container item direction="row" xs={12} justify="center">
+                                <TextField
+                                    className="textfield" 
+                                    label="Title" 
+                                    value={this.state.title} 
+                                    onChange={(e) => this.handleFormChange(e, "title")}
+                                    required 
+                                />
+                            </Grid>
+                            <br />
+                            <Grid container item direction="row" xs={12} justify="center">
+                                <TextField 
+                                    className="textfield" 
+                                    variant="outlined"
+                                    label="Description" 
+                                    value={this.state.description} 
+                                    onChange={(e) => this.handleFormChange(e, "description")} 
+                                    multiline 
+                                    rows={3} 
+                                    required 
+                                />
+                            </Grid>
+                            <br />
+                            <Grid container item direction="row" xs={12} justify="center">
+                                {this.ingredientFields()}
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button 
+                                    id="add-ingredient-btn"
+                                    variant="outlined"
+                                    onClick={this.addIngredientField} 
+                                    disabled={this.state.ingredients.length === 0 ? false : 
+                                        !this.state.ingredients[this.state.ingredients.length-1].ingredient ||
+                                        !this.state.ingredients[this.state.ingredients.length-1].wholeNum||
+                                        !this.state.ingredients[this.state.ingredients.length-1].fracNum||
+                                        !this.state.ingredients[this.state.ingredients.length-1].unit}
+                                >
+                                    Add Ingredient
+                                </Button>
+                            </Grid>
+                            <br />
+                            <Grid container item direction="row" xs={12} justify="center">
+                                <TextField 
+                                    className="textfield" 
+                                    variant="outlined"
+                                    label="Instructions" 
+                                    value={this.state.instructions} 
+                                    onChange={(e) => this.handleFormChange(e, "instructions")} 
+                                    multiline 
+                                    rows={5} 
+                                    required 
+                                />
+                            </Grid>
+                            <br />  
+                            <Grid container item direction="row" xs={12} justify="center">
+                                <TextField
+                                    className="textfield" 
+                                    variant="outlined"
+                                    label="Tags" 
+                                    value={this.state.tags} 
+                                    onChange={(e) => this.handleFormChange(e, "tags")}
+                                />
+                            </Grid>
 
-                                <Grid className="btn-container" container item justify="center">
-                                    <Grid item className="btn-div">
-                                        <Button className="recipe-form-btn" variant="outlined" onClick={this.props.closeRecipeForm}>Back</Button>
-                                    </Grid>
-                                    <Grid item className="btn-div">
-                                        <Button className="recipe-form-btn" type="submit" variant="outlined">Submit</Button>
-                                    </Grid>
+                            <Grid className="btn-container" container item justify="center">
+                                <Grid item className="btn-div">
+                                    <Button className="recipe-form-btn" variant="outlined" onClick={() => this.props.setUserPage("profile")}>Back</Button>
+                                </Grid>
+                                <Grid item className="btn-div">
+                                    <Button className="recipe-form-btn" type="submit" variant="outlined">Submit</Button>
                                 </Grid>
                             </Grid>
-                        </form>
-                    </Grid>
+                        </Grid>
+                    </form>
                 </Grid>
-                
             </React.Fragment>
         )
     }
@@ -236,7 +234,8 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addNewRecipe: (recipe, userId) => dispatch(addNewRecipe(recipe, userId))
+        addNewRecipe: (recipe, userId) => dispatch(addNewRecipe(recipe, userId)),
+        setUserPage: (page) => dispatch(setUserPage(page))
     }
 }
 

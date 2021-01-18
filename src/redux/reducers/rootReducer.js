@@ -3,7 +3,11 @@ import { combineReducers } from 'redux';
 const initialState = {
     user: null,
     token: null,
-    recipes: []
+    recipes: [],
+
+    userPage: "profile",
+    currentUser: null,
+    currentRecipe: null
 }
 
 // const rootReducer = (state = initialState, action) => {
@@ -54,7 +58,10 @@ function tokenReducer(state = initialState.token, action) {
 function recipesReducer(state = initialState.recipes, action) {
     switch (action.type) {
         case "UPDATE_USER_INFO":
-            const recipes = action.payload.user.recipes.map(rec => JSON.parse(rec.recipe))
+            const recipes = action.payload.user.recipes.map(rec => {
+                return {id: rec.id, ...JSON.parse(rec.recipe)}
+            })
+            console.log(recipes)
             return recipes
         case "ADD_NEW_RECIPE":
             return [...state, JSON.parse(action.payload)]
@@ -63,10 +70,31 @@ function recipesReducer(state = initialState.recipes, action) {
     }
 }
 
+function userPageReducer(state = initialState.userPage, action) {
+    switch (action.type) {
+        case "SET_USER_PAGE":
+            return action.payload
+        default:
+            return state
+    }
+}
+
+function currentRecipeReducer(state = initialState.currentRecipe, action) {
+    switch (action.type) {
+        case "SET_CURRENT_RECIPE":
+            console.log(action.payload)
+            return action.payload
+        default: 
+            return state
+    }
+}
+
 const rootReducer = combineReducers({
     user: userReducer,
     token: tokenReducer,
-    recipes: recipesReducer
+    recipes: recipesReducer,
+    userPage: userPageReducer,
+    currentRecipe: currentRecipeReducer
 })
 
 
