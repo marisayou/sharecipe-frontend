@@ -6,9 +6,9 @@ import RecipePreview from './RecipePreview';
 class RecipesContainer extends Component {
 
     renderRecipePreviews = () => {
-        return this.props.recipes.map(recipe => {
+        return this.props.recipes.map((recipe, idx) => {
             return (
-                <RecipePreview recipe={recipe}/>
+                <RecipePreview key={idx} recipe={recipe}/>
             )
         })
     }

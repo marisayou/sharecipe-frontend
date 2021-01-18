@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addNewRecipe } from '../redux/actions';
+import { setUserPage, setCurrentRecipe, addNewRecipe, editRecipe } from '../redux/actions';
 import { Button, Grid, TextField, MenuItem } from "@material-ui/core";
-import { setUserPage } from '../redux/actions';
 import '../css/UserForm.css';
 import '../css/NewRecipeForm.css';
 
@@ -17,6 +16,29 @@ class NewRecipeForm extends Component {
         tags: ""
     }
 
+    componentDidMount() {
+        const recipe = this.props.currentRecipe
+        if (recipe) {
+            this.setState({
+                title: recipe.title,
+                description: recipe.description,
+                ingredients: recipe.ingredients,
+                instructions: recipe.instructions,
+                // tags: ""
+            })
+        }
+    }
+
+    handleBackButtonClick = async () => {
+        if (this.props.currentRecipe) {
+            this.props.setUserPage("recipe")
+        } else {
+            await this.props.setUserPage("profile")
+            this.props.setCurrentRecipe(null)
+        }
+        
+    }
+
     handleRecipeFormSubmit = async (e) => {
         e.preventDefault()
         const recipe = {
@@ -26,10 +48,15 @@ class NewRecipeForm extends Component {
             instructions: this.state.instructions
         }
         const tags = this.state.tags.split(" ")
-        
-        await this.props.addNewRecipe(recipe, this.props.user.id)
-        // await this.createTags(tags)
-        this.props.setUserPage("profile")
+        if (this.props.currentRecipe) {
+            await this.props.editRecipe(recipe, this.props.currentRecipe.id)
+            
+            this.props.setUserPage("recipe")
+        } else {
+            await this.props.addNewRecipe(recipe, this.props.user.id)
+            // await this.createTags(tags)
+            this.props.setUserPage("profile")
+        }
     }
 
     // createTags = async (tags) => {
@@ -52,7 +79,7 @@ class NewRecipeForm extends Component {
         const units = ["none", "tsp", "tbsp", "fl oz", "c", "pt", "qt", "gal", "ml", "l", "lb", "oz", "mg", "g", "kg"]
         return ingredients.map((ing, idx) => {
             return (
-                <Grid container item direction="row" xs={12} sm={6} md={4} justify="center">
+                <Grid key={idx} container item direction="row" xs={12} sm={6} md={4} justify="center">
                     <Grid item className="textfield">
                     <TextField 
                         className="qty-input" 
@@ -214,7 +241,7 @@ class NewRecipeForm extends Component {
 
                             <Grid className="btn-container" container item justify="center">
                                 <Grid item className="btn-div">
-                                    <Button className="recipe-form-btn" variant="outlined" onClick={() => this.props.setUserPage("profile")}>Back</Button>
+                                    <Button className="recipe-form-btn" variant="outlined" onClick={this.handleBackButtonClick}>Back</Button>
                                 </Grid>
                                 <Grid item className="btn-div">
                                     <Button className="recipe-form-btn" type="submit" variant="outlined">Submit</Button>
@@ -228,14 +255,16 @@ class NewRecipeForm extends Component {
     }
 }
 
-const mapStateToProps = ({ user }) => {
-    return { user }
+const mapStateToProps = ({ user, currentRecipe }) => {
+    return { user, currentRecipe }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         addNewRecipe: (recipe, userId) => dispatch(addNewRecipe(recipe, userId)),
-        setUserPage: (page) => dispatch(setUserPage(page))
+        setUserPage: (page) => dispatch(setUserPage(page)),
+        setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
+        editRecipe: (recipe, id) => dispatch(editRecipe(recipe, id))
     }
 }
 

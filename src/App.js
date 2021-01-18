@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
-import { updateUserInfo, logout } from './redux/actions.js';
+import { updateUserInfo, logout, setUserPage } from './redux/actions.js';
 import UserForm from './components/UserForm';
 import Home from './components/Home';
 import UserPage from './components/UserPage';
@@ -34,6 +34,7 @@ class App extends Component {
   renderPage = () => {
     switch (this.state.page) {
       case "My Sharecipe Page": 
+        this.props.setUserPage("profile")
         return <UserPage />
       case "Favorites":
         return <FavoritesPage />
@@ -133,7 +134,8 @@ const mapStateToProps = ({ user }) => {
 const mapDispatchToProps = dispatch => {
   return {
     updateUserInfo: (info) => dispatch(updateUserInfo(info)),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    setUserPage: (page) => dispatch(setUserPage(page))
   }
 }
 

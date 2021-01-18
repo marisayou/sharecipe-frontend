@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button } from "@material-ui/core";
-import { setUserPage } from '../redux/actions';
+import { setUserPage, setCurrentRecipe } from '../redux/actions';
 import '../css/RecipePage.css';
 
 class RecipePage extends Component {
 
     renderDescription = () => {
         const paragraphs = this.props.description.split("\n")
-        return paragraphs.map(para => {
+        return paragraphs.map((para, idx) => {
             return (
-                <Grid container item >
+                <Grid container item key={idx}>
                     <p>{para}</p>
                 </Grid>
             )
@@ -18,13 +18,13 @@ class RecipePage extends Component {
     }
 
     renderIngredients = () => {
-        return this.props.ingredients.map(ing => {
+        return this.props.ingredients.map((ing, idx) => {
             const wholeNum = ing.wholeNum === "0" ? "" : `${ing.wholeNum} `
             const fracNum = ing.fracNum === "0" ? "" : `${ing.fracNum} `
             const unit = ing.unit === "none" ? "" : `${ing.unit} `
             const ingredient = ing.ingredient
             return (
-                <Grid container item >
+                <Grid container item key={idx}>
                     <p>{wholeNum+fracNum+unit+ingredient}</p>
                 </Grid>
             )
@@ -33,13 +33,18 @@ class RecipePage extends Component {
 
     renderInstructions = () => {
         const instructions = this.props.instructions.split("\n")
-        return instructions.map(ins => {
+        return instructions.map((ins, idx) => {
             return (
-                <Grid container item >
+                <Grid container item key={idx}>
                     <p>{ins}</p>
                 </Grid>
             )
         })
+    }
+
+    handleBackButtonClick = async () => {
+        await this.props.setUserPage("profile")
+        this.props.setCurrentRecipe(null)
     }
 
     render() {
@@ -47,11 +52,20 @@ class RecipePage extends Component {
         return (
             <React.Fragment>
                 <Grid container item direction="column" xs={10} alignItems="center">
-                    <Grid item>
+                    <Grid item xs={12}>
                         <h1>{this.props.title}</h1>
                     </Grid>
-                    <Grid item>
-                        <Button variant="outlined" onClick={() => this.props.setUserPage("profile")}>Back</Button>
+                    <Grid container item justify="center">
+                        <Button variant="outlined" 
+                            onClick={this.handleBackButtonClick}
+                        >
+                            Back
+                        </Button>
+                        <Button variant="outlined" 
+                            onClick={() => this.props.setUserPage("form")}
+                        >
+                            Edit
+                        </Button>
                     </Grid>
                     <Grid id="description" item container xs={12}>
                         {this.renderDescription()}
@@ -77,13 +91,16 @@ class RecipePage extends Component {
 }
 
 const mapStateToProps = ({ currentRecipe }) => {
-    const { title, description, ingredients, instructions } = currentRecipe
-    return { title, description, ingredients, instructions }
+    // if (currentRecipe) {
+        const { title, description, ingredients, instructions } = currentRecipe
+        return { title, description, ingredients, instructions }
+    // }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        setUserPage: (page) => dispatch(setUserPage(page))
+        setUserPage: (page) => dispatch(setUserPage(page)),
+        setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe))
     }
 }
 

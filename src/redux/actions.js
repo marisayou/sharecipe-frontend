@@ -35,8 +35,26 @@ export const addNewRecipe = (recipe, user_id) => {
     }
 }
 
+// edit a recipe
+export const editRecipe = (recipe, id) => {
+    return function (dispatch) {
+        fetch('http://localhost:3000/recipes/' + id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ recipe })
+        })
+        .then(res => res.json())
+        .then(rec => dispatch({ type: "EDIT_RECIPE", payload: { id: id, recipe: rec.recipe }}))
+    }
+}
+
 // determine which recipe page to render using its id 
-export const setCurrentRecipe = (recipe) => ({ type: "SET_CURRENT_RECIPE", payload: recipe })
+export const setCurrentRecipe = (recipe) => {
+    return ({ type: "SET_CURRENT_RECIPE", payload: recipe })
+}
 
 
 // select which view to render for userPage

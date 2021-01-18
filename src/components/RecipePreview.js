@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button, Card, CardHeader, CardContent, CardActions, Typography, IconButton } from "@material-ui/core";
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import EditIcon from '@material-ui/icons/Edit';
 import { setCurrentRecipe, setUserPage } from '../redux/actions';
 
 class RecipePreview extends Component {
 
     handleClickReadMore = async () => {
         await this.props.setCurrentRecipe(this.props.recipe)
+        console.log(this.props.recipe)
+        console.log(this.props.currentRecipe)
         this.props.setUserPage("recipe")
     }
 
@@ -26,15 +27,16 @@ class RecipePreview extends Component {
                         <IconButton>
                             <FavoriteIcon />
                         </IconButton>
-                        <IconButton>
-                            <EditIcon />
-                        </IconButton>
                         <Button size="small" onClick={this.handleClickReadMore}>Read More</Button>
                     </CardActions>
                 </Card>
             </Grid>
         )
     }
+}
+
+const mapStateToProps = ({ currentRecipe }) => {
+    return { currentRecipe}
 }
 
 const mapDispatchToProps = dispatch => {
@@ -44,5 +46,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(RecipePreview)
+export default connect(mapStateToProps, mapDispatchToProps)(RecipePreview)
 

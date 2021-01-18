@@ -61,10 +61,15 @@ function recipesReducer(state = initialState.recipes, action) {
             const recipes = action.payload.user.recipes.map(rec => {
                 return {id: rec.id, ...JSON.parse(rec.recipe)}
             })
-            console.log(recipes)
             return recipes
         case "ADD_NEW_RECIPE":
             return [...state, JSON.parse(action.payload)]
+        case "EDIT_RECIPE":
+            const updatedRecipes = [...state]
+            const idx = updatedRecipes.findIndex(rec => rec.id === action.payload.id)
+            updatedRecipes[idx] = {id: action.payload.id, ...JSON.parse(action.payload.recipe)}
+            console.log(updatedRecipes)
+            return updatedRecipes
         default: 
             return state
     }
@@ -82,8 +87,9 @@ function userPageReducer(state = initialState.userPage, action) {
 function currentRecipeReducer(state = initialState.currentRecipe, action) {
     switch (action.type) {
         case "SET_CURRENT_RECIPE":
-            console.log(action.payload)
             return action.payload
+        case "EDIT_RECIPE":
+            return JSON.parse(action.payload.recipe)
         default: 
             return state
     }
