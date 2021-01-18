@@ -63,12 +63,16 @@ function recipesReducer(state = initialState.recipes, action) {
             })
             return recipes
         case "ADD_NEW_RECIPE":
-            return [...state, JSON.parse(action.payload)]
+            return [...state, { id: action.payload.id, ...JSON.parse(action.payload.recipe)}]
         case "EDIT_RECIPE":
+            const editedRecipes = [...state]
+            const i = editedRecipes.findIndex(rec => rec.id === action.payload.id)
+            editedRecipes[i] = {id: action.payload.id, ...JSON.parse(action.payload.recipe)}
+            return editedRecipes
+        case "DELETE_RECIPE":
             const updatedRecipes = [...state]
-            const idx = updatedRecipes.findIndex(rec => rec.id === action.payload.id)
-            updatedRecipes[idx] = {id: action.payload.id, ...JSON.parse(action.payload.recipe)}
-            console.log(updatedRecipes)
+            const j = updatedRecipes.findIndex(rec => rec.id === action.payload)
+            updatedRecipes.splice(j, 1)
             return updatedRecipes
         default: 
             return state
@@ -90,6 +94,8 @@ function currentRecipeReducer(state = initialState.currentRecipe, action) {
             return action.payload
         case "EDIT_RECIPE":
             return JSON.parse(action.payload.recipe)
+        case "DELETE_RECIPE":
+            return null
         default: 
             return state
     }

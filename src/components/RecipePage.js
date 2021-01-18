@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button } from "@material-ui/core";
-import { setUserPage, setCurrentRecipe } from '../redux/actions';
+import { setUserPage, setCurrentRecipe, deleteRecipe } from '../redux/actions';
 import '../css/RecipePage.css';
 
 class RecipePage extends Component {
@@ -47,6 +47,12 @@ class RecipePage extends Component {
         this.props.setCurrentRecipe(null)
     }
 
+    handleDeleteButtonClick = async () => {
+        await this.props.setUserPage("profile")
+        this.props.deleteRecipe(this.props.id)
+        
+    }
+
     render() {
         console.log(this.props.instructions)
         return (
@@ -60,11 +66,6 @@ class RecipePage extends Component {
                             onClick={this.handleBackButtonClick}
                         >
                             Back
-                        </Button>
-                        <Button variant="outlined" 
-                            onClick={() => this.props.setUserPage("form")}
-                        >
-                            Edit
                         </Button>
                     </Grid>
                     <Grid id="description" item container xs={12}>
@@ -84,6 +85,18 @@ class RecipePage extends Component {
                             {this.renderInstructions()}
                         </Grid>
                     </Grid>
+                    <Grid className="btn-container" container item justify="center">
+                        <Button variant="outlined" 
+                            onClick={() => this.props.setUserPage("form")}
+                        >
+                            Edit
+                        </Button>
+                        <Button variant="outlined" 
+                            onClick={this.handleDeleteButtonClick}
+                        >
+                            Delete
+                        </Button>
+                    </Grid>
                 </Grid>
             </React.Fragment>
         )
@@ -91,16 +104,15 @@ class RecipePage extends Component {
 }
 
 const mapStateToProps = ({ currentRecipe }) => {
-    // if (currentRecipe) {
-        const { title, description, ingredients, instructions } = currentRecipe
-        return { title, description, ingredients, instructions }
-    // }
+    const { id, title, description, ingredients, instructions } = currentRecipe
+    return { id, title, description, ingredients, instructions }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         setUserPage: (page) => dispatch(setUserPage(page)),
-        setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe))
+        setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
+        deleteRecipe: (id) => dispatch(deleteRecipe(id))
     }
 }
 

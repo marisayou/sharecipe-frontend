@@ -14,6 +14,7 @@ class RecipePreview extends Component {
     }
 
     render() {
+        
         return (
             <Grid container item xs={12} direction="column">
                 <Card variant="outlined">

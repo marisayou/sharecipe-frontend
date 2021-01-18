@@ -28,6 +28,7 @@ class UserPage extends Component {
     }
 
     render() {
+        console.log(this.props.recipes)
         console.log(this.props.currentRecipe)
         return (
             <React.Fragment>
@@ -41,8 +42,8 @@ class UserPage extends Component {
     }
 }
 
-const mapStateToProps = ({ user, currentRecipe, userPage }) => {
-    return { user, currentRecipe, userPage }
+const mapStateToProps = ({ user, recipes, currentRecipe, userPage }) => {
+    return { user, recipes, currentRecipe, userPage }
 }
 
 // const mapDispatchToProps = dispatch => {

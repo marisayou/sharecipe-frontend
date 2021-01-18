@@ -31,7 +31,7 @@ export const addNewRecipe = (recipe, user_id) => {
             body: JSON.stringify({ user_id, recipe })
         })
         .then(res => res.json())
-        .then(recipe => dispatch({ type: "ADD_NEW_RECIPE", payload: recipe.recipe}))
+        .then(recipe => dispatch({ type: "ADD_NEW_RECIPE", payload: { id: recipe.id, recipe: recipe.recipe }}))
     }
 }
 
@@ -48,6 +48,13 @@ export const editRecipe = (recipe, id) => {
         })
         .then(res => res.json())
         .then(rec => dispatch({ type: "EDIT_RECIPE", payload: { id: id, recipe: rec.recipe }}))
+    }
+}
+
+export const deleteRecipe = (id) => {
+    return function (dispatch) {
+        fetch('http://localhost:3000/recipes/' + id, { method: 'DELETE' })
+        .then(() => dispatch({ type: "DELETE_RECIPE", payload: id }))
     }
 }
 
