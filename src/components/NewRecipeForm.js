@@ -48,29 +48,65 @@ class NewRecipeForm extends Component {
             instructions: this.state.instructions
         }
         const tags = this.state.tags.split(" ")
+        console.log(tags)
         if (this.props.currentRecipe) {
             await this.props.editRecipe(recipe, this.props.currentRecipe.id)
-            
             this.props.setUserPage("recipe")
         } else {
-            await this.props.addNewRecipe(recipe, this.props.user.id)
-            // await this.createTags(tags)
+            const recipeId = await this.createRecipes(recipe)
+
+            // await this.props.addNewRecipe(recipe, this.props.user.id)
+            console.log(recipeId)
+            await this.createTags(tags, recipeId)
             this.props.setUserPage("profile")
         }
     }
 
-    // createTags = async (tags) => {
-    //     tags.map(tag => {
-    //         await fetch("http://localhost:3000/tags", {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Accept': 'application/json'
-    //             },
-    //             body: JSON.stringify({ name: tag })
-    //         })
-    //     })
-    // }
+    createRecipes = (recipe) => {
+        return fetch('http://localhost:3000/recipes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ user_id: this.props.user.id, recipe })
+        })
+        .then(res => res.json())
+        .then(recipe => {
+            this.props.addNewRecipe(recipe)
+            return recipe.id
+        })
+    }
+
+    createTags = async (tags, recipeId) => {
+        for (let i = 0; i < tags.length; i++) {
+            const tagId = await fetch("http://localhost:3000/tags", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ name: tags[i] })
+            })
+            .then(res => res.json())
+            .then(tag => tag.id)
+            
+
+            await fetch("http://localhost:3000/recipe_tags", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    recipe_id: recipeId,
+                    tag_id: tagId
+                })
+            })
+            .then(res => res.json())
+            .then(recipeTag => console.log(recipeTag))
+        }
+    }
 
     ingredientFields = () => {
         const ingredients = [...this.state.ingredients]
@@ -255,8 +291,8 @@ class NewRecipeForm extends Component {
     }
 }
 
-const mapStateToProps = ({ user, currentRecipe }) => {
-    return { user, currentRecipe }
+const mapStateToProps = ({ user, recipes, currentRecipe }) => {
+    return { user, recipes, currentRecipe }
 }
 
 const mapDispatchToProps = dispatch => {
