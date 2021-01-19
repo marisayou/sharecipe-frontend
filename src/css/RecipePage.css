@@ -1,3 +1,7 @@
+h1#recipe-title {
+    margin-bottom: 10px;
+}
+
 #ingredients-instructions {
     /* border-style: solid; */
     /* border-width: 1px; */

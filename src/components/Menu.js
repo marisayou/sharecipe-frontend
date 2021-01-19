@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
@@ -24,7 +25,7 @@ class Menu extends Component {
       onKeyDown={() => this.toggleDrawer(false)}
     >
       <List>
-        {["Home", "My Sharecipe Page", "Favorites", "Recipes", "Users"].map((text) => (
+        {["Home", "Profile Page", "Favorites", "Recipes"].map((text) => (
           <ListItem button key={text} 
             onClick={() => {
               this.props.selectMenuItem(text)
@@ -62,4 +63,8 @@ class Menu extends Component {
   }
 }
 
-export default Menu
+const mapStateToProps = ({ user }) => {
+  return { user }
+}
+
+export default connect(mapStateToProps)(Menu)

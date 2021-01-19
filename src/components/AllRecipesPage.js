@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RecipeForm from './RecipeForm';
 import { Container, Grid } from "@material-ui/core";
-import ProfileInfo from './ProfileInfo';
 import RecipesContainer from './RecipesContainer';
 import RecipePage from './RecipePage';
 
-class UserPage extends Component {
+class AllRecipesPage extends Component {
 
     renderPage = () => {
-        switch (this.props.userPage) {
-            case "form":
-                return <RecipeForm />
+        switch (this.props.allRecipesPage) {
+            // case "user":
+            //     return <UserPage />
             case "recipe":
                 return <RecipePage /> 
             default:
                 return (
                     <React.Fragment>
-                        <Grid container item xs={12} justify="center">
-                            <ProfileInfo />
+                        <Grid item>
+                            <h1>All Recipes</h1>
                         </Grid>
-                        <br />
                         <RecipesContainer/>
                     </React.Fragment>
                 )   
         }
     }
-
     render() {
         return (
             <React.Fragment>
@@ -40,10 +36,8 @@ class UserPage extends Component {
     }
 }
 
-const mapStateToProps = ({ user, recipes, currentRecipe, userPage }) => {
-    return { user, recipes, currentRecipe, userPage }
+const mapStateToProps = ({ allRecipesPage }) => {
+    return { allRecipesPage }
 }
 
-export default connect(
-    mapStateToProps
-)(UserPage)
+export default connect(mapStateToProps)(AllRecipesPage)

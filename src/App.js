@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
-import { updateUserInfo, logout, setUserPage } from './redux/actions.js';
+import { updateUserInfo, logout, setMenuPage, setUserPage } from './redux/actions.js';
 import UserForm from './components/UserForm';
 import Home from './components/Home';
 import UserPage from './components/UserPage';
 import FavoritesPage from './components/FavoritesPage';
-import RecipesPage from './components/RecipesPage';
-import UsersPage from './components/UsersPage';
+import AllRecipesPage from './components/AllRecipesPage';
 import TopBar from './components/TopBar';
 import './App.css';
 
@@ -33,16 +32,18 @@ class App extends Component {
 
   renderPage = () => {
     switch (this.state.page) {
-      case "My Sharecipe Page": 
+      case "Profile Page": 
+        this.props.setMenuPage("profile")
         this.props.setUserPage("profile")
         return <UserPage />
       case "Favorites":
+        this.props.setMenuPage("favorites")
         return <FavoritesPage />
       case "Recipes":
-        return <RecipesPage />
-      case "Users":
-        return <UsersPage />
+        this.props.setMenuPage("recipes")
+        return <AllRecipesPage />
       default:
+        this.props.setMenuPage("home")
         return <Home />
     }
   }
@@ -135,6 +136,7 @@ const mapDispatchToProps = dispatch => {
   return {
     updateUserInfo: (info) => dispatch(updateUserInfo(info)),
     logout: () => dispatch(logout()),
+    setMenuPage: (page) => dispatch(setMenuPage(page)),
     setUserPage: (page) => dispatch(setUserPage(page))
   }
 }

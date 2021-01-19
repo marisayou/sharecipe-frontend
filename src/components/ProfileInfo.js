@@ -8,7 +8,7 @@ class ProfileInfo extends Component {
 
     render() {
         return (
-            <Grid container spacing={1} >
+            <Grid container spacing={1} xs={12} md={9}>
                 <Grid container item xs={12} spacing={2} direction="row">
                     <Grid item xs={4}>
                         <div id="profile-photo-container">

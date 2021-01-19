@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button } from "@material-ui/core";
-import { setUserPage, setCurrentRecipe, deleteRecipe } from '../redux/actions';
+import { setUserPage, setRecipesPage, setCurrentRecipe, deleteRecipe } from '../redux/actions';
 import '../css/RecipePage.css';
 
 class RecipePage extends Component {
@@ -47,7 +47,9 @@ class RecipePage extends Component {
     }
 
     handleBackButtonClick = async () => {
-        await this.props.setUserPage("profile")
+        this.props.menuPage === "profile" ?
+            await this.props.setUserPage("profile"):
+            await this.props.setRecipesPage("all")
         this.props.setCurrentRecipe(null)
     }
 
@@ -59,13 +61,20 @@ class RecipePage extends Component {
 
     render() {
         console.log(this.props.currentRecipe)
+        console.log(this.props.user)
         return (
             <React.Fragment>
-                <Grid container item direction="column" xs={10} alignItems="center">
+                <Grid container item direction="column" xs={12} md={9} alignItems="center">
                     <Grid item xs={12}>
-                        <h1>{this.props.title}</h1>
+                        <h1 id="recipe-title">{this.props.title}</h1>
                     </Grid>
-                    <Grid container item justify="center">
+                    <Grid item xs={12}>
+                        {this.props.menuPage === "profile" ? 
+                            <Button onClick={this.handleBackButtonClick}>{this.props.user.username}</Button> : 
+                            <Button>{this.props.currentRecipe.user.username}</Button>
+                        }
+                    </Grid>
+                    <Grid className="btn-container" container item justify="center">
                         <Button variant="outlined" 
                             onClick={this.handleBackButtonClick}
                         >
@@ -92,32 +101,37 @@ class RecipePage extends Component {
                             {this.renderInstructions()}
                         </Grid>
                     </Grid>
-                    <Grid className="btn-container" container item justify="center">
-                        <Button variant="outlined" 
-                            onClick={() => this.props.setUserPage("form")}
-                        >
-                            Edit
-                        </Button>
-                        <Button variant="outlined" 
-                            onClick={this.handleDeleteButtonClick}
-                        >
-                            Delete
-                        </Button>
-                    </Grid>
+
+                    {this.props.menuPage === "profile" ?
+                        (<Grid className="btn-container" container item justify="center">
+                            <Button variant="outlined" 
+                                onClick={() => this.props.setUserPage("form")}
+                            >
+                                Edit
+                            </Button>
+                            <Button variant="outlined" 
+                                onClick={this.handleDeleteButtonClick}
+                            >
+                                Delete
+                            </Button>
+                        </Grid>) :
+                        null
+                    }
                 </Grid>
             </React.Fragment>
         )
     }
 }
 
-const mapStateToProps = ({ currentRecipe }) => {
+const mapStateToProps = ({ user, currentRecipe, menuPage }) => {
     const { id, title, description, ingredients, instructions, tags } = currentRecipe
-    return { currentRecipe, id, title, description, ingredients, instructions, tags }
+    return { user, currentRecipe, menuPage, id, title, description, ingredients, instructions, tags }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         setUserPage: (page) => dispatch(setUserPage(page)),
+        setRecipesPage: (page) => dispatch(setRecipesPage(page)),
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
         deleteRecipe: (id) => dispatch(deleteRecipe(id))
     }

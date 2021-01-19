@@ -64,6 +64,20 @@ export const setCurrentRecipe = (recipe) => {
     return ({ type: "SET_CURRENT_RECIPE", payload: recipe })
 }
 
+// select page from side menu
+export const setMenuPage = (page) => ({ type: "SET_MENU_PAGE", payload: page})
 
 // select which view to render for userPage
 export const setUserPage = (page) => ({ type: "SET_USER_PAGE", payload: page })
+
+// get all recipes when allRecipesPage mounts
+export const getRecipes = () => {
+    return function (dispatch) {
+        fetch('http://localhost:3000/recipes')
+        .then(res => res.json())
+        .then(recipes => dispatch({ type: "GET_RECIPES", payload: recipes }))
+    }
+}
+
+// select which view to render for allRecipesPage
+export const setRecipesPage = (page) => ({ type: "SET_RECIPES_PAGE", payload: page})

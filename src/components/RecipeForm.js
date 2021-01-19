@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { setUserPage, setCurrentRecipe, addNewRecipe, editRecipe } from '../redux/actions';
 import { Button, Grid, TextField, MenuItem } from "@material-ui/core";
 import '../css/UserForm.css';
-import '../css/NewRecipeForm.css';
+import '../css/RecipeForm.css';
 
-class NewRecipeForm extends Component {
+class RecipeForm extends Component {
     state = {
         title: "",
         description: "",
@@ -254,4 +254,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewRecipeForm)
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeForm)

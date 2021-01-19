@@ -4,10 +4,14 @@ const initialState = {
     user: null,
     token: null,
     recipes: [],
+    menuPage: null,
 
-    userPage: "profile",
+    userPage: null,
     currentUser: null,
-    currentRecipe: null
+    currentRecipe: null,
+
+    allRecipes: [],
+    allRecipesPage: null
 }
 
 function userReducer(state = initialState.user, action) {
@@ -56,7 +60,20 @@ function recipesReducer(state = initialState.recipes, action) {
             const j = updatedRecipes.findIndex(rec => rec.id === action.payload)
             updatedRecipes.splice(j, 1)
             return updatedRecipes
+        case "LOGOUT":
+            return []
         default: 
+            return state
+    }
+}
+
+function menuPageReducer(state = initialState.menuPage, action) {
+    switch (action.type) {
+        case "SET_MENU_PAGE":
+            return action.payload
+        case "LOGOUT":
+            return null
+        default:
             return state
     }
 }
@@ -65,6 +82,8 @@ function userPageReducer(state = initialState.userPage, action) {
     switch (action.type) {
         case "SET_USER_PAGE":
             return action.payload
+        case "LOGOUT":
+            return null
         default:
             return state
     }
@@ -78,7 +97,36 @@ function currentRecipeReducer(state = initialState.currentRecipe, action) {
             return {id: action.payload.id, ...JSON.parse(action.payload.recipe), tags: action.payload.tags}
         case "DELETE_RECIPE":
             return null
+        case "LOGOUT":
+            return null
         default: 
+            return state
+    }
+}
+
+function allRecipesReducer(state = initialState.allRecipes, action) {
+    switch (action.type) {
+        case "GET_RECIPES":
+            console.log(action.payload)
+            const recipes = action.payload.map(rec => {
+                return {id: rec.id, ...JSON.parse(rec.recipe), tags: rec.tags, user: rec.user}
+            })
+            return recipes
+        case "LOGOUT":
+            return []
+        default: 
+            return state
+    }
+} 
+
+function allRecipesPageReducer(state = initialState.allRecipesPage, action) {
+    switch(action.type) {
+        case "SET_RECIPES_PAGE":
+            console.log(action.payload)
+            return action.payload
+        case "LOGOUT":
+            return null
+        default:
             return state
     }
 }
@@ -87,8 +135,11 @@ const rootReducer = combineReducers({
     user: userReducer,
     token: tokenReducer,
     recipes: recipesReducer,
+    menuPage: menuPageReducer,
     userPage: userPageReducer,
-    currentRecipe: currentRecipeReducer
+    currentRecipe: currentRecipeReducer,
+    allRecipes: allRecipesReducer,
+    allRecipesPage: allRecipesPageReducer
 })
 
 

@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button, Card, CardHeader, CardContent, CardActions, Typography, IconButton } from "@material-ui/core";
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { setCurrentRecipe, setUserPage } from '../redux/actions';
+import { setCurrentRecipe, setUserPage, setRecipesPage } from '../redux/actions';
 
 class RecipePreview extends Component {
 
     handleClickReadMore = async () => {
         await this.props.setCurrentRecipe(this.props.recipe)
-        this.props.setUserPage("recipe")
+        this.props.menuPage === "profile" ? 
+            this.props.setUserPage("recipe") :
+            this.props.setRecipesPage("recipe")
     }
 
     render() {
@@ -34,14 +36,15 @@ class RecipePreview extends Component {
     }
 }
 
-const mapStateToProps = ({ currentRecipe }) => {
-    return { currentRecipe}
+const mapStateToProps = ({ currentRecipe, menuPage }) => {
+    return { currentRecipe, menuPage }
 }
 
 const mapDispatchToProps = dispatch => {
     return { 
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
-        setUserPage: (page) => dispatch(setUserPage(page))
+        setUserPage: (page) => dispatch(setUserPage(page)),
+        setRecipesPage: (page) => dispatch(setRecipesPage(page))
     }
 }
 

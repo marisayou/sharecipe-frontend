@@ -6,7 +6,7 @@ class Home extends Component {
 
     componentDidMount() {
         this.props.getUser()
-    }
+    }    
 
     render() {
         return <div>Welcome, {this.props.user ? this.props.user.name : ""}</div>
