@@ -28,8 +28,6 @@ class UserPage extends Component {
     }
 
     render() {
-        console.log(this.props.recipes)
-        console.log(this.props.currentRecipe)
         return (
             <React.Fragment>
                 <Container maxWidth="md">

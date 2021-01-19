@@ -8,8 +8,6 @@ class RecipePreview extends Component {
 
     handleClickReadMore = async () => {
         await this.props.setCurrentRecipe(this.props.recipe)
-        console.log(this.props.recipe)
-        console.log(this.props.currentRecipe)
         this.props.setUserPage("recipe")
     }
 

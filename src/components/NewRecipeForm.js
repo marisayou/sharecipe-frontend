@@ -13,19 +13,18 @@ class NewRecipeForm extends Component {
             { ingredient: "", wholeNum: "", fracNum: "", unit: "" } 
         ],
         instructions: "",
-        tags: ""
+        tags: []
     }
 
     componentDidMount() {
         const recipe = this.props.currentRecipe
         if (recipe) {
-            this.setState({
-                title: recipe.title,
-                description: recipe.description,
-                ingredients: recipe.ingredients,
-                instructions: recipe.instructions,
-                // tags: ""
+            let tags = ""
+            recipe.tags.forEach((tag, idx) => {
+                idx === tags.length-1 ? tags += tag.name : tags += tag.name + " "
             })
+            const { title, description, ingredients, instructions } = recipe
+            this.setState({ title, description, ingredients, instructions, tags });
         }
     }
 
@@ -41,70 +40,16 @@ class NewRecipeForm extends Component {
 
     handleRecipeFormSubmit = async (e) => {
         e.preventDefault()
-        const recipe = {
-            title: this.state.title,
-            description: this.state.description,
-            ingredients: this.state.ingredients,
-            instructions: this.state.instructions
-        }
-        const tags = this.state.tags.split(" ")
-        console.log(tags)
+        const { title, description, ingredients, instructions } = this.state
+        const recipe = { title, description, ingredients, instructions }
+        const tags = this.state.tags.split(" ").filter(tag => tag != "")
+        
         if (this.props.currentRecipe) {
-            await this.props.editRecipe(recipe, this.props.currentRecipe.id)
+            await this.props.editRecipe(recipe, tags, this.props.currentRecipe.id)
             this.props.setUserPage("recipe")
         } else {
-            const recipeId = await this.createRecipes(recipe)
-
-            // await this.props.addNewRecipe(recipe, this.props.user.id)
-            console.log(recipeId)
-            await this.createTags(tags, recipeId)
+            await this.props.addNewRecipe(recipe, tags, this.props.user.id)
             this.props.setUserPage("profile")
-        }
-    }
-
-    createRecipes = (recipe) => {
-        return fetch('http://localhost:3000/recipes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ user_id: this.props.user.id, recipe })
-        })
-        .then(res => res.json())
-        .then(recipe => {
-            this.props.addNewRecipe(recipe)
-            return recipe.id
-        })
-    }
-
-    createTags = async (tags, recipeId) => {
-        for (let i = 0; i < tags.length; i++) {
-            const tagId = await fetch("http://localhost:3000/tags", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ name: tags[i] })
-            })
-            .then(res => res.json())
-            .then(tag => tag.id)
-            
-
-            await fetch("http://localhost:3000/recipe_tags", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    recipe_id: recipeId,
-                    tag_id: tagId
-                })
-            })
-            .then(res => res.json())
-            .then(recipeTag => console.log(recipeTag))
         }
     }
 
@@ -123,6 +68,7 @@ class NewRecipeForm extends Component {
                         label="Qty" 
                         value={ing.wholeNum} 
                         onChange={(e) => this.handleIngredientFieldChange(e, idx, "wholeNum")} 
+                        required
                     >
                         {qtyWholeNums.map(option => (
                             <MenuItem key={option} value={option}>
@@ -136,6 +82,7 @@ class NewRecipeForm extends Component {
                         label="Qty" 
                         value={ing.fracNum} 
                         onChange={(e) => this.handleIngredientFieldChange(e, idx, "fracNum")} 
+                        required
                     >
                         {qtyFractions.map(option => (
                             <MenuItem key={option} value={option}>
@@ -149,6 +96,7 @@ class NewRecipeForm extends Component {
                         label="Unit" 
                         value={ing.unit} 
                         onChange={(e) => this.handleIngredientFieldChange(e, idx, "unit")} 
+                        required
                     >
                         {units.map(option => (
                             <MenuItem key={option} value={option}>
@@ -161,6 +109,7 @@ class NewRecipeForm extends Component {
                         label="Ingredient" 
                         value={ing.ingredient} 
                         onChange={(e) => this.handleIngredientFieldChange(e, idx, "ingredient")} 
+                        required
                     />
                     <Button 
                         className="remove-ingredient" 
@@ -272,6 +221,7 @@ class NewRecipeForm extends Component {
                                     label="Tags" 
                                     value={this.state.tags} 
                                     onChange={(e) => this.handleFormChange(e, "tags")}
+                                    required
                                 />
                             </Grid>
 
@@ -297,10 +247,10 @@ const mapStateToProps = ({ user, recipes, currentRecipe }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addNewRecipe: (recipe, userId) => dispatch(addNewRecipe(recipe, userId)),
+        addNewRecipe: (recipe, tags, userId) => dispatch(addNewRecipe(recipe, tags, userId)),
         setUserPage: (page) => dispatch(setUserPage(page)),
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
-        editRecipe: (recipe, id) => dispatch(editRecipe(recipe, id))
+        editRecipe: (recipe, tags, recipeId) => dispatch(editRecipe(recipe, tags, recipeId))
     }
 }
 

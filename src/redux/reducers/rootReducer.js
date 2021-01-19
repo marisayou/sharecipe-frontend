@@ -10,24 +10,6 @@ const initialState = {
     currentRecipe: null
 }
 
-// const rootReducer = (state = initialState, action) => {
-//     console.log(action.type, action.payload);
-//     switch (action.type) {
-//         case "TOGGLE_MENU":
-//             console.log({ ...state, openMenu: action.payload })
-//             return { ...state, openMenu: action.payload }
-//         case "UPDATE_USER_INFO":
-//             console.log(action.payload)
-//             return action.payload.token ?
-//             { ...state, user: action.payload.user, token: action.payload.token } :
-//             { ...state, user: action.payload.user }
-//         case "LOGOUT":
-//             return {...initialState}
-//         default:
-//             return state
-//     }
-// }
-
 function userReducer(state = initialState.user, action) {
     switch (action.type) {
         case "UPDATE_USER_INFO":
@@ -59,15 +41,15 @@ function recipesReducer(state = initialState.recipes, action) {
     switch (action.type) {
         case "UPDATE_USER_INFO":
             const recipes = action.payload.user.recipes.map(rec => {
-                return {id: rec.id, ...JSON.parse(rec.recipe)}
+                return {id: rec.id, ...JSON.parse(rec.recipe), tags: rec.tags}
             })
             return recipes
         case "ADD_NEW_RECIPE":
-            return [...state, { id: action.payload.id, ...JSON.parse(action.payload.recipe)}]
+            return [...state, { id: action.payload.id, ...JSON.parse(action.payload.recipe), tags: action.payload.tags}]
         case "EDIT_RECIPE":
             const editedRecipes = [...state]
             const i = editedRecipes.findIndex(rec => rec.id === action.payload.id)
-            editedRecipes[i] = {id: action.payload.id, ...JSON.parse(action.payload.recipe)}
+            editedRecipes[i] = {id: action.payload.id, ...JSON.parse(action.payload.recipe), tags: action.payload.tags}
             return editedRecipes
         case "DELETE_RECIPE":
             const updatedRecipes = [...state]
@@ -93,7 +75,7 @@ function currentRecipeReducer(state = initialState.currentRecipe, action) {
         case "SET_CURRENT_RECIPE":
             return action.payload
         case "EDIT_RECIPE":
-            return JSON.parse(action.payload.recipe)
+            return {id: action.payload.id, ...JSON.parse(action.payload.recipe), tags: action.payload.tags}
         case "DELETE_RECIPE":
             return null
         default: 

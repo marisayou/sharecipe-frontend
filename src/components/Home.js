@@ -9,7 +9,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log("home")
         return <div>Welcome, {this.props.user ? this.props.user.name : ""}</div>
     }
 }

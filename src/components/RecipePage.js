@@ -17,6 +17,10 @@ class RecipePage extends Component {
         })
     }
 
+    renderTags = () => {
+        return this.props.tags.map(tag => <Button key={tag.name}>{'#' + tag.name}</Button>)
+    }
+
     renderIngredients = () => {
         return this.props.ingredients.map((ing, idx) => {
             const wholeNum = ing.wholeNum === "0" ? "" : `${ing.wholeNum} `
@@ -54,7 +58,7 @@ class RecipePage extends Component {
     }
 
     render() {
-        console.log(this.props.instructions)
+        console.log(this.props.currentRecipe)
         return (
             <React.Fragment>
                 <Grid container item direction="column" xs={10} alignItems="center">
@@ -67,6 +71,9 @@ class RecipePage extends Component {
                         >
                             Back
                         </Button>
+                    </Grid>
+                    <Grid id="tags" item container xs={12}>
+                        {this.renderTags()}
                     </Grid>
                     <Grid id="description" item container xs={12}>
                         {this.renderDescription()}
@@ -104,8 +111,8 @@ class RecipePage extends Component {
 }
 
 const mapStateToProps = ({ currentRecipe }) => {
-    const { id, title, description, ingredients, instructions } = currentRecipe
-    return { id, title, description, ingredients, instructions }
+    const { id, title, description, ingredients, instructions, tags } = currentRecipe
+    return { currentRecipe, id, title, description, ingredients, instructions, tags }
 }
 
 const mapDispatchToProps = dispatch => {
