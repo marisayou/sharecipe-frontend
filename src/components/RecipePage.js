@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Button } from "@material-ui/core";
-import { setUserPage, setRecipesPage, setCurrentRecipe, deleteRecipe } from '../redux/actions';
+import { Grid, Button, IconButton } from "@material-ui/core";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { 
+    setUserPage, 
+    setRecipesPage, 
+    setFavoritesPage,
+    setCurrentRecipe, 
+    deleteRecipe, 
+    favorite,
+    unfavorite
+} from '../redux/actions';
 import '../css/RecipePage.css';
 
 class RecipePage extends Component {
@@ -47,9 +57,19 @@ class RecipePage extends Component {
     }
 
     handleBackButtonClick = async () => {
-        this.props.menuPage === "profile" ?
-            await this.props.setUserPage("profile"):
-            await this.props.setRecipesPage("all")
+        switch (this.props.menuPage) {
+            case "profile":
+                await this.props.setUserPage("profile")
+                break
+            case "recipes":
+                await this.props.setRecipesPage("all")
+                break
+            case "favorites":
+                await this.props.setFavoritesPage("all")
+                break
+            default:
+                break
+        }
         this.props.setCurrentRecipe(null)
     }
 
@@ -59,14 +79,30 @@ class RecipePage extends Component {
         
     }
 
+    handleFavoriteClick = () => {
+        const recipeId = this.props.currentRecipe.id
+        const userId = this.props.user.id
+
+        this.props.favorites.includes(recipeId) ? 
+            this.props.unfavorite(recipeId, userId) :
+            this.props.favorite(recipeId, userId)
+    }
+
     render() {
         console.log(this.props.currentRecipe)
         console.log(this.props.user)
+        console.log(this.props.favorites)
         return (
             <React.Fragment>
                 <Grid container item direction="column" xs={12} md={9} alignItems="center">
-                    <Grid item xs={12}>
-                        <h1 id="recipe-title">{this.props.title}</h1>
+                    
+                    <Grid container item xs={12}>
+                        <Grid item className="back-btn" xs={1}>
+                            <IconButton onClick={this.handleBackButtonClick}>
+                                <ArrowBackIcon fontSize="large"/>
+                            </IconButton>
+                        </Grid>
+                        <Grid item xs={10}><h1 id="recipe-title">{this.props.title}</h1></Grid>
                     </Grid>
                     <Grid item xs={12}>
                         {this.props.menuPage === "profile" ? 
@@ -74,12 +110,11 @@ class RecipePage extends Component {
                             <Button>{this.props.currentRecipe.user.username}</Button>
                         }
                     </Grid>
-                    <Grid className="btn-container" container item justify="center">
-                        <Button variant="outlined" 
-                            onClick={this.handleBackButtonClick}
-                        >
-                            Back
-                        </Button>
+                    <Grid container item justify="center">
+                        <IconButton onClick={this.handleFavoriteClick}>
+                            <FavoriteIcon fontSize="large" 
+                            color={this.props.favorites.includes(this.props.currentRecipe.id) ? "error" : "inherit"}/>
+                        </IconButton>
                     </Grid>
                     <Grid id="tags" item container xs={12}>
                         {this.renderTags()}
@@ -123,17 +158,20 @@ class RecipePage extends Component {
     }
 }
 
-const mapStateToProps = ({ user, currentRecipe, menuPage }) => {
+const mapStateToProps = ({ user, favorites, currentRecipe, menuPage }) => {
     const { id, title, description, ingredients, instructions, tags } = currentRecipe
-    return { user, currentRecipe, menuPage, id, title, description, ingredients, instructions, tags }
+    return { user, favorites, currentRecipe, menuPage, id, title, description, ingredients, instructions, tags }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         setUserPage: (page) => dispatch(setUserPage(page)),
         setRecipesPage: (page) => dispatch(setRecipesPage(page)),
+        setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
-        deleteRecipe: (id) => dispatch(deleteRecipe(id))
+        deleteRecipe: (id) => dispatch(deleteRecipe(id)),
+        favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),
+        unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId))
     }
 }
 

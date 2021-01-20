@@ -2,15 +2,42 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button, Card, CardHeader, CardContent, CardActions, Typography, IconButton } from "@material-ui/core";
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { setCurrentRecipe, setUserPage, setRecipesPage } from '../redux/actions';
+import { 
+    setCurrentRecipe, 
+    setUserPage, 
+    setRecipesPage, 
+    setFavoritesPage,
+    favorite, 
+    unfavorite 
+} from '../redux/actions';
 
 class RecipePreview extends Component {
 
     handleClickReadMore = async () => {
+        console.log(this.props.recipe)
         await this.props.setCurrentRecipe(this.props.recipe)
-        this.props.menuPage === "profile" ? 
-            this.props.setUserPage("recipe") :
-            this.props.setRecipesPage("recipe")
+        switch(this.props.menuPage) {
+            case "profile":
+                this.props.setUserPage("recipe")
+                break
+            case "recipes":
+                this.props.setRecipesPage("recipe")
+                break
+            case "favorites":
+                this.props.setFavoritesPage("recipe")
+                break
+            default:
+                return
+        }
+    }
+
+    handleFavoriteClick = () => {
+        const recipeId = this.props.recipe.id
+        const userId = this.props.user.id
+
+        this.props.favorites.includes(recipeId) ? 
+            this.props.unfavorite(recipeId, userId) :
+            this.props.favorite(recipeId, userId)
     }
 
     render() {
@@ -25,8 +52,8 @@ class RecipePreview extends Component {
                         </Typography>
                     </CardContent>
                     <CardActions >
-                        <IconButton>
-                            <FavoriteIcon />
+                        <IconButton onClick={this.handleFavoriteClick}>
+                            <FavoriteIcon color={this.props.favorites.includes(this.props.recipe.id) ? "error" : "inherit"}/>
                         </IconButton>
                         <Button size="small" onClick={this.handleClickReadMore}>Read More</Button>
                     </CardActions>
@@ -36,15 +63,18 @@ class RecipePreview extends Component {
     }
 }
 
-const mapStateToProps = ({ currentRecipe, menuPage }) => {
-    return { currentRecipe, menuPage }
+const mapStateToProps = ({ user, favorites, currentRecipe, menuPage }) => {
+    return { user, favorites, currentRecipe, menuPage }
 }
 
 const mapDispatchToProps = dispatch => {
     return { 
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
         setUserPage: (page) => dispatch(setUserPage(page)),
-        setRecipesPage: (page) => dispatch(setRecipesPage(page))
+        setRecipesPage: (page) => dispatch(setRecipesPage(page)),
+        setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
+        favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),
+        unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId))
     }
 }
 

@@ -60,7 +60,7 @@ class RecipeForm extends Component {
         const units = ["none", "tsp", "tbsp", "fl oz", "c", "pt", "qt", "gal", "ml", "l", "lb", "oz", "mg", "g", "kg"]
         return ingredients.map((ing, idx) => {
             return (
-                <Grid key={idx} container item direction="row" xs={12} sm={6} md={4} justify="center">
+                <Grid key={idx} container item direction="row" xs={12} md={6} justify="center">
                     <Grid item className="textfield">
                     <TextField 
                         className="qty-input" 

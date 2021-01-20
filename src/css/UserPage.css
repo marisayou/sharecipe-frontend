@@ -21,12 +21,6 @@
     margin-bottom: 0px;
 }
 
-#edit-profile-div {
-    height: min-content;
-    display: flex;
-    justify-content: center;
-}
-
 .stat-qty {
     text-align: center;
 }
@@ -42,13 +36,4 @@
 
 #user-bio { 
     margin-left: 16px;
-}
-
-#new-recipe-div{
-    width: 100%;
-}
-
-#new-recipe-btn {
-    /* width: 100%; */
-    text-align: center;
 }

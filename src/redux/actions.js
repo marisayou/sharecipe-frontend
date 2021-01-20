@@ -71,13 +71,53 @@ export const setMenuPage = (page) => ({ type: "SET_MENU_PAGE", payload: page})
 export const setUserPage = (page) => ({ type: "SET_USER_PAGE", payload: page })
 
 // get all recipes when allRecipesPage mounts
-export const getRecipes = () => {
+export const getRecipes = (type, userId) => {
     return function (dispatch) {
-        fetch('http://localhost:3000/recipes')
+        let resource
+        if (type === "recipes") {
+            resource = 'http://localhost:3000/recipes'
+        }
+        else if (type === "favorites") {
+            resource = 'http://localhost:3000/users/' + userId + '/like_recipes'
+        }
+        fetch(resource)
         .then(res => res.json())
-        .then(recipes => dispatch({ type: "GET_RECIPES", payload: recipes }))
+        .then(recipes => dispatch({ type: "GET_RECIPES", payload: recipes }))   
     }
 }
 
-// select which view to render for allRecipesPage
+// select which view to render for Recipes tab
 export const setRecipesPage = (page) => ({ type: "SET_RECIPES_PAGE", payload: page})
+
+// select which view to render for Favorites tab
+export const setFavoritesPage = (page) => ({ type: "SET_FAVORITES_PAGE", payload: page})
+
+// favorite recipes
+export const favorite = (recipe_id, user_id) => {
+    return function (dispatch) {
+        fetch('http://localhost:3000/likes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ recipe_id, user_id })
+        })
+        .then(() => dispatch({ type: "FAVORITE", payload: recipe_id }))
+    }   
+}
+
+// unfavorite recipes
+export const unfavorite = (recipe_id, user_id) => {
+    return function (dispatch) {
+        fetch('http://localhost:3000/likes', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ recipe_id, user_id })
+        })
+        .then(() => dispatch({ type: "UNFAVORITE", payload: recipe_id }))
+    }
+}

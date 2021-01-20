@@ -7,19 +7,20 @@ import RecipePreview from './RecipePreview';
 class RecipesContainer extends Component {
 
     componentDidMount() {
-        if (this.props.menuPage === "recipes") {
-            this.props.getRecipes()
+        if (this.props.menuPage !== "profile") {
+            const type = this.props.menuPage
+            this.props.getRecipes(type, this.props.user.id)
         }
     }
 
     renderRecipePreviews = () => {
         return this.props.menuPage === "profile" ?
-        this.props.recipes.map((recipe, idx) => {
+        this.props.myRecipes.map((recipe, idx) => {
             return (
                 <RecipePreview key={idx} recipe={recipe}/>
             )
         }) :
-        this.props.allRecipes.map((recipe, idx) => {
+        this.props.recipes.map((recipe, idx) => {
             return (
                 <RecipePreview key={idx} recipe={recipe}/>
             )
@@ -35,13 +36,13 @@ class RecipesContainer extends Component {
     }
 }
 
-const mapStateToProps = ({ menuPage, recipes, allRecipes }) => {
-    return { menuPage, recipes, allRecipes }
+const mapStateToProps = ({ user, menuPage, myRecipes, recipes }) => {
+    return { user, menuPage, myRecipes, recipes }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getRecipes: () => dispatch(getRecipes())
+        getRecipes: (type, userId) => dispatch(getRecipes(type, userId))
     }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
-import { updateUserInfo, logout, setMenuPage, setUserPage } from './redux/actions.js';
+import { updateUserInfo, logout, setMenuPage, setUserPage, setRecipesPage } from './redux/actions.js';
 import UserForm from './components/UserForm';
 import Home from './components/Home';
 import UserPage from './components/UserPage';
@@ -12,26 +12,26 @@ import './App.css';
 
 class App extends Component {
 
-  state = { page: null }
+  state = { route: null }
 
   selectMenuItem = (menuItem) => {
     switch (menuItem) {
         case "Settings":
-          this.setState({ page: null }, () => this.props.history.push('/settings'))
+          this.setState({ route: null }, () => this.props.history.push('/settings'))
           return
         case "Logout":
           
-          this.setState({ page: null }, () => this.props.logout())
+          this.setState({ route: null }, () => this.props.logout())
           localStorage.clear()
           return
         default:
-          this.setState({ page: menuItem }, () => this.props.history.push('/home'))
+          this.setState({ route: menuItem }, () => this.props.history.push('/home'))
           return
     }
   }
 
   renderPage = () => {
-    switch (this.state.page) {
+    switch (this.state.route) {
       case "Profile Page": 
         this.props.setMenuPage("profile")
         this.props.setUserPage("profile")
@@ -40,6 +40,7 @@ class App extends Component {
         this.props.setMenuPage("favorites")
         return <FavoritesPage />
       case "Recipes":
+        this.props.setRecipesPage("all")
         this.props.setMenuPage("recipes")
         return <AllRecipesPage />
       default:
@@ -92,7 +93,9 @@ class App extends Component {
     .then(action => {
       if (action && action.payload) {
         action.payload.token ? 
+          // sign up or sign in
           localStorage.setItem('jwt', action.payload.token) : 
+          // update user in settings
           alert("Account successfully updated.")
         this.props.history.push('/home')
       }
@@ -137,7 +140,8 @@ const mapDispatchToProps = dispatch => {
     updateUserInfo: (info) => dispatch(updateUserInfo(info)),
     logout: () => dispatch(logout()),
     setMenuPage: (page) => dispatch(setMenuPage(page)),
-    setUserPage: (page) => dispatch(setUserPage(page))
+    setUserPage: (page) => dispatch(setUserPage(page)),
+    setRecipesPage: (page) => dispatch(setRecipesPage(page))
   }
 }
 
