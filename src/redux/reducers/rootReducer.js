@@ -5,9 +5,10 @@ const initialState = {
     user: null,
     token: null,
     myRecipes: [],
-    favorites: [], // ids of favorite recipes
+    favorites: [], // ids of favorited recipes
 
     currentRecipe: null,
+    currentUser: null,
 
     // determines which view to render when on profile tab
     userPage: null,
@@ -16,8 +17,6 @@ const initialState = {
     // determines which view to render when on recipes tab
     allRecipesPage: null,
     recipes: [],
-
-    currentUser: null,
 
     menuPage: null
 
@@ -39,7 +38,6 @@ const rootReducer = combineReducers({
 function userReducer(state = initialState.user, action) {
     switch (action.type) {
         case "UPDATE_USER_INFO":
-            console.log(action.payload)
             return { 
                 id: action.payload.user.id,
                 name: action.payload.user.name, 
@@ -67,15 +65,15 @@ function myRecipesReducer(state = initialState.myRecipes, action) {
     switch (action.type) {
         case "UPDATE_USER_INFO":
             const recipes = action.payload.user.recipes.map(rec => {
-                return {id: rec.id, ...JSON.parse(rec.recipe), tags: rec.tags}
+                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags}
             })
             return recipes
         case "ADD_NEW_RECIPE":
-            return [...state, { id: action.payload.id, ...JSON.parse(action.payload.recipe), tags: action.payload.tags}]
+            return [...state, { id: action.payload.id, ...JSON.parse(action.payload.recipe), comments: action.payload.comments, tags: action.payload.tags}]
         case "EDIT_RECIPE":
             const editedRecipes = [...state]
             const i = editedRecipes.findIndex(rec => rec.id === action.payload.id)
-            editedRecipes[i] = {id: action.payload.id, ...JSON.parse(action.payload.recipe), tags: action.payload.tags}
+            editedRecipes[i] = {id: action.payload.id, ...JSON.parse(action.payload.recipe), comments: action.payload.comments, tags: action.payload.tags}
             return editedRecipes
         case "DELETE_RECIPE":
             const updatedRecipes = [...state]
@@ -127,12 +125,14 @@ function userPageReducer(state = initialState.userPage, action) {
 function currentRecipeReducer(state = initialState.currentRecipe, action) {
     switch (action.type) {
         case "SET_CURRENT_RECIPE":
-            console.log(action.payload)
             return action.payload
         case "EDIT_RECIPE":
-            return {id: action.payload.id, ...JSON.parse(action.payload.recipe), tags: action.payload.tags}
+            return {id: action.payload.id, ...JSON.parse(action.payload.recipe), comments: action.payload.comments, tags: action.payload.tags}
         case "DELETE_RECIPE":
             return null
+        case "ADD_COMMENT":
+            console.log(action.payload)
+            return {...state, comments: [...state.comments, action.payload]}
         case "LOGOUT":
             return null
         default: 
@@ -144,7 +144,7 @@ function recipesReducer(state = initialState.recipes, action) {
     switch (action.type) {
         case "GET_RECIPES":
             const recipes = action.payload.map(rec => {
-                return {id: rec.id, ...JSON.parse(rec.recipe), tags: rec.tags, user: rec.user}
+                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
             })
             return recipes
         case "LOGOUT":

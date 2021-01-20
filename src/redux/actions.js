@@ -121,3 +121,19 @@ export const unfavorite = (recipe_id, user_id) => {
         .then(() => dispatch({ type: "UNFAVORITE", payload: recipe_id }))
     }
 }
+
+// add a comment to a recipe
+export const addComment = (user_id, recipe_id, text) => {
+    return function (dispatch) {
+        fetch('http://localhost:3000/comments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ user_id, recipe_id, text })
+        })
+        .then(res => res.json())
+        .then(comment => dispatch({ type: "ADD_COMMENT", payload: comment}))
+    }
+}

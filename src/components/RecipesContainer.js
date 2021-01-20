@@ -15,11 +15,13 @@ class RecipesContainer extends Component {
 
     renderRecipePreviews = () => {
         return this.props.menuPage === "profile" ?
+        // user's recipes
         this.props.myRecipes.map((recipe, idx) => {
             return (
                 <RecipePreview key={idx} recipe={recipe}/>
             )
         }) :
+        // all recipes or favorited recipes
         this.props.recipes.map((recipe, idx) => {
             return (
                 <RecipePreview key={idx} recipe={recipe}/>
@@ -28,8 +30,9 @@ class RecipesContainer extends Component {
     }
 
     render() {
+        console.log(this.props.recipes)
         return (
-            <Grid container item xs={12} md={9} spacing={1}>
+            <Grid className="container" container item xs={12} md={9} spacing={1}>
                 {this.renderRecipePreviews()}
             </Grid>
         )

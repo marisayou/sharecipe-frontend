@@ -34,3 +34,17 @@ h3 {
 .back-btn {
     padding-top: 12px;
 }
+
+#comment-box {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.comment-card {
+    padding-bottom: 0px;
+}
+
+.comment-user {
+    font-weight: bold;
+    padding-bottom: 10px;
+}

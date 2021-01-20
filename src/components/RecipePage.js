@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Button, IconButton } from "@material-ui/core";
+import { Grid, Card, CardHeader, CardContent, TextField, Button, IconButton } from "@material-ui/core";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { 
@@ -10,11 +10,16 @@ import {
     setCurrentRecipe, 
     deleteRecipe, 
     favorite,
-    unfavorite
+    unfavorite,
+    addComment
 } from '../redux/actions';
 import '../css/RecipePage.css';
 
 class RecipePage extends Component {
+
+    state = {
+        comment: ""
+    }
 
     renderDescription = () => {
         const paragraphs = this.props.description.split("\n")
@@ -88,13 +93,46 @@ class RecipePage extends Component {
             this.props.favorite(recipeId, userId)
     }
 
+    handleCommentFormSubmit = (e) => {
+        e.preventDefault()
+
+        // don't post comment if it's blank or only contains spaces
+        if (this.state.comment.replace(/ +/g, "") === "") {
+            this.setState({ comment: "" })
+            return
+        }
+
+        this.props.addComment(this.props.user.id, this.props.currentRecipe.id, this.state.comment)
+        this.setState({ comment: "" })
+    }
+
+    renderComments = () => {
+        if (this.props.currentRecipe.comments.length === 0) {
+            return <p>Be the first to comment on this recipe!</p>
+        }
+        return this.props.currentRecipe.comments.map((comment, idx) => {
+            return (
+                <Grid key={idx}item xs={12}>
+                    <Card variant="outlined">
+                        <CardContent className="comment-card">
+                            <p className="comment-user">{comment.user}</p>
+                            <p>{comment.text}</p>
+                        </CardContent>
+                    </Card>
+                    <br/>
+                </Grid>
+                
+            )
+        })
+    }
+
     render() {
         console.log(this.props.currentRecipe)
         console.log(this.props.user)
         console.log(this.props.favorites)
         return (
             <React.Fragment>
-                <Grid container item direction="column" xs={12} md={9} alignItems="center">
+                <Grid container item className="container" direction="column" xs={12} md={9} alignItems="center">
                     
                     <Grid container item xs={12}>
                         <Grid item className="back-btn" xs={1}>
@@ -152,6 +190,40 @@ class RecipePage extends Component {
                         </Grid>) :
                         null
                     }
+                    <br />
+                    <Grid container item xs={12}>
+                        <Grid item>
+                            <h3>Comments</h3>
+                        </Grid>
+                        <Grid container item>
+                            {this.renderComments()}
+                        </Grid>
+                    </Grid>
+                    
+                    <Grid container item xs={12}>
+                        <Grid item>
+                            <h3>Leave a Comment!</h3>
+                        </Grid>
+                        <form onSubmit={this.handleCommentFormSubmit}>
+                            <Grid container item xs={12}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        variant="outlined"
+                                        label="Comment" 
+                                        value={this.state.comment} 
+                                        onChange={(e) => this.setState({ comment: e.target.value })}
+                                        multiline 
+                                        rows={3}
+                                    />
+                                </Grid>
+                                <Grid item className="btn-container">
+                                    <Button type="submit" variant="outlined">Post Comment</Button>
+                                </Grid>
+                                
+                            </Grid>
+                        </form>
+                    </Grid>
                 </Grid>
             </React.Fragment>
         )
@@ -171,7 +243,8 @@ const mapDispatchToProps = dispatch => {
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
         deleteRecipe: (id) => dispatch(deleteRecipe(id)),
         favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),
-        unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId))
+        unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId)),
+        addComment: (userId, recipeId, comment) => dispatch(addComment(userId, recipeId, comment))
     }
 }
 

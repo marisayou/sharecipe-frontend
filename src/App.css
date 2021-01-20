@@ -26,6 +26,10 @@ p {
     margin-bottom: 5px;
 }
 
+.container {
+    padding-bottom: 50px;
+}
+
 .btn-container {
     padding-top: 20px;
 }

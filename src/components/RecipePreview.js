@@ -14,7 +14,6 @@ import {
 class RecipePreview extends Component {
 
     handleClickReadMore = async () => {
-        console.log(this.props.recipe)
         await this.props.setCurrentRecipe(this.props.recipe)
         switch(this.props.menuPage) {
             case "profile":

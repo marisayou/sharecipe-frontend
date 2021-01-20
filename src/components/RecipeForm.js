@@ -42,7 +42,7 @@ class RecipeForm extends Component {
         e.preventDefault()
         const { title, description, ingredients, instructions } = this.state
         const recipe = { title, description, ingredients, instructions }
-        const tags = this.state.tags.split(" ").filter(tag => tag != "")
+        const tags = this.state.tags.split(" ").filter(tag => tag !== "")
         
         if (this.props.currentRecipe) {
             await this.props.editRecipe(recipe, tags, this.props.currentRecipe.id)
@@ -217,9 +217,9 @@ class RecipeForm extends Component {
                             <Grid container item direction="row" xs={12} justify="center">
                                 <TextField
                                     className="textfield" 
-                                    variant="outlined"
                                     label="Tags" 
                                     value={this.state.tags} 
+                                    helperText="eg. dessert cake yummy"
                                     onChange={(e) => this.handleFormChange(e, "tags")}
                                     required
                                 />
