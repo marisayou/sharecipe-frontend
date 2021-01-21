@@ -13,7 +13,7 @@ class ProfileInfo extends Component {
 
                     <Grid container item xs={12} direction="row" justify="center" spacing={1}>
                         <Grid id="profile-username-div" item xs={12} sm={4}>
-                            <h2 id="profile-username">{this.props.user.username}</h2>
+                            <h1>{this.props.user.username}</h1>
                         </Grid>
                         
                         <Grid id="profile-stats" container item xs={12}>
@@ -23,7 +23,7 @@ class ProfileInfo extends Component {
                                     {this.props.favorites.length}
                                 </Grid>
                                 <Grid className="stat-cnt" item>
-                                    Likes
+                                    Favorites
                                 </Grid>
                                 
                             </Grid>
@@ -39,7 +39,7 @@ class ProfileInfo extends Component {
                     </Grid>
                 </Grid>
 
-                <Grid container item direction="row" justify="flex-start">
+                {/* <Grid container item direction="row" justify="flex-start">
                     <Grid container item direction="column" justify="flex-start">
                         <Grid item >
                             <h3 id="profile-name">{this.props.user.name}</h3>
@@ -48,7 +48,7 @@ class ProfileInfo extends Component {
                             {this.props.user.bio}
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid> */}
                 <Grid container item direction="row" justify="center">
                     <Grid container item className="btn-container" justify="center">
                         

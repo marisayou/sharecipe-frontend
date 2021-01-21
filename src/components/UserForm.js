@@ -96,8 +96,27 @@ class UserForm extends Component {
                                 <Grid className="btn-container" container item direction="row" justify="center">
                                     <Button variant="outlined" type="submit">Submit</Button>
                                 </Grid>
+                                
+                                <br/>
+                                
+
                             </Grid>
                         </form>
+                        {this.props.form === "Sign In" ? 
+                        (
+                            <Grid container item direction="row" justify="center">
+                                <p className="no-account">Don't have an account? <span className="signup-link" onClick={() => this.props.signIn(false)}>Sign Up</span></p>
+                            </Grid>
+                        ) : 
+                        null }
+
+{                       this.props.form === "Sign Up" ? 
+                        (
+                            <Grid container item direction="row" justify="center">
+                                <p className="no-account">Go back to <span className="signup-link" onClick={() => this.props.signIn(true)}>Sign In</span></p>
+                            </Grid>
+                        ) : 
+                        null }
                     </Grid>
                 </Grid>
             </div>

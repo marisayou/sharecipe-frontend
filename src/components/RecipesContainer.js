@@ -8,8 +8,15 @@ class RecipesContainer extends Component {
 
     componentDidMount() {
         switch (this.props.menuPage) {
+            case "home":
+                this.props.homePage !== "tag" ?
+                    this.props.getRecipes("home", null) :
+                    this.props.getTagRecipes(this.props.currentTag)
+                break
             case "profile":
-                // tags
+                if (this.props.userPage === "tag") {
+                    this.props.getTagRecipes(this.props.currentTag)
+                }
                 return
             case "recipes":
                 this.props.allRecipesPage !== "tag" ?
@@ -21,20 +28,25 @@ class RecipesContainer extends Component {
                     this.props.getRecipes("favorites", this.props.user.id) :
                     this.props.getTagRecipes(this.props.currentTag)
                 break
+            case "search":
+                if (this.props.searchPage === "tag") {
+                    this.props.getTagRecipes(this.props.currentTag)
+                }
+                break
             default:
                 return
         }
     }
 
     renderRecipePreviews = () => {
-        return this.props.menuPage === "profile" ?
+        return this.props.menuPage === "profile" && this.props.userPage !== "tag" ?
         // user's recipes
         this.props.myRecipes.map((recipe, idx) => {
             return (
                 <RecipePreview key={idx} recipe={recipe}/>
             )
         }) :
-        // all recipes or favorited recipes
+        // other pages
         this.props.recipes.map((recipe, idx) => {
             return (
                 <RecipePreview key={idx} recipe={recipe}/>
@@ -52,8 +64,8 @@ class RecipesContainer extends Component {
     }
 }
 
-const mapStateToProps = ({ user, menuPage, myRecipes, recipes, userPage, allRecipesPage, favoritesPage, currentTag }) => {
-    return { user, menuPage, myRecipes, recipes, userPage, allRecipesPage, favoritesPage, currentTag }
+const mapStateToProps = ({ user, menuPage, myRecipes, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag }) => {
+    return { user, menuPage, myRecipes, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag }
 }
 
 const mapDispatchToProps = dispatch => {

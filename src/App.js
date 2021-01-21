@@ -6,6 +6,7 @@ import {
   updateUserInfo, 
   logout, 
   setMenuPage, 
+  setHomePage,
   setUserPage, 
   setRecipesPage, 
   setFavoritesPage, 
@@ -32,6 +33,12 @@ class App extends Component {
     window.removeEventListener("resize", () => this.props.resizeScreen(document.body.clientWidth))
   }
 
+  signIn = (signIn) => {
+    signIn ? 
+      this.props.history.push('/') :
+      this.props.history.push('/signup')
+  }
+
   selectMenuItem = (menuItem) => {
     switch (menuItem) {
         case "Settings":
@@ -51,29 +58,30 @@ class App extends Component {
   renderPage = () => {
     switch (this.state.route) {
       case "Profile": 
-        this.props.setMenuPage("default")
-        this.props.setUserPage("profile")
+        this.props.setMenuPage("profile")
+        this.props.setUserPage("default")
         return <UserPage />
       case "Favorites":
-        this.props.setMenuPage("default")
-        this.props.setFavoritesPage("favorites")
+        this.props.setMenuPage("favorites")
+        this.props.setFavoritesPage("default")
         return <FavoritesPage />
       case "Recipes":
-        this.props.setMenuPage("default")
-        this.props.setRecipesPage("recipes")
+        this.props.setMenuPage("recipes")
+        this.props.setRecipesPage("default")
         return <AllRecipesPage />
       case "Search":
-        this.props.setSearchPage("default")
         this.props.setMenuPage("search")
+        this.props.setSearchPage("default")
         return <SearchResults />
       default:
         this.props.setMenuPage("home")
+        this.props.setHomePage("default")
         return <Home />
     }
   }
 
   renderForm = (formType) => {
-    return <UserForm handleSubmit={this.handleSubmit} form={formType}/>
+    return <UserForm handleSubmit={this.handleSubmit} form={formType} signIn={this.signIn}/>
   }
 
   handleSubmit = (formType, data) => {
@@ -164,6 +172,7 @@ const mapDispatchToProps = dispatch => {
     updateUserInfo: (info) => dispatch(updateUserInfo(info)),
     logout: () => dispatch(logout()),
     setMenuPage: (page) => dispatch(setMenuPage(page)),
+    setHomePage: (page) => dispatch(setHomePage(page)),
     setUserPage: (page) => dispatch(setUserPage(page)),
     setRecipesPage: (page) => dispatch(setRecipesPage(page)),
     setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),

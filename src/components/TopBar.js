@@ -4,7 +4,7 @@ import Menu from './Menu';
 import { AppBar, Grid, InputBase, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import '../css/TopBar.css';
-import { setSearchTerm } from '../redux/actions';
+import { setSearchTerm, getSearchTags, getRecipes } from '../redux/actions';
 
 class TopBar extends Component {
 
@@ -18,6 +18,9 @@ class TopBar extends Component {
 
   handleSearchSubmit = (e) => {
     e.preventDefault()
+    // const searchTerms = this.state.search.split(" ").filter(w => w !== "")
+    this.props.getSearchTags(this.state.search)
+    // this.props.getRecipes("search", this.state.search)
     this.props.setSearchTerm(this.state.search)
     this.setState({ search: "" })
     this.props.selectMenuItem("Search")
@@ -61,16 +64,18 @@ class TopBar extends Component {
           </Grid>
           <Grid container item id="search-bar-div" direction="row" xs={4} justify="flex-start">
             <Grid item xs={11}>
-              <InputBase 
-                fullWidth
-                id="search-bar"
-                placeholder="Search…"
-                value={this.state.search}
-                onChange={this.handleSearchOnChange}
-              />
-              <IconButton id="large-screen-search-button">
-                <SearchIcon />
-              </IconButton>
+              <form onSubmit={this.handleSearchSubmit}>
+                <InputBase 
+                  fullWidth
+                  id="search-bar"
+                  placeholder="Search…"
+                  value={this.state.search}
+                  onChange={this.handleSearchOnChange}
+                />
+                <IconButton type="submit" id="large-screen-search-button">
+                  <SearchIcon />
+                </IconButton>
+              </form>
             </Grid>
           </Grid>
         </React.Fragment>
@@ -97,7 +102,9 @@ const mapStateToProps = ({ screenWidth }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setSearchTerm: (searchTerm) => dispatch(setSearchTerm(searchTerm))
+    setSearchTerm: (searchTerm) => dispatch(setSearchTerm(searchTerm)),
+    // getRecipes: (type, searchTerm) => dispatch(getRecipes(type, searchTerm)),
+    getSearchTags: (searchTerm) => dispatch(getSearchTags(searchTerm))
   }
 }
 

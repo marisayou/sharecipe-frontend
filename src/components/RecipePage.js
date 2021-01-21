@@ -5,8 +5,10 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { 
     setUserPage, 
+    setHomePage,
     setRecipesPage, 
     setFavoritesPage,
+    setSearchPage,
     setCurrentRecipe, 
     deleteRecipe, 
     favorite,
@@ -42,6 +44,9 @@ class RecipePage extends Component {
     handleTagClick = (tagName) => {
         this.props.setCurrentTag(tagName)
         switch (this.props.menuPage) {
+            case "home":
+                this.props.setHomePage("tag")
+                break
             case "profile":
                 this.props.setUserPage("tag")
                 break
@@ -50,6 +55,9 @@ class RecipePage extends Component {
                 break
             case "favorites":
                 this.props.setFavoritesPage("tag")
+                break
+            case "search":
+                this.props.setSearchPage("tag")
                 break
             default:
                 return
@@ -83,6 +91,9 @@ class RecipePage extends Component {
 
     handleBackButtonClick = async () => {
         switch (this.props.menuPage) {
+            case "home":
+                await this.props.setHomePage("default")
+                break
             case "profile":
                 await this.props.setUserPage("default")
                 break
@@ -91,6 +102,9 @@ class RecipePage extends Component {
                 break
             case "favorites":
                 await this.props.setFavoritesPage("default")
+                break
+            case "search":
+                await this.props.setSearchPage("default")
                 break
             default:
                 break
@@ -258,8 +272,10 @@ const mapStateToProps = ({ user, favorites, currentRecipe, menuPage }) => {
 const mapDispatchToProps = dispatch => {
     return {
         setUserPage: (page) => dispatch(setUserPage(page)),
+        setHomePage: (page) => dispatch(setHomePage(page)),
         setRecipesPage: (page) => dispatch(setRecipesPage(page)),
         setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
+        setSearchPage: (page) => dispatch(setSearchPage(page)),
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
         deleteRecipe: (id) => dispatch(deleteRecipe(id)),
         favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),

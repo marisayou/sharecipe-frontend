@@ -42,3 +42,11 @@ form {
     text-align: center;
     width: 80%;
 }
+
+.no-account {
+    font-size: smaller;
+}
+
+.signup-link {
+    text-decoration: underline;
+}

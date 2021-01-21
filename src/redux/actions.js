@@ -8,7 +8,7 @@ export const logout = () => ({ type: "LOGOUT" })
 
 // get user using token from local storage when Home component mounts
 export const getUser = () => {
-    return function (dispatch) {
+    return function(dispatch) {
         fetch('http://localhost:3000/get_user', {
             method: 'GET',
             headers: {
@@ -24,7 +24,7 @@ export const getUser = () => {
 // add new recipe when submitting recipe form
 // export const addNewRecipe = (recipe) => ({ type: "ADD_NEW_RECIPE", payload: recipe})
 export const addNewRecipe = (recipe, tags, user_id) => {
-    return function (dispatch) {
+    return function(dispatch) {
         fetch('http://localhost:3000/recipes', {
             method: 'POST',
             headers: {
@@ -40,7 +40,7 @@ export const addNewRecipe = (recipe, tags, user_id) => {
 
 // edit a recipe
 export const editRecipe = (recipe, tags, recipeId) => {
-    return function (dispatch) {
+    return function(dispatch) {
         fetch('http://localhost:3000/recipes/' + recipeId, {
             method: 'PATCH',
             headers: {
@@ -55,7 +55,7 @@ export const editRecipe = (recipe, tags, recipeId) => {
 }
 
 export const deleteRecipe = (id) => {
-    return function (dispatch) {
+    return function(dispatch) {
         fetch('http://localhost:3000/recipes/' + id, { method: 'DELETE' })
         .then(() => dispatch({ type: "DELETE_RECIPE", payload: id }))
     }
@@ -73,6 +73,8 @@ export const setCurrentTag = (tag) => {
 // select page from side menu
 export const setMenuPage = (page) => ({ type: "SET_MENU_PAGE", payload: page})
 
+export const setHomePage = (page) => ({ type: "SET_HOME_PAGE", payload: page})
+
 // select which view to render for userPage
 export const setUserPage = (page) => ({ type: "SET_USER_PAGE", payload: page })
 
@@ -86,23 +88,34 @@ export const setFavoritesPage = (page) => ({ type: "SET_FAVORITES_PAGE", payload
 export const setSearchPage = (page) => ({ type: "SET_SEARCH_PAGE", payload: page })
 
 // get all recipes when allRecipesPage mounts
-export const getRecipes = (type, userId) => {
-    return function (dispatch) {
+export const getRecipes = (type, param) => {
+    return function(dispatch) {
         let resource
-        if (type === "recipes") {
-            resource = 'http://localhost:3000/recipes'
-        }
-        else if (type === "favorites") {
-            resource = 'http://localhost:3000/users/' + userId + '/like_recipes'
+        switch (type) {
+            case "home":
+                resource = 'http://localhost:3000/recipes/newest'
+                break
+            case "recipes":
+                resource = 'http://localhost:3000/recipes'
+                break
+            case "favorites": // param = user id 
+                resource = 'http://localhost:3000/users/' + param + '/like_recipes'
+                break
+            case "search": // param = search term
+                resource = 'http://localhost:3000/search_recipes/' + param
+                break
+            default:
+                return
         }
         fetch(resource)
-        .then(res => res.json())
+        .then(res => res.json()) 
         .then(recipes => dispatch({ type: "GET_RECIPES", payload: recipes }))   
     }
 }
 
+// when a tag is clicked, get recipes that have that tag
 export const getTagRecipes = (tagName) => {
-    return function (dispatch) {
+    return function(dispatch) {
         fetch('http://localhost:3000/tags/' + tagName + '/tag_recipes')
         .then(res => res.json())
         .then(recipes => dispatch({ type: "GET_RECIPES", payload: recipes}))
@@ -111,7 +124,7 @@ export const getTagRecipes = (tagName) => {
 
 // favorite recipes
 export const favorite = (recipe_id, user_id) => {
-    return function (dispatch) {
+    return function(dispatch) {
         fetch('http://localhost:3000/likes', {
             method: 'POST',
             headers: {
@@ -126,7 +139,7 @@ export const favorite = (recipe_id, user_id) => {
 
 // unfavorite recipes
 export const unfavorite = (recipe_id, user_id) => {
-    return function (dispatch) {
+    return function(dispatch) {
         fetch('http://localhost:3000/likes', {
             method: 'DELETE',
             headers: {
@@ -141,7 +154,7 @@ export const unfavorite = (recipe_id, user_id) => {
 
 // add a comment to a recipe
 export const addComment = (user_id, recipe_id, text) => {
-    return function (dispatch) {
+    return function(dispatch) {
         fetch('http://localhost:3000/comments', {
             method: 'POST',
             headers: {
@@ -155,6 +168,29 @@ export const addComment = (user_id, recipe_id, text) => {
     }
 }
 
-
 // set search term
 export const setSearchTerm = (searchTerm) => ({ type: "SET_SEARCH_TERM", payload: searchTerm })
+
+// get tags that contain the search term
+export const getSearchTags = (searchTerm) => {
+    return function(dispatch) {
+        fetch('http://localhost:3000/search_tags/' + searchTerm)
+        .then(res => res.json())
+        .then(tags => dispatch({ 
+            type: "GET_SEARCH_TAGS", 
+            payload: tags.filter(tag => tag.recipes.length !== 0) 
+        }))
+    }
+}
+
+// get recipes whose titles contain the search term
+export const getSearchRecipes = (searchTerm) => {
+    return function(dispatch) {
+        fetch('http://localhost:3000/search_recipes/' + searchTerm)
+        .then(res => res.json())
+        .then(recipes => dispatch({ 
+            type: "GET_SEARCH_RECIPES", 
+            payload: recipes
+        }))
+    }
+}

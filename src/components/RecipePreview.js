@@ -4,9 +4,11 @@ import { Grid, Button, Card, CardHeader, CardContent, CardActions, Typography, I
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { 
     setCurrentRecipe, 
+    setHomePage,
     setUserPage, 
     setRecipesPage, 
     setFavoritesPage,
+    setSearchPage,
     favorite, 
     unfavorite 
 } from '../redux/actions';
@@ -16,6 +18,9 @@ class RecipePreview extends Component {
     handleClickReadMore = async () => {
         await this.props.setCurrentRecipe(this.props.recipe)
         switch(this.props.menuPage) {
+            case "home":
+                this.props.setHomePage("recipe")
+                break
             case "profile":
                 this.props.setUserPage("recipe")
                 break
@@ -24,6 +29,9 @@ class RecipePreview extends Component {
                 break
             case "favorites":
                 this.props.setFavoritesPage("recipe")
+                break
+            case "search":
+                this.props.setSearchPage("recipe")
                 break
             default:
                 return
@@ -69,9 +77,11 @@ const mapStateToProps = ({ user, favorites, currentRecipe, menuPage }) => {
 const mapDispatchToProps = dispatch => {
     return { 
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
+        setHomePage: (page) => dispatch(setHomePage(page)),
         setUserPage: (page) => dispatch(setUserPage(page)),
         setRecipesPage: (page) => dispatch(setRecipesPage(page)),
         setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
+        setSearchPage: (page) => dispatch(setSearchPage(page)),
         favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),
         unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId))
     }

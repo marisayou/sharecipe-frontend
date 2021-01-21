@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Grid } from "@material-ui/core";
 import TagPage from './TagPage';
-import RecipesContainer from './RecipesContainer';
 import RecipePage from './RecipePage';
+import SearchRecipes from './SearchRecipes';
+import SearchTags from './SearchTags';
 
 class SearchResults extends Component {
 
@@ -19,11 +20,12 @@ class SearchResults extends Component {
                 return (
                     <React.Fragment>
                         <Grid container item xs={12} justify="center">
-                            {/* <SearchTags /> */}
-                            {this.props.searchTerm}
+                            <Grid item>
+                                <h1>Search Results</h1>
+                            </Grid>
+                            <SearchTags />
+                            {/* <SearchRecipes /> */}
                         </Grid>
-                        <br />
-                        {/* <SearchRecipes /> */}
                     </React.Fragment>
                 )   
         }

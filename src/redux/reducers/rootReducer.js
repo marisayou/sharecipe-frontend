@@ -11,11 +11,12 @@ const initialState = {
 
     currentRecipe: null,
     currentTag: null,
-    currentUser: null,
+    // currentUser: null,
 
     recipes: [],
 
     menuPage: null,
+    homePage: null,
     // determines which view to render when on profile tab
     userPage: null,
     // determines which view to render when on favorites tab
@@ -25,7 +26,8 @@ const initialState = {
     // determines which view to render when in search
     searchPage: null,
     
-    searchTerm: null
+    searchTerm: null,
+    searchTags: []
 }
 
 const rootReducer = combineReducers({
@@ -41,8 +43,10 @@ const rootReducer = combineReducers({
     recipes: recipesReducer,
     allRecipesPage: allRecipesPageReducer,
     favoritesPage: favoritesPageReducer,
+    homePage: homePageReducer,
     searchPage: searchPageReducer,
-    searchTerm: searchTermReducer
+    searchTerm: searchTermReducer,
+    searchTags: searchTagsReducer
 })
 
 function screenWidthReducer(state = initialState.screenWidth, action) {
@@ -130,6 +134,18 @@ function menuPageReducer(state = initialState.menuPage, action) {
     }
 }
 
+function homePageReducer(state = initialState.homePage, action) {
+    switch (action.type) {
+        case "SET_HOME_PAGE":
+            console.log(action.payload)
+            return action.payload
+        case "LOGOUT":
+            return null
+        default:
+            return state
+    }
+}
+
 function userPageReducer(state = initialState.userPage, action) {
     switch (action.type) {
         case "SET_USER_PAGE":
@@ -174,6 +190,9 @@ function recipesReducer(state = initialState.recipes, action) {
                 return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
             })
             return recipes
+        case "GET_SEARCH_RECIPES":
+            console.log(action.payload)
+            return action.payload
         case "LOGOUT":
             return []
         default: 
@@ -182,7 +201,7 @@ function recipesReducer(state = initialState.recipes, action) {
 } 
 
 function allRecipesPageReducer(state = initialState.allRecipesPage, action) {
-    switch(action.type) {
+    switch (action.type) {
         case "SET_RECIPES_PAGE":
             return action.payload
         case "LOGOUT":
@@ -193,8 +212,9 @@ function allRecipesPageReducer(state = initialState.allRecipesPage, action) {
 }
 
 function favoritesPageReducer(state = initialState.favoritesPage, action) {
-    switch(action.type) {
+    switch (action.type) {
         case "SET_FAVORITES_PAGE":
+            console.log(action.payload)
             return action.payload
         default:
             return state
@@ -202,7 +222,7 @@ function favoritesPageReducer(state = initialState.favoritesPage, action) {
 }
 
 function searchPageReducer(state = initialState.searchPage, action) {
-    switch(action.type) {
+    switch (action.type) {
         case "SET_SEARCH_PAGE":
             return action.payload
         default:
@@ -211,12 +231,23 @@ function searchPageReducer(state = initialState.searchPage, action) {
 }
 
 function searchTermReducer(state = initialState.searchTerm, action) {
-    switch(action.type) {
+    switch (action.type) {
         case "SET_SEARCH_TERM":
+            console.log(action.payload)
             return action.payload
         default: 
             return state
     }
 }
+
+function searchTagsReducer(state = initialState.searchTags, action) {
+    switch (action.type) {
+        case "GET_SEARCH_TAGS":
+            return action.payload
+        default:
+            return state
+    }
+}
+
 
 export default rootReducer
