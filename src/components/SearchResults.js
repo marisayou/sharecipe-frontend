@@ -1,32 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Grid } from "@material-ui/core";
+import TagPage from './TagPage';
 import RecipesContainer from './RecipesContainer';
 import RecipePage from './RecipePage';
-import TagPage from './TagPage';
 
-class FavoritesPage extends Component {
+class SearchResults extends Component {
 
     renderPage = () => {
-        switch (this.props.favoritesPage) {
+        switch (this.props.searchPage) {
             // case "user":
             //     return <UserPage />
             case "recipe":
-                return <RecipePage />
+                return <RecipePage /> 
             case "tag":
-                console.log("tag")
                 return <TagPage />
             default:
                 return (
                     <React.Fragment>
-                        <Grid item>
-                            <h1>Favorites</h1>
+                        <Grid container item xs={12} justify="center">
+                            {/* <SearchTags /> */}
+                            {this.props.searchTerm}
                         </Grid>
-                        <RecipesContainer/>
+                        <br />
+                        {/* <SearchRecipes /> */}
                     </React.Fragment>
                 )   
         }
     }
+
     render() {
         return (
             <React.Fragment>
@@ -40,8 +42,8 @@ class FavoritesPage extends Component {
     }
 }
 
-const mapStateToProps = ({ favoritesPage }) => {
-    return { favoritesPage }
+const mapStateToProps = ({ searchPage, searchTerm }) => {
+    return {searchPage, searchTerm}
 }
 
-export default connect(mapStateToProps)(FavoritesPage)
+export default connect(mapStateToProps)(SearchResults)

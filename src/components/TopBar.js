@@ -1,89 +1,104 @@
-import React from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Menu from './Menu';
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import InputBase from "@material-ui/core/InputBase";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { AppBar, Grid, InputBase, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import '../css/TopBar.css';
+import { setSearchTerm } from '../redux/actions';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  title: {
-    flexGrow: 1,
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block"
-    }
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    // backgroundColor: fade(theme.palette.common.white, 0.15),
-    // "&:hover": {
-    //   backgroundColor: fade(theme.palette.common.white, 0.25)
-    // },
-    marginLeft: 0,
-    width: "100%",
-    // [theme.breakpoints.up("sm")]: {
-    //   marginLeft: theme.spacing(1),
-    //   width: "auto"
-    // }
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  inputRoot: {
-    color: "inherit"
-  },
-  inputInput: {
-    // padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    // paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    paddingLeft: `50px`,
+class TopBar extends Component {
 
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    // [theme.breakpoints.up("sm")]: {
-    //   width: "12ch",
-    //   "&:focus": {
-    //     width: "20ch"
-    //   }
-    // }
+  state = {
+    search: ""
   }
-}));
 
-export default function TopBar(props) {
-  const classes = useStyles();
+  handleSearchOnChange = (e) => {
+    this.setState({search: e.target.value})
+  }
 
-  return (
-    <div className={classes.root}>
-      {/* <AppBar position="static" color="secondary"> */}
-        {/* <div>LOGO</div> */}
-        <Toolbar>
-          <Menu selectMenuItem={props.selectMenuItem}/>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
-        </Toolbar>
-      {/* </AppBar> */}
-    </div>
-  );
+  handleSearchSubmit = (e) => {
+    e.preventDefault()
+    this.props.setSearchTerm(this.state.search)
+    this.setState({ search: "" })
+    this.props.selectMenuItem("Search")
+  }
+
+  renderTopBar = () => {
+    if (this.props.screenWidth < 900) {
+      return (
+        <React.Fragment>
+          <Grid item xs={1}>
+            <Menu selectMenuItem={this.props.selectMenuItem}/>
+          </Grid>
+          <Grid item md={1}></Grid>
+          {/* <Grid item xs={1} id="search-icon">
+            
+          </Grid> */}
+          <Grid container item id="search-bar-div" direction="row" xs={10} md={8} justify="center">
+            <Grid item xs={11} sm={8}>
+              <form onSubmit={this.handleSearchSubmit}>
+                <InputBase 
+                  fullWidth
+                  id="search-bar"
+                  placeholder="Search…"
+                  value={this.state.search}
+                  onChange={this.handleSearchOnChange}
+                />
+                <IconButton type="submit" id="search-button">
+                  <SearchIcon />
+                </IconButton>
+              </form>
+              
+            </Grid>
+          </Grid>
+        </React.Fragment>
+      ) 
+    } else {
+      return (
+        <React.Fragment>
+          <Grid item xs={8}>
+            <Menu selectMenuItem={this.props.selectMenuItem}/>
+          </Grid>
+          <Grid container item id="search-bar-div" direction="row" xs={4} justify="flex-start">
+            <Grid item xs={11}>
+              <InputBase 
+                fullWidth
+                id="search-bar"
+                placeholder="Search…"
+                value={this.state.search}
+                onChange={this.handleSearchOnChange}
+              />
+              <IconButton id="large-screen-search-button">
+                <SearchIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </React.Fragment>
+      )
+    }
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <AppBar position="static" id="appbar">
+          <Grid container id="topbar-container">
+            {this.renderTopBar()}  
+          </Grid>
+        </AppBar>
+      </React.Fragment>
+    )
+  }
 }
+
+const mapStateToProps = ({ screenWidth }) => {
+  return { screenWidth }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setSearchTerm: (searchTerm) => dispatch(setSearchTerm(searchTerm))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar)

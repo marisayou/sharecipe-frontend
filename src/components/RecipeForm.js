@@ -28,7 +28,7 @@ class RecipeForm extends Component {
         }
     }
 
-    handleBackButtonClick = async () => {
+    handleCancelButtonClick = async () => {
         if (this.props.currentRecipe) {
             this.props.setUserPage("recipe")
         } else {
@@ -227,7 +227,7 @@ class RecipeForm extends Component {
 
                             <Grid className="btn-container" container item justify="center">
                                 <Grid item className="btn-div">
-                                    <Button className="recipe-form-btn" variant="outlined" onClick={this.handleBackButtonClick}>Back</Button>
+                                    <Button className="recipe-form-btn" variant="outlined" onClick={this.handleCancelButtonClick}>Cancel</Button>
                                 </Grid>
                                 <Grid item className="btn-div">
                                     <Button className="recipe-form-btn" type="submit" variant="outlined">Submit</Button>

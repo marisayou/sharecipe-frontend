@@ -11,7 +11,8 @@ import {
     deleteRecipe, 
     favorite,
     unfavorite,
-    addComment
+    addComment,
+    setCurrentTag
 } from '../redux/actions';
 import '../css/RecipePage.css';
 
@@ -33,7 +34,26 @@ class RecipePage extends Component {
     }
 
     renderTags = () => {
-        return this.props.tags.map(tag => <Button key={tag.name}>{'#' + tag.name}</Button>)
+        return this.props.tags.map(tag => {
+            return <Button key={tag.name} onClick={() => this.handleTagClick(tag.name)}>{'#' + tag.name}</Button>
+        })
+    }
+
+    handleTagClick = (tagName) => {
+        this.props.setCurrentTag(tagName)
+        switch (this.props.menuPage) {
+            case "profile":
+                this.props.setUserPage("tag")
+                break
+            case "recipes":
+                this.props.setRecipesPage("tag")
+                break
+            case "favorites":
+                this.props.setFavoritesPage("tag")
+                break
+            default:
+                return
+        }
     }
 
     renderIngredients = () => {
@@ -64,13 +84,13 @@ class RecipePage extends Component {
     handleBackButtonClick = async () => {
         switch (this.props.menuPage) {
             case "profile":
-                await this.props.setUserPage("profile")
+                await this.props.setUserPage("default")
                 break
             case "recipes":
-                await this.props.setRecipesPage("all")
+                await this.props.setRecipesPage("default")
                 break
             case "favorites":
-                await this.props.setFavoritesPage("all")
+                await this.props.setFavoritesPage("default")
                 break
             default:
                 break
@@ -79,7 +99,7 @@ class RecipePage extends Component {
     }
 
     handleDeleteButtonClick = async () => {
-        await this.props.setUserPage("profile")
+        await this.props.setUserPage("default")
         this.props.deleteRecipe(this.props.id)
         
     }
@@ -244,7 +264,8 @@ const mapDispatchToProps = dispatch => {
         deleteRecipe: (id) => dispatch(deleteRecipe(id)),
         favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),
         unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId)),
-        addComment: (userId, recipeId, comment) => dispatch(addComment(userId, recipeId, comment))
+        addComment: (userId, recipeId, comment) => dispatch(addComment(userId, recipeId, comment)),
+        setCurrentTag: (tagName) => dispatch(setCurrentTag(tagName))
     }
 }
 

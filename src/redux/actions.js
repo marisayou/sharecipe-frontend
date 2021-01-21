@@ -1,3 +1,5 @@
+export const resizeScreen = (pageWidth) => ({ type: "RESIZE_SCREEN", payload: pageWidth })
+
 // update user info and token on sign up, sign in, and user update
 export const updateUserInfo = (userInfo) => ({ type: "UPDATE_USER_INFO", payload: userInfo })
 
@@ -64,11 +66,24 @@ export const setCurrentRecipe = (recipe) => {
     return ({ type: "SET_CURRENT_RECIPE", payload: recipe })
 }
 
+export const setCurrentTag = (tag) => {
+    return ({ type: "SET_CURRENT_TAG", payload: tag})
+}
+
 // select page from side menu
 export const setMenuPage = (page) => ({ type: "SET_MENU_PAGE", payload: page})
 
 // select which view to render for userPage
 export const setUserPage = (page) => ({ type: "SET_USER_PAGE", payload: page })
+
+// select which view to render for Recipes tab
+export const setRecipesPage = (page) => ({ type: "SET_RECIPES_PAGE", payload: page})
+
+// select which view to render for Favorites tab
+export const setFavoritesPage = (page) => ({ type: "SET_FAVORITES_PAGE", payload: page})
+
+// select which view to render when entering search term
+export const setSearchPage = (page) => ({ type: "SET_SEARCH_PAGE", payload: page })
 
 // get all recipes when allRecipesPage mounts
 export const getRecipes = (type, userId) => {
@@ -86,11 +101,13 @@ export const getRecipes = (type, userId) => {
     }
 }
 
-// select which view to render for Recipes tab
-export const setRecipesPage = (page) => ({ type: "SET_RECIPES_PAGE", payload: page})
-
-// select which view to render for Favorites tab
-export const setFavoritesPage = (page) => ({ type: "SET_FAVORITES_PAGE", payload: page})
+export const getTagRecipes = (tagName) => {
+    return function (dispatch) {
+        fetch('http://localhost:3000/tags/' + tagName + '/tag_recipes')
+        .then(res => res.json())
+        .then(recipes => dispatch({ type: "GET_RECIPES", payload: recipes}))
+    }
+}
 
 // favorite recipes
 export const favorite = (recipe_id, user_id) => {
@@ -137,3 +154,7 @@ export const addComment = (user_id, recipe_id, text) => {
         .then(comment => dispatch({ type: "ADD_COMMENT", payload: comment}))
     }
 }
+
+
+// set search term
+export const setSearchTerm = (searchTerm) => ({ type: "SET_SEARCH_TERM", payload: searchTerm })

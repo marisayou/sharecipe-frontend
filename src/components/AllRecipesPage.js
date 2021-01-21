@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Grid } from "@material-ui/core";
 import RecipesContainer from './RecipesContainer';
 import RecipePage from './RecipePage';
+import TagPage from './TagPage';
 
 class AllRecipesPage extends Component {
 
@@ -12,6 +13,8 @@ class AllRecipesPage extends Component {
             //     return <UserPage />
             case "recipe":
                 return <RecipePage /> 
+            case "tag":
+                return <TagPage />
             default:
                 return (
                     <React.Fragment>

@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 
 const initialState = {
+    screenWidth: window.screen.width,
+
     // states specific to the user
     user: null,
     token: null,
@@ -8,21 +10,26 @@ const initialState = {
     favorites: [], // ids of favorited recipes
 
     currentRecipe: null,
+    currentTag: null,
     currentUser: null,
 
+    recipes: [],
+
+    menuPage: null,
     // determines which view to render when on profile tab
     userPage: null,
     // determines which view to render when on favorites tab
     favoritesPage: null,
     // determines which view to render when on recipes tab
     allRecipesPage: null,
-    recipes: [],
-
-    menuPage: null
-
+    // determines which view to render when in search
+    searchPage: null,
+    
+    searchTerm: null
 }
 
 const rootReducer = combineReducers({
+    screenWidth: screenWidthReducer,
     user: userReducer,
     token: tokenReducer,
     myRecipes: myRecipesReducer,
@@ -30,10 +37,22 @@ const rootReducer = combineReducers({
     menuPage: menuPageReducer,
     userPage: userPageReducer,
     currentRecipe: currentRecipeReducer,
+    currentTag: currentTagReducer,
     recipes: recipesReducer,
     allRecipesPage: allRecipesPageReducer,
-    favoritesPage: favoritesPageReducer
+    favoritesPage: favoritesPageReducer,
+    searchPage: searchPageReducer,
+    searchTerm: searchTermReducer
 })
+
+function screenWidthReducer(state = initialState.screenWidth, action) {
+    switch (action.type) {
+        case "RESIZE_SCREEN":
+            return action.payload
+        default:
+            return state
+    }
+}
 
 function userReducer(state = initialState.user, action) {
     switch (action.type) {
@@ -131,11 +150,19 @@ function currentRecipeReducer(state = initialState.currentRecipe, action) {
         case "DELETE_RECIPE":
             return null
         case "ADD_COMMENT":
-            console.log(action.payload)
             return {...state, comments: [...state.comments, action.payload]}
         case "LOGOUT":
             return null
         default: 
+            return state
+    }
+}
+
+function currentTagReducer(state = initialState.currentTag, action) {
+    switch (action.type) {
+        case "SET_CURRENT_TAG":
+            return action.payload
+        default:
             return state
     }
 }
@@ -170,6 +197,24 @@ function favoritesPageReducer(state = initialState.favoritesPage, action) {
         case "SET_FAVORITES_PAGE":
             return action.payload
         default:
+            return state
+    }
+}
+
+function searchPageReducer(state = initialState.searchPage, action) {
+    switch(action.type) {
+        case "SET_SEARCH_PAGE":
+            return action.payload
+        default:
+            return state
+    }
+}
+
+function searchTermReducer(state = initialState.searchTerm, action) {
+    switch(action.type) {
+        case "SET_SEARCH_TERM":
+            return action.payload
+        default: 
             return state
     }
 }

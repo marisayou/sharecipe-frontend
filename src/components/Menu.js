@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import { Toolbar, Grid, Drawer, Button, List, Divider, ListItem, ListItemText } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 
 class Menu extends Component {
@@ -25,7 +20,7 @@ class Menu extends Component {
       onKeyDown={() => this.toggleDrawer(false)}
     >
       <List>
-        {["Home", "Profile Page", "Favorites", "Recipes"].map((text) => (
+        {["Home", "Profile", "Favorites", "Recipes"].map((text) => (
           <ListItem button key={text} 
             onClick={() => {
               this.props.selectMenuItem(text)
@@ -45,8 +40,8 @@ class Menu extends Component {
       </List>
     </div>
   );
-
-  render() {
+  
+  smallScreenMenu = () => {
     return (
       <React.Fragment key={"left"}>
         <Button onClick={() => this.toggleDrawer(true)} id="menu-btn"><MenuIcon /></Button>
@@ -61,10 +56,30 @@ class Menu extends Component {
 
     )
   }
+
+  largeScreenMenu = () => {
+    return (
+      <Toolbar>
+        <Grid container item direction="row">
+          {["Home", "Profile", "Favorites", "Recipes", "Settings", "Logout"].map((text) => (
+            <Button key={text} onClick={() => {this.props.selectMenuItem(text)}}>{text}</Button>
+          ))}
+        </Grid>
+      </Toolbar>
+    )
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        {this.props.screenWidth < 900 ? this.smallScreenMenu() : this.largeScreenMenu()}
+      </React.Fragment>
+    )
+  }
 }
 
-const mapStateToProps = ({ user }) => {
-  return { user }
+const mapStateToProps = ({ user, screenWidth }) => {
+  return { user, screenWidth }
 }
 
 export default connect(mapStateToProps)(Menu)

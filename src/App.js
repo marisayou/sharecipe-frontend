@@ -1,18 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
-import { updateUserInfo, logout, setMenuPage, setUserPage, setRecipesPage } from './redux/actions.js';
+import { 
+  resizeScreen, 
+  updateUserInfo, 
+  logout, 
+  setMenuPage, 
+  setUserPage, 
+  setRecipesPage, 
+  setFavoritesPage, 
+  setSearchPage 
+} from './redux/actions.js';
 import UserForm from './components/UserForm';
 import Home from './components/Home';
 import UserPage from './components/UserPage';
 import FavoritesPage from './components/FavoritesPage';
 import AllRecipesPage from './components/AllRecipesPage';
 import TopBar from './components/TopBar';
+import SearchResults from './components/SearchResults';
 import './App.css';
 
 class App extends Component {
 
   state = { route: null }
+
+  componentDidMount() {
+    window.addEventListener("resize", () => this.props.resizeScreen(document.body.clientWidth))
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", () => this.props.resizeScreen(document.body.clientWidth))
+  }
 
   selectMenuItem = (menuItem) => {
     switch (menuItem) {
@@ -32,17 +50,22 @@ class App extends Component {
 
   renderPage = () => {
     switch (this.state.route) {
-      case "Profile Page": 
-        this.props.setMenuPage("profile")
+      case "Profile": 
+        this.props.setMenuPage("default")
         this.props.setUserPage("profile")
         return <UserPage />
       case "Favorites":
-        this.props.setMenuPage("favorites")
+        this.props.setMenuPage("default")
+        this.props.setFavoritesPage("favorites")
         return <FavoritesPage />
       case "Recipes":
-        this.props.setRecipesPage("all")
-        this.props.setMenuPage("recipes")
+        this.props.setMenuPage("default")
+        this.props.setRecipesPage("recipes")
         return <AllRecipesPage />
+      case "Search":
+        this.props.setSearchPage("default")
+        this.props.setMenuPage("search")
+        return <SearchResults />
       default:
         this.props.setMenuPage("home")
         return <Home />
@@ -137,11 +160,14 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    resizeScreen: (pageWidth) => dispatch(resizeScreen(pageWidth)),
     updateUserInfo: (info) => dispatch(updateUserInfo(info)),
     logout: () => dispatch(logout()),
     setMenuPage: (page) => dispatch(setMenuPage(page)),
     setUserPage: (page) => dispatch(setUserPage(page)),
-    setRecipesPage: (page) => dispatch(setRecipesPage(page))
+    setRecipesPage: (page) => dispatch(setRecipesPage(page)),
+    setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
+    setSearchPage: (page) => dispatch(setSearchPage(page))
   }
 }
 
