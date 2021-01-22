@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button } from "@material-ui/core";
-import { setUserPage } from '../redux/actions';
+import { setUserPage, setCurrentRecipe } from '../redux/actions';
 import '../css/UserPage.css'
 
 class ProfileInfo extends Component {
 
+    handleAddRecipe = () => {
+        this.props.setCurrentRecipe(null)
+        this.props.setUserPage("form")
+    }
+
     render() {
         return (
-            <Grid container item spacing={1} xs={12} md={9}>
+            <Grid container item spacing={1} direction="column" xs={12} md={9} alignItems="center" >
                 <Grid container item xs={12} spacing={2} direction="row">
 
                     <Grid container item xs={12} direction="row" justify="center" spacing={1}>
@@ -54,12 +59,13 @@ class ProfileInfo extends Component {
                         
                         <Button 
                             variant="outlined" 
-                            onClick={() => this.props.setUserPage("form")}
+                            onClick={this.handleAddRecipe}
                         >
                             Add Recipe
                         </Button>
                         <Button 
                             variant="outlined" 
+                            onClick={() => this.props.selectMenuItem("Settings")}
                         >
                             Edit Profile
                         </Button> 
@@ -77,7 +83,8 @@ const mapStateToProps = ({ user, myRecipes, favorites }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setUserPage: (page) => dispatch(setUserPage(page))
+        setUserPage: (page) => dispatch(setUserPage(page)),
+        setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe))
     }
 }
 

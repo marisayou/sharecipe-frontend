@@ -21,20 +21,12 @@ export const getUser = () => {
     }
 }
 
-// add new recipe when submitting recipe form
-// export const addNewRecipe = (recipe) => ({ type: "ADD_NEW_RECIPE", payload: recipe})
-export const addNewRecipe = (recipe, tags, user_id) => {
+// get logged in user's recipes in profile page
+export const getUserRecipes = (id) => {
     return function(dispatch) {
-        fetch('http://localhost:3000/recipes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ user_id, recipe, tags })
-        })
+        fetch('http://localhost:3000/users/' + id + '/recipes')
         .then(res => res.json())
-        .then(rec => dispatch({ type: "ADD_NEW_RECIPE", payload: rec}))
+        .then(recipes => dispatch({ type: "GET_USER_RECIPES", payload: recipes }))
     }
 }
 
@@ -50,7 +42,7 @@ export const editRecipe = (recipe, tags, recipeId) => {
             body: JSON.stringify({ recipe, tags })
         })
         .then(res => res.json())
-        .then(rec => dispatch({ type: "EDIT_RECIPE", payload: { id: recipeId, recipe: rec.recipe, tags: rec.tags }}))
+        .then(rec => dispatch({ type: "EDIT_RECIPE", payload: { id: recipeId, recipe: rec.recipe, comments: rec.comments, tags: rec.tags }}))
     }
 }
 

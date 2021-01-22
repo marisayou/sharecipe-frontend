@@ -15,7 +15,6 @@ class Home extends Component {
     renderPage = () => {
         switch (this.props.homePage) {
             case "recipe":
-                console.log("!!!!!!!!!")
                 return <RecipePage /> 
             case "tag":
                 return <TagPage />
@@ -25,10 +24,10 @@ class Home extends Component {
                         <Container maxWidth="md">
                             <Grid container direction="column" alignItems="center">
                                 <Grid item>
-                                    <h1>Welcome, {this.props.user ? this.props.user.name : ""}!</h1>
+                                    <h1>Welcome, {this.props.user ? this.props.user.name : ""}</h1>
                                 </Grid>
                                 <Grid item>
-                                    <h3>Here are the newest recipes</h3>
+                                    <h3>Here are the newest recipes!</h3>
                                 </Grid>
                                 <RecipesContainer />
                             </Grid>

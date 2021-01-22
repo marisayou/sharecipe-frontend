@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid } from "@material-ui/core";
-import { getRecipes, getTagRecipes } from '../redux/actions';
+import { getUserRecipes, getRecipes, getTagRecipes } from '../redux/actions';
 import RecipePreview from './RecipePreview';
 
 class RecipesContainer extends Component {
 
     componentDidMount() {
+        console.log(this.props.menuPage)
         switch (this.props.menuPage) {
             case "home":
                 this.props.homePage !== "tag" ?
@@ -14,10 +15,10 @@ class RecipesContainer extends Component {
                     this.props.getTagRecipes(this.props.currentTag)
                 break
             case "profile":
-                if (this.props.userPage === "tag") {
+                this.props.userPage !== "tag" ?
+                    this.props.getUserRecipes(this.props.user.id) :
                     this.props.getTagRecipes(this.props.currentTag)
-                }
-                return
+                break
             case "recipes":
                 this.props.allRecipesPage !== "tag" ?
                     this.props.getRecipes("recipes", this.props.user.id) :
@@ -55,7 +56,7 @@ class RecipesContainer extends Component {
     }
 
     render() {
-        console.log(this.props.recipes)
+        console.log(this.props.myRecipes)
         return (
             <Grid className="container" container item xs={12} md={9} spacing={1}>
                 {this.renderRecipePreviews()}
@@ -70,6 +71,7 @@ const mapStateToProps = ({ user, menuPage, myRecipes, recipes, homePage, userPag
 
 const mapDispatchToProps = dispatch => {
     return {
+        getUserRecipes: (userId) => dispatch(getUserRecipes(userId)),
         getRecipes: (type, userId) => dispatch(getRecipes(type, userId)),
         getTagRecipes: (tagName) => dispatch(getTagRecipes(tagName))
     }

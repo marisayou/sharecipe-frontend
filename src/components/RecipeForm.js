@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setUserPage, setCurrentRecipe, addNewRecipe, editRecipe } from '../redux/actions';
+import { setUserPage, setCurrentRecipe, editRecipe } from '../redux/actions';
 import { Button, Grid, TextField, MenuItem } from "@material-ui/core";
 import '../css/UserForm.css';
 import '../css/RecipeForm.css';
@@ -48,8 +48,19 @@ class RecipeForm extends Component {
             await this.props.editRecipe(recipe, tags, this.props.currentRecipe.id)
             this.props.setUserPage("recipe")
         } else {
-            await this.props.addNewRecipe(recipe, tags, this.props.user.id)
-            this.props.setUserPage("profile")
+            fetch('http://localhost:3000/recipes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    user_id: this.props.user.id, 
+                    recipe: recipe, 
+                    tags: tags 
+                })
+            })
+            .then(this.props.setUserPage("profile"))
         }
     }
 
@@ -247,7 +258,6 @@ const mapStateToProps = ({ user, recipes, currentRecipe }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addNewRecipe: (recipe, tags, userId) => dispatch(addNewRecipe(recipe, tags, userId)),
         setUserPage: (page) => dispatch(setUserPage(page)),
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
         editRecipe: (recipe, tags, recipeId) => dispatch(editRecipe(recipe, tags, recipeId))

@@ -21,7 +21,7 @@ class UserPage extends Component {
                 return (
                     <React.Fragment>
                         <Grid container item xs={12} justify="center">
-                            <ProfileInfo />
+                            <ProfileInfo selectMenuItem={this.props.selectMenuItem}/>
                         </Grid>
                         <br />
                         <RecipesContainer/>

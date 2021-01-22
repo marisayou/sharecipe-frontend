@@ -85,14 +85,18 @@ function tokenReducer(state = initialState.token, action) {
 }
 
 function myRecipesReducer(state = initialState.myRecipes, action) {
+    console.log(action.type)
     switch (action.type) {
-        case "UPDATE_USER_INFO":
-            const recipes = action.payload.user.recipes.map(rec => {
+        // case "UPDATE_USER_INFO":
+        //     console.log(action.payload)
+        //     const recipes = action.payload.user.recipes.map(rec => {
+        //         return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags}
+        //     })
+        //     return recipes
+        case "GET_USER_RECIPES":
+            return action.payload.map(rec => {
                 return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags}
             })
-            return recipes
-        case "ADD_NEW_RECIPE":
-            return [...state, { id: action.payload.id, ...JSON.parse(action.payload.recipe), comments: action.payload.comments, tags: action.payload.tags}]
         case "EDIT_RECIPE":
             const editedRecipes = [...state]
             const i = editedRecipes.findIndex(rec => rec.id === action.payload.id)
@@ -109,6 +113,22 @@ function myRecipesReducer(state = initialState.myRecipes, action) {
             return state
     }
 }
+
+function recipesReducer(state = initialState.recipes, action) {
+    switch (action.type) {
+        case "GET_RECIPES":
+            const recipes = action.payload.map(rec => {
+                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
+            })
+            return recipes
+        case "GET_SEARCH_RECIPES":
+            return action.payload
+        case "LOGOUT":
+            return []
+        default: 
+            return state
+    }
+} 
 
 function favoritesReducer(state = initialState.favorites, action) {
     switch (action.type) {
@@ -182,23 +202,6 @@ function currentTagReducer(state = initialState.currentTag, action) {
             return state
     }
 }
-
-function recipesReducer(state = initialState.recipes, action) {
-    switch (action.type) {
-        case "GET_RECIPES":
-            const recipes = action.payload.map(rec => {
-                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
-            })
-            return recipes
-        case "GET_SEARCH_RECIPES":
-            console.log(action.payload)
-            return action.payload
-        case "LOGOUT":
-            return []
-        default: 
-            return state
-    }
-} 
 
 function allRecipesPageReducer(state = initialState.allRecipesPage, action) {
     switch (action.type) {

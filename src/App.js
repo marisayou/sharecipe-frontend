@@ -10,7 +10,7 @@ import {
   setUserPage, 
   setRecipesPage, 
   setFavoritesPage, 
-  setSearchPage 
+  setSearchPage,
 } from './redux/actions.js';
 import UserForm from './components/UserForm';
 import Home from './components/Home';
@@ -60,7 +60,7 @@ class App extends Component {
       case "Profile": 
         this.props.setMenuPage("profile")
         this.props.setUserPage("default")
-        return <UserPage />
+        return <UserPage selectMenuItem={this.selectMenuItem}/>
       case "Favorites":
         this.props.setMenuPage("favorites")
         this.props.setFavoritesPage("default")
@@ -101,13 +101,12 @@ class App extends Component {
   }
 
   handleAuthFetch = (data, request, method) => {
+    console.log(request)
     fetch(request, {
       method: method,
       headers: { 
         "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Access-Control-Allow-Origin" : "*", 
-        "Access-Control-Allow-Credentials" : true  
+        "Accept": "application/json"
       },
       body: JSON.stringify(data)
     })
@@ -118,6 +117,7 @@ class App extends Component {
         return 
       } 
       else {
+        console.log(data)
         return this.props.updateUserInfo(data)
       }
     })
