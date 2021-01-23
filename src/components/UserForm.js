@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Grid, TextField } from "@material-ui/core";
+import { deleteUser } from '../redux/actions';
 import '../css/UserForm.css';
 
 class UserForm extends Component {
@@ -52,6 +53,11 @@ class UserForm extends Component {
         const inputField = e.target.getAttribute('name')
         this.setState({ [inputField]: e.target.value})
     }
+
+    handleDeleteAccount = () => {
+        this.props.selectMenuItem("Logout")
+        this.props.deleteUser(this.props.user.id)
+    }
     
     render() {
         return (
@@ -96,7 +102,12 @@ class UserForm extends Component {
                                 <Grid className="btn-container" container item direction="row" justify="center">
                                     <Button variant="outlined" type="submit">Submit</Button>
                                 </Grid>
-                                
+                                {this.props.form === "Settings" ? 
+                                (<Grid className="btn-container" container item direction="row" justify="center">
+                                    <Button variant="outlined" onClick={this.handleDeleteAccount}>Delete Account</Button>
+                                </Grid>) :
+                                null}
+
                                 <br/>
                                 
 
@@ -126,6 +137,10 @@ class UserForm extends Component {
 
 const mapStateToProps = ({ user }) => {
     return { user }
-  }
+}
 
-export default connect(mapStateToProps)(UserForm)
+const mapDispatchToProps = dispatch => {
+    return { deleteUser: (userId) => dispatch(deleteUser(userId)) }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserForm)

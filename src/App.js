@@ -45,7 +45,6 @@ class App extends Component {
           this.setState({ route: null }, () => this.props.history.push('/settings'))
           return
         case "Logout":
-          
           this.setState({ route: null }, () => this.props.logout())
           localStorage.clear()
           return
@@ -81,7 +80,12 @@ class App extends Component {
   }
 
   renderForm = (formType) => {
-    return <UserForm handleSubmit={this.handleSubmit} form={formType} signIn={this.signIn}/>
+    return <UserForm 
+      handleSubmit={this.handleSubmit} 
+      form={formType} 
+      signIn={this.signIn} 
+      selectMenuItem={this.selectMenuItem}
+    />
   }
 
   handleSubmit = (formType, data) => {

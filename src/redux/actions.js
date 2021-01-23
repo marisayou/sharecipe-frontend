@@ -1,3 +1,4 @@
+// track screen width so that UI is responsive to screen size
 export const resizeScreen = (pageWidth) => ({ type: "RESIZE_SCREEN", payload: pageWidth })
 
 // update user info and token on sign up, sign in, and user update
@@ -18,6 +19,14 @@ export const getUser = () => {
         })
         .then(res => res.json())
         .then(user => dispatch({ type: "UPDATE_USER_INFO", payload: user }))
+    }
+}
+
+// delete an user and go to sign in page
+export const deleteUser = (userId) => {
+    return function(dispatch) {
+        fetch('http://localhost:3000/users/' + userId, { method: 'DELETE' })
+        .then(() => dispatch({ type: "LOGOUT"}))
     }
 }
 
@@ -62,6 +71,7 @@ export const editRecipe = (recipe, tags, recipeId) => {
     }
 }
 
+// delete a recipe
 export const deleteRecipe = (id) => {
     return function(dispatch) {
         fetch('http://localhost:3000/recipes/' + id, { method: 'DELETE' })
@@ -179,18 +189,7 @@ export const addComment = (user_id, recipe_id, text) => {
 // set search term
 export const setSearchTerm = (searchTerm) => ({ type: "SET_SEARCH_TERM", payload: searchTerm })
 
-// get tags that contain the search term
-// export const getSearchTags = (searchTerm) => {
-//     return function(dispatch) {
-//         fetch('http://localhost:3000/search_tags/' + searchTerm)
-//         .then(res => res.json())
-//         .then(tags => dispatch({ 
-//             type: "GET_SEARCH_TAGS", 
-//             payload: tags.filter(tag => tag.recipes.length !== 0) 
-//         }))
-//     }
-// }
-
+// get tags and recipes that contain the search term
 export const getSearchResults = (searchTerm) => {
     return function(dispatch) {
         fetch('http://localhost:3000/searches/' + searchTerm, {

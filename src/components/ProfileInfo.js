@@ -28,7 +28,7 @@ class ProfileInfo extends Component {
                                     {this.props.favorites.length}
                                 </Grid>
                                 <Grid className="stat-cnt" item>
-                                    Favorites
+                                    {this.props.favorites.length === 1 ? "Favorite" : "Favorites"}
                                 </Grid>
                                 
                             </Grid>
@@ -37,7 +37,7 @@ class ProfileInfo extends Component {
                                     {this.props.myRecipes.length}
                                 </Grid>
                                 <Grid className="stat-cnt" item>
-                                    Recipes
+                                    {this.props.myRecipes.length === 1 ? "Recipe" : "Recipes"}
                                 </Grid>
                             </Grid>
                         </Grid>

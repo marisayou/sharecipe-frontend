@@ -27,8 +27,7 @@ const initialState = {
     searchPage: null,
     
     searchTerm: null,
-    searchTags: [],
-    
+    searchTags: [],  
 }
 
 const rootReducer = combineReducers({
