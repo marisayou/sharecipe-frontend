@@ -4,7 +4,7 @@ import Menu from './Menu';
 import { AppBar, Grid, InputBase, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import '../css/TopBar.css';
-import { setSearchTerm, getSearchTags, getRecipes } from '../redux/actions';
+import { setSearchTerm, getSearchResults } from '../redux/actions';
 
 class TopBar extends Component {
 
@@ -19,8 +19,7 @@ class TopBar extends Component {
   handleSearchSubmit = (e) => {
     e.preventDefault()
     // const searchTerms = this.state.search.split(" ").filter(w => w !== "")
-    this.props.getSearchTags(this.state.search)
-    // this.props.getRecipes("search", this.state.search)
+    this.props.getSearchResults(this.state.search)
     this.props.setSearchTerm(this.state.search)
     this.setState({ search: "" })
     this.props.selectMenuItem("Search")
@@ -103,8 +102,7 @@ const mapStateToProps = ({ screenWidth }) => {
 const mapDispatchToProps = dispatch => {
   return {
     setSearchTerm: (searchTerm) => dispatch(setSearchTerm(searchTerm)),
-    // getRecipes: (type, searchTerm) => dispatch(getRecipes(type, searchTerm)),
-    getSearchTags: (searchTerm) => dispatch(getSearchTags(searchTerm))
+    getSearchResults: (searchTerm) => dispatch(getSearchResults(searchTerm))
   }
 }
 

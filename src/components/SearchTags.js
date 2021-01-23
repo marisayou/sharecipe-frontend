@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button } from "@material-ui/core";
-import { getSearchTags, setSearchPage, setCurrentTag } from '../redux/actions';
+import { setSearchPage, setCurrentTag } from '../redux/actions';
 import '../css/SearchResults.css'
 
 class SearchTags extends Component {
@@ -30,8 +30,8 @@ class SearchTags extends Component {
     render() {
         return (
             <Grid container item direction="row" alignItems="flex-end">
-                <Grid item>
-                    <h3 id="tags-header">Tags:</h3>
+                <Grid item xs={12}>
+                    <h3 className="search-header">Tags</h3>
                 </Grid>
                 {this.renderTags()}
             </Grid>
@@ -45,7 +45,6 @@ const mapStateToProps = ({ searchTags, searchTerm }) => {
 
 const mapDispatchToProps = dispatch => {
     return { 
-        getSearchTags: (searchTerm) => dispatch(getSearchTags(searchTerm)),
         setSearchPage: (page) => dispatch(setSearchPage(page)),
         setCurrentTag: (tagName) => dispatch(setCurrentTag(tagName))
     }

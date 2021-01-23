@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setUserPage, setCurrentRecipe, editRecipe } from '../redux/actions';
+import { setUserPage, setCurrentRecipe, editRecipe, addNewRecipe } from '../redux/actions';
 import { Button, Grid, TextField, MenuItem } from "@material-ui/core";
 import '../css/UserForm.css';
 import '../css/RecipeForm.css';
@@ -38,29 +38,16 @@ class RecipeForm extends Component {
         
     }
 
-    handleRecipeFormSubmit = async (e) => {
+    handleRecipeFormSubmit = (e) => {
         e.preventDefault()
         const { title, description, ingredients, instructions } = this.state
         const recipe = { title, description, ingredients, instructions }
         const tags = this.state.tags.split(" ").filter(tag => tag !== "")
         
         if (this.props.currentRecipe) {
-            await this.props.editRecipe(recipe, tags, this.props.currentRecipe.id)
-            this.props.setUserPage("recipe")
+            this.props.editRecipe(recipe, tags, this.props.currentRecipe.id)
         } else {
-            fetch('http://localhost:3000/recipes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    user_id: this.props.user.id, 
-                    recipe: recipe, 
-                    tags: tags 
-                })
-            })
-            .then(this.props.setUserPage("profile"))
+            this.props.addNewRecipe(this.props.user.id, recipe, tags)
         }
     }
 
@@ -260,6 +247,7 @@ const mapDispatchToProps = dispatch => {
     return {
         setUserPage: (page) => dispatch(setUserPage(page)),
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
+        addNewRecipe: (userId, recipe, tags) => dispatch(addNewRecipe(userId, recipe, tags)),
         editRecipe: (recipe, tags, recipeId) => dispatch(editRecipe(recipe, tags, recipeId))
     }
 }

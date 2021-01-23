@@ -24,7 +24,7 @@ class SearchResults extends Component {
                                 <h1>Search Results</h1>
                             </Grid>
                             <SearchTags />
-                            {/* <SearchRecipes /> */}
+                            <SearchRecipes />
                         </Grid>
                     </React.Fragment>
                 )   

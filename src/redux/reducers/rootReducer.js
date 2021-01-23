@@ -27,7 +27,8 @@ const initialState = {
     searchPage: null,
     
     searchTerm: null,
-    searchTags: []
+    searchTags: [],
+    
 }
 
 const rootReducer = combineReducers({
@@ -85,23 +86,11 @@ function tokenReducer(state = initialState.token, action) {
 }
 
 function myRecipesReducer(state = initialState.myRecipes, action) {
-    console.log(action.type)
     switch (action.type) {
-        // case "UPDATE_USER_INFO":
-        //     console.log(action.payload)
-        //     const recipes = action.payload.user.recipes.map(rec => {
-        //         return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags}
-        //     })
-        //     return recipes
         case "GET_USER_RECIPES":
             return action.payload.map(rec => {
                 return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags}
             })
-        case "EDIT_RECIPE":
-            const editedRecipes = [...state]
-            const i = editedRecipes.findIndex(rec => rec.id === action.payload.id)
-            editedRecipes[i] = {id: action.payload.id, ...JSON.parse(action.payload.recipe), comments: action.payload.comments, tags: action.payload.tags}
-            return editedRecipes
         case "DELETE_RECIPE":
             const updatedRecipes = [...state]
             const j = updatedRecipes.findIndex(rec => rec.id === action.payload)
@@ -121,8 +110,11 @@ function recipesReducer(state = initialState.recipes, action) {
                 return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
             })
             return recipes
-        case "GET_SEARCH_RECIPES":
-            return action.payload
+        case "GET_SEARCH_RESULTS":
+            const search_recipes = action.payload.recipes.map(rec => {
+                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
+            })
+            return search_recipes
         case "LOGOUT":
             return []
         default: 
@@ -157,7 +149,6 @@ function menuPageReducer(state = initialState.menuPage, action) {
 function homePageReducer(state = initialState.homePage, action) {
     switch (action.type) {
         case "SET_HOME_PAGE":
-            console.log(action.payload)
             return action.payload
         case "LOGOUT":
             return null
@@ -170,6 +161,10 @@ function userPageReducer(state = initialState.userPage, action) {
     switch (action.type) {
         case "SET_USER_PAGE":
             return action.payload
+        case "ADD_NEW_RECIPE":
+            return action.payload.page
+        case "EDIT_RECIPE":
+            return action.payload.page
         case "LOGOUT":
             return null
         default:
@@ -181,8 +176,11 @@ function currentRecipeReducer(state = initialState.currentRecipe, action) {
     switch (action.type) {
         case "SET_CURRENT_RECIPE":
             return action.payload
+        case "ADD_NEW_RECIPE":
+            console.log(action.payload.recipe)
+            return {id: action.payload.recipe.id, ...JSON.parse(action.payload.recipe.recipe), comments: action.payload.recipe.comments, tags: action.payload.recipe.tags}
         case "EDIT_RECIPE":
-            return {id: action.payload.id, ...JSON.parse(action.payload.recipe), comments: action.payload.comments, tags: action.payload.tags}
+            return {id: action.payload.recipe.id, ...JSON.parse(action.payload.recipe.recipe), comments: action.payload.recipe.comments, tags: action.payload.recipe.tags}
         case "DELETE_RECIPE":
             return null
         case "ADD_COMMENT":
@@ -245,8 +243,8 @@ function searchTermReducer(state = initialState.searchTerm, action) {
 
 function searchTagsReducer(state = initialState.searchTags, action) {
     switch (action.type) {
-        case "GET_SEARCH_TAGS":
-            return action.payload
+        case "GET_SEARCH_RESULTS":
+            return action.payload.tags
         default:
             return state
     }

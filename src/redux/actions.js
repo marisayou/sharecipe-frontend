@@ -30,6 +30,22 @@ export const getUserRecipes = (id) => {
     }
 }
 
+// add a new recipe
+export const addNewRecipe = (user_id, recipe, tags) => {
+    return function(dispatch) {
+        fetch('http://localhost:3000/recipes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ user_id, recipe, tags })
+        })
+        .then(res => res.json())
+        .then(recipe => dispatch({ type: "ADD_NEW_RECIPE", payload: { recipe, page: "recipe" }}))
+    }
+}
+
 // edit a recipe
 export const editRecipe = (recipe, tags, recipeId) => {
     return function(dispatch) {
@@ -42,7 +58,7 @@ export const editRecipe = (recipe, tags, recipeId) => {
             body: JSON.stringify({ recipe, tags })
         })
         .then(res => res.json())
-        .then(rec => dispatch({ type: "EDIT_RECIPE", payload: { id: recipeId, recipe: rec.recipe, comments: rec.comments, tags: rec.tags }}))
+        .then(rec => dispatch({ type: "EDIT_RECIPE", payload: {recipe: { id: recipeId, recipe: rec.recipe, comments: rec.comments, tags: rec.tags }, page: "recipe"}}))
     }
 }
 
@@ -164,25 +180,27 @@ export const addComment = (user_id, recipe_id, text) => {
 export const setSearchTerm = (searchTerm) => ({ type: "SET_SEARCH_TERM", payload: searchTerm })
 
 // get tags that contain the search term
-export const getSearchTags = (searchTerm) => {
-    return function(dispatch) {
-        fetch('http://localhost:3000/search_tags/' + searchTerm)
-        .then(res => res.json())
-        .then(tags => dispatch({ 
-            type: "GET_SEARCH_TAGS", 
-            payload: tags.filter(tag => tag.recipes.length !== 0) 
-        }))
-    }
-}
+// export const getSearchTags = (searchTerm) => {
+//     return function(dispatch) {
+//         fetch('http://localhost:3000/search_tags/' + searchTerm)
+//         .then(res => res.json())
+//         .then(tags => dispatch({ 
+//             type: "GET_SEARCH_TAGS", 
+//             payload: tags.filter(tag => tag.recipes.length !== 0) 
+//         }))
+//     }
+// }
 
-// get recipes whose titles contain the search term
-export const getSearchRecipes = (searchTerm) => {
+export const getSearchResults = (searchTerm) => {
     return function(dispatch) {
-        fetch('http://localhost:3000/search_recipes/' + searchTerm)
+        fetch('http://localhost:3000/searches/' + searchTerm, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        })
         .then(res => res.json())
-        .then(recipes => dispatch({ 
-            type: "GET_SEARCH_RECIPES", 
-            payload: recipes
-        }))
+        .then(results => dispatch({ type: "GET_SEARCH_RESULTS", payload: results }))
     }
 }
