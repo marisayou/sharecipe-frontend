@@ -11,6 +11,7 @@ import {
   setRecipesPage, 
   setFavoritesPage, 
   setSearchPage,
+  setCurrentUser
 } from './redux/actions.js';
 import UserForm from './components/UserForm';
 import Home from './components/Home';
@@ -57,8 +58,8 @@ class App extends Component {
   renderPage = () => {
     switch (this.state.route) {
       case "Profile": 
+        this.props.setCurrentUser(this.props.user.id, "default")
         this.props.setMenuPage("profile")
-        this.props.setUserPage("default")
         return <UserPage selectMenuItem={this.selectMenuItem}/>
       case "Favorites":
         this.props.setMenuPage("favorites")
@@ -180,7 +181,8 @@ const mapDispatchToProps = dispatch => {
     setUserPage: (page) => dispatch(setUserPage(page)),
     setRecipesPage: (page) => dispatch(setRecipesPage(page)),
     setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
-    setSearchPage: (page) => dispatch(setSearchPage(page))
+    setSearchPage: (page) => dispatch(setSearchPage(page)),
+    setCurrentUser: (userId, page) => dispatch(setCurrentUser(userId, page))
   }
 }
 

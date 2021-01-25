@@ -16,6 +16,7 @@ class UserPage extends Component {
             case "form":
                 return <RecipeForm />
             case "recipe":
+                console.log("yo")
                 return <RecipePage /> 
             case "tag":
                 return <TagPage />

@@ -48,15 +48,7 @@ class RecipesContainer extends Component {
     }
 
     renderRecipePreviews = () => {
-        return this.props.menuPage === "profile" && this.props.userPage !== "tag" ?
-        // user's recipes
-        this.props.myRecipes.map((recipe, idx) => {
-            return (
-                <RecipePreview key={idx} recipe={recipe}/>
-            )
-        }) :
-        // other pages
-        this.props.recipes.map((recipe, idx) => {
+        return this.props.recipes.map((recipe, idx) => {
             return (
                 <RecipePreview key={idx} recipe={recipe}/>
             )
@@ -64,7 +56,6 @@ class RecipesContainer extends Component {
     }
 
     render() {
-        console.log(this.props.myRecipes)
         return (
             <Grid className="container" container item xs={12} md={9} spacing={1}>
                 {this.renderRecipePreviews()}
@@ -73,8 +64,8 @@ class RecipesContainer extends Component {
     }
 }
 
-const mapStateToProps = ({ user, menuPage, myRecipes, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag }) => {
-    return { user, menuPage, myRecipes, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag }
+const mapStateToProps = ({ user, menuPage, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag }) => {
+    return { user, menuPage, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag }
 }
 
 const mapDispatchToProps = dispatch => {

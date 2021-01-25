@@ -6,12 +6,8 @@ const initialState = {
     // states specific to the user
     user: null,
     token: null,
-    myRecipes: [],
+    subscriptions: [], // users that the logged in user is subscribed to
     favorites: [], // ids of favorited recipes
-
-    currentRecipe: null,
-    currentTag: null,
-    currentUser: null,
 
     recipes: [],
 
@@ -25,6 +21,10 @@ const initialState = {
     allRecipesPage: null,
     // determines which view to render when in search
     searchPage: null,
+
+    currentRecipe: null,
+    currentTag: null,
+    currentUser: null,
     
     searchTerm: null,
     searchTags: [],  
@@ -34,7 +34,7 @@ const rootReducer = combineReducers({
     screenWidth: screenWidthReducer,
     user: userReducer,
     token: tokenReducer,
-    myRecipes: myRecipesReducer,
+    subscriptions: subscriptionsReducer,
     favorites: favoritesReducer,
     menuPage: menuPageReducer,
     userPage: userPageReducer,
@@ -65,7 +65,8 @@ function userReducer(state = initialState.user, action) {
             return { 
                 id: action.payload.user.id,
                 name: action.payload.user.name, 
-                username: action.payload.user.username
+                username: action.payload.user.username,
+                subscribers: action.payload.user.subscriber_counts
             }
         case "LOGOUT":
             return null
@@ -85,9 +86,19 @@ function tokenReducer(state = initialState.token, action) {
     }
 }
 
-function myRecipesReducer(state = initialState.myRecipes, action) {
+function subscriptionsReducer(state = initialState.subscriptions, action) {
+    switch (action.type) {
+        case "UPDATE_USER_INFO":
+            return action.payload.user.subscriptions
+        default:
+            return state
+    }
+}
+
+function recipesReducer(state = initialState.recipes, action) {
     switch (action.type) {
         case "GET_USER_RECIPES":
+            console.log(action.payload)
             return action.payload.map(rec => {
                 return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
             })
@@ -96,15 +107,6 @@ function myRecipesReducer(state = initialState.myRecipes, action) {
             const i = updatedRecipes.findIndex(rec => rec.id === action.payload)
             updatedRecipes.splice(i, 1)
             return updatedRecipes
-        case "LOGOUT":
-            return []
-        default: 
-            return state
-    }
-}
-
-function recipesReducer(state = initialState.recipes, action) {
-    switch (action.type) {
         case "GET_RECIPES":
             const recipes = action.payload.map(rec => {
                 return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
@@ -183,11 +185,17 @@ function currentUserReducer(state = initialState.currentUser, action) {
             return { 
                 id: action.payload.user.id,
                 name: action.payload.user.name, 
-                username: action.payload.user.username
+                username: action.payload.user.username,
+                subscribers: action.payload.user.subscriber_count
             }
         case "SET_CURRENT_USER":
             console.log(action.payload.user)
-            return action.payload.user
+            return { 
+                id: action.payload.user.id,
+                name: action.payload.user.name, 
+                username: action.payload.user.username,
+                subscribers: action.payload.user.subscriber_count
+            }
         case "LOGOUT":
             return null
         default: 

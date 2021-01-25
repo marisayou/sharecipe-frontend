@@ -27,21 +27,19 @@ class ProfileInfo extends Component {
 
                             <Grid container item xs={6} direction="column">
                                 <Grid className="stat-qty" item>
-                                    X
+                                    {this.props.currentUser.subscribers}
                                 </Grid>
                                 <Grid className="stat-cnt" item>
-                                    Subscribers
+                                    {this.props.currentUser.subscribers === 1 ? "Subscriber" : "Subscribers"}
                                 </Grid>
                                 
                             </Grid>
                             <Grid container item xs={6} direction="column">
                                 <Grid className="stat-qty" item>
-                                    {this.props.currentUser.id === this.props.user.id ? this.props.myRecipes.length : this.props.recipes.length}
+                                    {this.props.recipes.length}
                                 </Grid>
                                 <Grid className="stat-cnt" item>
-                                    {this.props.currentUser.id === this.props.user.id ? 
-                                    (this.props.myRecipes.length === 1 ? "Recipe" : "Recipes") :
-                                    (this.props.recipes.length === 1 ? "Recipe" : "Recipes")}
+                                    {(this.props.recipes.length === 1 ? "Recipe" : "Recipes")}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -72,8 +70,8 @@ class ProfileInfo extends Component {
     }
 }
 
-const mapStateToProps = ({ user, currentUser, myRecipes, recipes, favorites }) => {
-    return { user, currentUser, myRecipes, recipes, favorites }
+const mapStateToProps = ({ user, currentUser, recipes, favorites }) => {
+    return { user, currentUser, recipes, favorites }
 }
 
 const mapDispatchToProps = dispatch => {
