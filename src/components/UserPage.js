@@ -11,6 +11,8 @@ class UserPage extends Component {
 
     renderPage = () => {
         switch (this.props.userPage) {
+            // case "user":
+            //     return 
             case "form":
                 return <RecipeForm />
             case "recipe":

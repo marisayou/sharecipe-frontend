@@ -5,6 +5,7 @@ import { Container, Grid } from "@material-ui/core";
 import RecipesContainer from './RecipesContainer';
 import RecipePage from './RecipePage';
 import TagPage from './TagPage';
+import UserPage from './UserPage';
 
 class Home extends Component {
 
@@ -18,6 +19,8 @@ class Home extends Component {
                 return <RecipePage /> 
             case "tag":
                 return <TagPage />
+            case "user":
+                return <UserPage />
             default:
                 return (
                     <React.Fragment>

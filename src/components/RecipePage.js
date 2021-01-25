@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Card, CardHeader, CardContent, TextField, Button, IconButton } from "@material-ui/core";
+import { Grid, Card, CardContent, TextField, Button, IconButton } from "@material-ui/core";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { 
@@ -14,7 +14,8 @@ import {
     favorite,
     unfavorite,
     addComment,
-    setCurrentTag
+    setCurrentTag,
+    setCurrentUser
 } from '../redux/actions';
 import '../css/RecipePage.css';
 
@@ -87,6 +88,10 @@ class RecipePage extends Component {
                 </Grid>
             )
         })
+    }
+
+    handleUsernameClick = async () => {
+        this.props.setCurrentUser(this.props.currentRecipe.user.id, this.props.menuPage)
     }
 
     handleBackButtonClick = async () => {
@@ -177,10 +182,7 @@ class RecipePage extends Component {
                         <Grid item xs={10}><h1 id="recipe-title">{this.props.title}</h1></Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        {this.props.menuPage === "profile" ? 
-                            <Button onClick={this.handleBackButtonClick}>{this.props.user.username}</Button> : 
-                            <Button>{this.props.currentRecipe.user.username}</Button>
-                        }
+                        <Button onClick={this.handleUsernameClick}>{this.props.currentRecipe.user ? this.props.currentRecipe.user.username :null}</Button>
                     </Grid>
                     <Grid container item justify="center">
                         <IconButton onClick={this.handleFavoriteClick}>
@@ -281,7 +283,8 @@ const mapDispatchToProps = dispatch => {
         favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),
         unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId)),
         addComment: (userId, recipeId, comment) => dispatch(addComment(userId, recipeId, comment)),
-        setCurrentTag: (tagName) => dispatch(setCurrentTag(tagName))
+        setCurrentTag: (tagName) => dispatch(setCurrentTag(tagName)),
+        setCurrentUser: (userId, menuPage) => dispatch(setCurrentUser(userId, menuPage))
     }
 }
 

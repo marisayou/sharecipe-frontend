@@ -5,13 +5,14 @@ import TagPage from './TagPage';
 import RecipePage from './RecipePage';
 import SearchRecipes from './SearchRecipes';
 import SearchTags from './SearchTags';
+import UserPage from './UserPage';
 
 class SearchResults extends Component {
 
     renderPage = () => {
         switch (this.props.searchPage) {
-            // case "user":
-            //     return <UserPage />
+            case "user":
+                return <UserPage />
             case "recipe":
                 return <RecipePage /> 
             case "tag":

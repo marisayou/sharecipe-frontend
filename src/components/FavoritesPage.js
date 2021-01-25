@@ -4,17 +4,18 @@ import { Container, Grid } from "@material-ui/core";
 import RecipesContainer from './RecipesContainer';
 import RecipePage from './RecipePage';
 import TagPage from './TagPage';
+import UserPage from './UserPage';
 
 class FavoritesPage extends Component {
 
     renderPage = () => {
+        console.log(this.props.favoritesPage)
         switch (this.props.favoritesPage) {
-            // case "user":
-            //     return <UserPage />
+            case "user":
+                return <UserPage />
             case "recipe":
                 return <RecipePage />
             case "tag":
-                console.log("tag")
                 return <TagPage />
             default:
                 return (

@@ -4,13 +4,14 @@ import { Container, Grid } from "@material-ui/core";
 import RecipesContainer from './RecipesContainer';
 import RecipePage from './RecipePage';
 import TagPage from './TagPage';
+import UserPage from './UserPage';
 
 class AllRecipesPage extends Component {
 
     renderPage = () => {
         switch (this.props.allRecipesPage) {
-            // case "user":
-            //     return <UserPage />
+            case "user":
+                return <UserPage />
             case "recipe":
                 return <RecipePage /> 
             case "tag":

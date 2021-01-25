@@ -80,8 +80,35 @@ export const deleteRecipe = (id) => {
 }
 
 // determine which recipe page to render using its id 
-export const setCurrentRecipe = (recipe) => {
-    return ({ type: "SET_CURRENT_RECIPE", payload: recipe })
+export const setCurrentRecipe = (recipe) => ({ type: "SET_CURRENT_RECIPE", payload: recipe })
+
+export const setCurrentUser = (userId, menuPage) => {
+    return function(dispatch) {
+        fetch('http://localhost:3000/users/' + userId)
+        .then(res => res.json())
+        .then(user => dispatch({ type: "SET_CURRENT_USER", payload: user }))
+        .then(() => {
+            switch (menuPage) {
+                case "home":
+                    dispatch({ type: "SET_HOME_PAGE", payload: "user" })
+                    break
+                case "profile":
+                    dispatch({ type: "SET_USER_PAGE", payload: "user" })
+                    break
+                case "recipes":
+                    dispatch({ type: "SET_RECIPES_PAGE", payload: "user" })
+                    break
+                case "favorites":
+                    dispatch({ type: "SET_FAVORITES_PAGE", payload: "user" })
+                    break
+                case "search":
+                    dispatch({ type: "SET_SEARCH_PAGE", payload: "user" })
+                    break
+                default:
+                    return
+            }
+        })
+    }
 }
 
 export const setCurrentTag = (tag) => {

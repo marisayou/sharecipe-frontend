@@ -10,24 +10,32 @@ class RecipesContainer extends Component {
         console.log(this.props.menuPage)
         switch (this.props.menuPage) {
             case "home":
-                this.props.homePage !== "tag" ?
-                    this.props.getRecipes("home", null) :
-                    this.props.getTagRecipes(this.props.currentTag)
+                if (this.props.homePage !== "user") {
+                    this.props.homePage !== "tag" ?
+                        this.props.getRecipes("home", null) :
+                        this.props.getTagRecipes(this.props.currentTag)
+                }
                 break
             case "profile":
-                this.props.userPage !== "tag" ?
-                    this.props.getUserRecipes(this.props.user.id) :
-                    this.props.getTagRecipes(this.props.currentTag)
+                if (this.props.userPage !== "user") {
+                    this.props.userPage !== "tag" ?
+                        this.props.getUserRecipes(this.props.user.id) :
+                        this.props.getTagRecipes(this.props.currentTag)
+                }
                 break
             case "recipes":
-                this.props.allRecipesPage !== "tag" ?
-                    this.props.getRecipes("recipes", this.props.user.id) :
-                    this.props.getTagRecipes(this.props.currentTag)
+                if (this.props.allRecipesPage !== "user") {
+                    this.props.allRecipesPage !== "tag" ?
+                        this.props.getRecipes("recipes", this.props.user.id) :
+                        this.props.getTagRecipes(this.props.currentTag)
+                }
                 break
             case "favorites":
-                this.props.favoritesPage !== "tag" ?
-                    this.props.getRecipes("favorites", this.props.user.id) :
-                    this.props.getTagRecipes(this.props.currentTag)
+                if (this.props.favoritesPage !== "user") {
+                    this.props.favoritesPage !== "tag" ?
+                        this.props.getRecipes("favorites", this.props.user.id) :
+                        this.props.getTagRecipes(this.props.currentTag)
+                }
                 break
             case "search":
                 if (this.props.searchPage === "tag") {

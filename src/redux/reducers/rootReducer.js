@@ -11,7 +11,7 @@ const initialState = {
 
     currentRecipe: null,
     currentTag: null,
-    // currentUser: null,
+    currentUser: null,
 
     recipes: [],
 
@@ -39,6 +39,7 @@ const rootReducer = combineReducers({
     menuPage: menuPageReducer,
     userPage: userPageReducer,
     currentRecipe: currentRecipeReducer,
+    currentUser: currentUserReducer,
     currentTag: currentTagReducer,
     recipes: recipesReducer,
     allRecipesPage: allRecipesPageReducer,
@@ -88,12 +89,12 @@ function myRecipesReducer(state = initialState.myRecipes, action) {
     switch (action.type) {
         case "GET_USER_RECIPES":
             return action.payload.map(rec => {
-                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags}
+                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
             })
         case "DELETE_RECIPE":
             const updatedRecipes = [...state]
-            const j = updatedRecipes.findIndex(rec => rec.id === action.payload)
-            updatedRecipes.splice(j, 1)
+            const i = updatedRecipes.findIndex(rec => rec.id === action.payload)
+            updatedRecipes.splice(i, 1)
             return updatedRecipes
         case "LOGOUT":
             return []
@@ -114,6 +115,11 @@ function recipesReducer(state = initialState.recipes, action) {
                 return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
             })
             return search_recipes
+        case "SET_CURRENT_USER":
+            const user_recipes = action.payload.recipes.map(rec => {
+                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
+            })
+            return user_recipes
         case "LOGOUT":
             return []
         default: 
@@ -171,12 +177,29 @@ function userPageReducer(state = initialState.userPage, action) {
     }
 }
 
-function currentRecipeReducer(state = initialState.currentRecipe, action) {
+function currentUserReducer(state = initialState.currentUser, action) {
     switch (action.type) {
+        case "UPDATE_USER_INFO":
+            return { 
+                id: action.payload.user.id,
+                name: action.payload.user.name, 
+                username: action.payload.user.username
+            }
+        case "SET_CURRENT_USER":
+            console.log(action.payload.user)
+            return action.payload.user
+        case "LOGOUT":
+            return null
+        default: 
+            return state
+    }
+}
+
+function currentRecipeReducer(state = initialState.currentRecipe, action) {
+    switch (action.type) {        
         case "SET_CURRENT_RECIPE":
             return action.payload
         case "ADD_NEW_RECIPE":
-            console.log(action.payload.recipe)
             return {id: action.payload.recipe.id, ...JSON.parse(action.payload.recipe.recipe), comments: action.payload.recipe.comments, tags: action.payload.recipe.tags}
         case "EDIT_RECIPE":
             return {id: action.payload.recipe.id, ...JSON.parse(action.payload.recipe.recipe), comments: action.payload.recipe.comments, tags: action.payload.recipe.tags}
