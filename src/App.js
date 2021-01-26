@@ -9,7 +9,8 @@ import {
   setHomePage,
   setUserPage, 
   setRecipesPage, 
-  setFavoritesPage, 
+  setFavoritesPage,
+  setSubscriptionsPage, 
   setSearchPage,
   setCurrentUser
 } from './redux/actions.js';
@@ -17,6 +18,7 @@ import UserForm from './components/UserForm';
 import Home from './components/Home';
 import UserPage from './components/UserPage';
 import FavoritesPage from './components/FavoritesPage';
+import SubscriptionsPage from './components/SubscriptionsPage';
 import AllRecipesPage from './components/AllRecipesPage';
 import TopBar from './components/TopBar';
 import SearchResults from './components/SearchResults';
@@ -65,6 +67,10 @@ class App extends Component {
         this.props.setMenuPage("favorites")
         this.props.setFavoritesPage("default")
         return <FavoritesPage />
+      case "Subscriptions":
+        this.props.setMenuPage("subscriptions")
+        this.props.setSubscriptionsPage("default")
+        return <SubscriptionsPage />
       case "Recipes":
         this.props.setMenuPage("recipes")
         this.props.setRecipesPage("default")
@@ -181,6 +187,7 @@ const mapDispatchToProps = dispatch => {
     setUserPage: (page) => dispatch(setUserPage(page)),
     setRecipesPage: (page) => dispatch(setRecipesPage(page)),
     setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
+    setSubscriptionsPage: (page) => dispatch(setSubscriptionsPage(page)),
     setSearchPage: (page) => dispatch(setSearchPage(page)),
     setCurrentUser: (userId, page) => dispatch(setCurrentUser(userId, page))
   }

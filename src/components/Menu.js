@@ -20,7 +20,7 @@ class Menu extends Component {
       onKeyDown={() => this.toggleDrawer(false)}
     >
       <List>
-        {["Home", "Profile", "Favorites", "Recipes"].map((text) => (
+        {["Home", "Profile", "Favorites", "Subscriptions", "Recipes"].map((text) => (
           <ListItem button key={text} 
             onClick={() => {
               this.props.selectMenuItem(text)

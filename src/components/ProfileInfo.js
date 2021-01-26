@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button } from "@material-ui/core";
-import { setUserPage, setCurrentRecipe } from '../redux/actions';
+import { setUserPage, setCurrentRecipe, subscribe, unsubscribe } from '../redux/actions';
 import '../css/UserPage.css'
 
 class ProfileInfo extends Component {
+
 
     handleAddRecipe = () => {
         this.props.setCurrentRecipe(null)
         this.props.setUserPage("form")
     }
 
+    handleSubscribeClick = () => {
+
+        this.props.subscriptions.map(sub => sub.id).includes(this.props.currentUser.id) ? 
+            this.props.unsubscribe(this.props.user.id, this.props.currentUser.id) :
+            this.props.subscribe(this.props.user.id, this.props.currentUser.id)
+    }
 
     render() {
-        console.log(this.props.currentUser)
+        console.log(this.props.subscriptions)
         return (
             <Grid container item spacing={1} direction="column" xs={12} md={9} alignItems="center" >
                 <Grid container item xs={12} spacing={2} direction="row">
@@ -64,20 +71,35 @@ class ProfileInfo extends Component {
                         </Button> 
                         
                     </Grid>
-                </Grid>) : null}
+                </Grid>) : 
+                (<Grid container item direction="row" justify="center">
+                    <Grid container item className="btn-container" justify="center">
+                        
+                        <Button 
+                            variant="outlined" 
+                            onClick={this.handleSubscribeClick}
+                        >
+                            { this.props.subscriptions.map(sub => sub.id).includes(this.props.currentUser.id) ? 
+                            "Unsubscribe" : "Subscribe"}
+                        </Button>
+                        
+                    </Grid>
+                </Grid>)}
             </Grid>
         )
     }
 }
 
-const mapStateToProps = ({ user, currentUser, recipes, favorites }) => {
-    return { user, currentUser, recipes, favorites }
+const mapStateToProps = ({ user, currentUser, recipes, favorites, subscriptions, menuPage, homePage }) => {
+    return { user, currentUser, recipes, favorites, subscriptions, menuPage, homePage }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         setUserPage: (page) => dispatch(setUserPage(page)),
-        setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe))
+        setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
+        subscribe: (subscribedFromId, subscribedToId) => dispatch(subscribe(subscribedFromId, subscribedToId)),
+        unsubscribe: (subscribedFromId, subscribedToId) => dispatch(unsubscribe(subscribedFromId, subscribedToId))
     }
 }
 

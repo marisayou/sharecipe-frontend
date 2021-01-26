@@ -1,35 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RecipeForm from './RecipeForm';
 import { Container, Grid } from "@material-ui/core";
-import ProfileInfo from './ProfileInfo';
-import RecipesContainer from './RecipesContainer';
 import RecipePage from './RecipePage';
 import TagPage from './TagPage';
+import UserPage from './UserPage';
+import SubscriptionsContainer from './SubscriptionsContainer';
 
-class UserPage extends Component {
+class SubscriptionsPage extends Component {
 
     renderPage = () => {
-        switch (this.props.userPage) {
-            case "form":
-                return <RecipeForm />
+        switch (this.props.subscriptionsPage) {
+            case "user":
+                return <UserPage />
             case "recipe":
-                return <RecipePage /> 
+                return <RecipePage />
             case "tag":
                 return <TagPage />
             default:
                 return (
                     <React.Fragment>
-                        <Grid container item xs={12} justify="center">
-                            <ProfileInfo selectMenuItem={this.props.selectMenuItem}/>
+                        <Grid item>
+                            <h1>Subscriptions</h1>
                         </Grid>
-                        <br />
-                        <RecipesContainer/>
+                        <SubscriptionsContainer />
                     </React.Fragment>
                 )   
         }
     }
-
     render() {
         return (
             <React.Fragment>
@@ -43,10 +40,8 @@ class UserPage extends Component {
     }
 }
 
-const mapStateToProps = ({ user, recipes, currentRecipe, userPage }) => {
-    return { user, recipes, currentRecipe, userPage }
+const mapStateToProps = ({ subscriptionsPage }) => {
+    return { subscriptionsPage }
 }
 
-export default connect(
-    mapStateToProps
-)(UserPage)
+export default connect(mapStateToProps)(SubscriptionsPage)

@@ -8,6 +8,7 @@ import {
     setHomePage,
     setRecipesPage, 
     setFavoritesPage,
+    setSubscriptionsPage,
     setSearchPage,
     setCurrentRecipe, 
     deleteRecipe, 
@@ -57,6 +58,9 @@ class RecipePage extends Component {
             case "favorites":
                 this.props.setFavoritesPage("tag")
                 break
+            case "subscriptions":
+                this.props.setSubscriptionsPage("tag")
+                break
             case "search":
                 this.props.setSearchPage("tag")
                 break
@@ -94,22 +98,25 @@ class RecipePage extends Component {
         this.props.setCurrentUser(this.props.currentRecipe.user.id, this.props.menuPage)
     }
 
-    handleBackButtonClick = async () => {
+    handleBackButtonClick = () => {
         switch (this.props.menuPage) {
             case "home":
-                await this.props.setHomePage("default")
+                this.props.setHomePage("default")
                 break
             case "profile":
-                await this.props.setUserPage("default")
+                this.props.setUserPage("default")
                 break
             case "recipes":
-                await this.props.setRecipesPage("default")
+                this.props.setRecipesPage("default")
                 break
             case "favorites":
-                await this.props.setFavoritesPage("default")
+                this.props.setFavoritesPage("default")
+                break
+            case "subscriptions":
+                this.props.setSubscriptionsPage("default")
                 break
             case "search":
-                await this.props.setSearchPage("default")
+                this.props.setSearchPage("default")
                 break
             default:
                 break
@@ -277,6 +284,7 @@ const mapDispatchToProps = dispatch => {
         setHomePage: (page) => dispatch(setHomePage(page)),
         setRecipesPage: (page) => dispatch(setRecipesPage(page)),
         setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
+        setSubscriptionsPage: (page) => dispatch(setSubscriptionsPage(page)),
         setSearchPage: (page) => dispatch(setSearchPage(page)),
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
         deleteRecipe: (id) => dispatch(deleteRecipe(id)),

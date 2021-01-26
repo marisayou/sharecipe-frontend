@@ -101,6 +101,9 @@ export const setCurrentUser = (userId, menuPage) => {
                 case "favorites":
                     dispatch({ type: "SET_FAVORITES_PAGE", payload: "user" })
                     break
+                case "subscriptions":
+                    dispatch({ type: "SET_SUBSCRIPTIONS_PAGE", payload: "user" })
+                    break
                 case "search":
                     dispatch({ type: "SET_SEARCH_PAGE", payload: "user" })
                     break
@@ -128,6 +131,9 @@ export const setRecipesPage = (page) => ({ type: "SET_RECIPES_PAGE", payload: pa
 
 // select which view to render for Favorites tab
 export const setFavoritesPage = (page) => ({ type: "SET_FAVORITES_PAGE", payload: page})
+
+// select which view to render for Subscription tab
+export const setSubscriptionsPage = (page) => ({ type: "SET_SUBSCRIPTIONS_PAGE", payload: page})
 
 // select which view to render when entering search term
 export const setSearchPage = (page) => ({ type: "SET_SEARCH_PAGE", payload: page })
@@ -194,6 +200,37 @@ export const unfavorite = (recipe_id, user_id) => {
             body: JSON.stringify({ recipe_id, user_id })
         })
         .then(() => dispatch({ type: "UNFAVORITE", payload: recipe_id }))
+    }
+}
+
+// subscribe to an user
+export const subscribe = (subscribed_from_id, subscribed_to_id) => {
+    return function(dispatch) {
+        fetch('http://localhost:3000/subscriptions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ subscribed_from_id, subscribed_to_id })
+        })
+        .then(res => res.json())
+        .then(subscription => dispatch({ type: "ADD_SUBSCRIPTION", payload: subscription.subscribed_to}))
+    }
+}
+
+// unsubscribe from an user
+export const unsubscribe = (subscribed_from_id, subscribed_to_id) => {
+    return function(dispatch) {
+        fetch('http://localhost:3000/subscriptions', { 
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ subscribed_from_id, subscribed_to_id })
+        })
+        .then(() => dispatch({ type: "DELETE_SUBSCRIPTION", payload: subscribed_to_id }))
     }
 }
 

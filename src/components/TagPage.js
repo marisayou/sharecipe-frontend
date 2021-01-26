@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button } from "@material-ui/core";
 import RecipesContainer from './RecipesContainer';
-import { setHomePage, setUserPage, setRecipesPage, setFavoritesPage, setSearchPage } from '../redux/actions';
+import { setHomePage, setUserPage, setRecipesPage, setFavoritesPage, setSubscriptionsPage, setSearchPage } from '../redux/actions';
 
 class TagPage extends Component {
 
@@ -18,8 +18,10 @@ class TagPage extends Component {
                 this.props.setRecipesPage("default")
                 break
             case "favorites":
-                console.log("back to favorites")
                 this.props.setFavoritesPage("default")
+                break
+            case "subscriptions":
+                this.props.setSubscriptionsPage("default")
                 break
             case "search":
                 this.props.setSearchPage("default")
@@ -58,6 +60,7 @@ const mapDispatchToProps = dispatch => {
         setUserPage: (page) => dispatch(setUserPage(page)),
         setRecipesPage: (page) => dispatch(setRecipesPage(page)),
         setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
+        setSubscriptionsPage: (page) => dispatch(setSubscriptionsPage(page)),
         setSearchPage: (page) => dispatch(setSearchPage(page)),
     }
 }

@@ -12,14 +12,13 @@ const initialState = {
     recipes: [],
 
     menuPage: null,
+
+    // determines which view to render when on each tab
     homePage: null,
-    // determines which view to render when on profile tab
     userPage: null,
-    // determines which view to render when on favorites tab
     favoritesPage: null,
-    // determines which view to render when on recipes tab
+    subscriptionsPage: null,
     allRecipesPage: null,
-    // determines which view to render when in search
     searchPage: null,
 
     currentRecipe: null,
@@ -44,6 +43,7 @@ const rootReducer = combineReducers({
     recipes: recipesReducer,
     allRecipesPage: allRecipesPageReducer,
     favoritesPage: favoritesPageReducer,
+    subscriptionsPage: subscriptionsPageReducer,
     homePage: homePageReducer,
     searchPage: searchPageReducer,
     searchTerm: searchTermReducer,
@@ -90,6 +90,10 @@ function subscriptionsReducer(state = initialState.subscriptions, action) {
     switch (action.type) {
         case "UPDATE_USER_INFO":
             return action.payload.user.subscriptions
+        case "ADD_SUBSCRIPTION":
+            return [...state, action.payload]
+        case "DELETE_SUBSCRIPTION":
+            return state.filter(sub => sub.id !== action.payload)
         default:
             return state
     }
@@ -98,7 +102,6 @@ function subscriptionsReducer(state = initialState.subscriptions, action) {
 function recipesReducer(state = initialState.recipes, action) {
     switch (action.type) {
         case "GET_USER_RECIPES":
-            console.log(action.payload)
             return action.payload.map(rec => {
                 return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
             })
@@ -179,6 +182,17 @@ function userPageReducer(state = initialState.userPage, action) {
     }
 }
 
+function subscriptionsPageReducer(state = initialState.subscriptionsPage, action) {
+    switch (action.type) {
+        case "SET_SUBSCRIPTIONS_PAGE":
+            return action.payload
+        case "LOGOUT":
+            return null
+        default:
+            return state
+    }
+}
+
 function currentUserReducer(state = initialState.currentUser, action) {
     switch (action.type) {
         case "UPDATE_USER_INFO":
@@ -189,13 +203,16 @@ function currentUserReducer(state = initialState.currentUser, action) {
                 subscribers: action.payload.user.subscriber_count
             }
         case "SET_CURRENT_USER":
-            console.log(action.payload.user)
             return { 
                 id: action.payload.user.id,
                 name: action.payload.user.name, 
                 username: action.payload.user.username,
                 subscribers: action.payload.user.subscriber_count
             }
+        case "ADD_SUBSCRIPTION":
+            return {...state, subscribers: state.subscribers + 1}
+        case "DELETE_SUBSCRIPTION":
+            return {...state, subscribers: state.subscribers - 1}
         case "LOGOUT":
             return null
         default: 
@@ -245,7 +262,6 @@ function allRecipesPageReducer(state = initialState.allRecipesPage, action) {
 function favoritesPageReducer(state = initialState.favoritesPage, action) {
     switch (action.type) {
         case "SET_FAVORITES_PAGE":
-            console.log(action.payload)
             return action.payload
         default:
             return state
@@ -264,7 +280,6 @@ function searchPageReducer(state = initialState.searchPage, action) {
 function searchTermReducer(state = initialState.searchTerm, action) {
     switch (action.type) {
         case "SET_SEARCH_TERM":
-            console.log(action.payload)
             return action.payload
         default: 
             return state

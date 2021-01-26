@@ -49,9 +49,7 @@ class RecipesContainer extends Component {
 
     renderRecipePreviews = () => {
         return this.props.recipes.map((recipe, idx) => {
-            return (
-                <RecipePreview key={idx} recipe={recipe}/>
-            )
+            return <RecipePreview key={idx} recipe={recipe}/>
         })
     }
 

@@ -8,6 +8,7 @@ import {
     setUserPage, 
     setRecipesPage, 
     setFavoritesPage,
+    setSubscriptionsPage,
     setSearchPage,
     favorite, 
     unfavorite 
@@ -30,6 +31,9 @@ class RecipePreview extends Component {
                 break
             case "favorites":
                 this.props.setFavoritesPage("recipe")
+                break
+            case "subscriptions":
+                this.props.setSubscriptionsPage("recipe")
                 break
             case "search":
                 this.props.setSearchPage("recipe")
@@ -82,6 +86,7 @@ const mapDispatchToProps = dispatch => {
         setUserPage: (page) => dispatch(setUserPage(page)),
         setRecipesPage: (page) => dispatch(setRecipesPage(page)),
         setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
+        setSubscriptionsPage: (page) => dispatch(setSubscriptionsPage(page)),
         setSearchPage: (page) => dispatch(setSearchPage(page)),
         favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),
         unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId))
