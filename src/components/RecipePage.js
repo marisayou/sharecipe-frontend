@@ -52,6 +52,8 @@ class RecipePage extends Component {
     }
 
     handleTagClick = (tagName) => {
+        this.props.addNestedPage("recipe")
+        this.props.addNestedRecipe(this.props.currentRecipe)
         this.props.setCurrentTag(tagName)
         switch (this.props.menuPage) {
             case "home":
@@ -130,6 +132,28 @@ class RecipePage extends Component {
                     const prevTag = this.props.nested.tagStack[0]
                     this.props.popNestedTag()
                     this.props.setCurrentTag(prevTag)
+                    switch (this.props.menuPage) {
+                        case "home":
+                            this.props.setHomePage("tag")
+                            break
+                        case "profile":
+                            this.props.setUserPage("tag")
+                            break
+                        case "recipes":
+                            this.props.setRecipesPage("tag")
+                            break
+                        case "favorites":
+                            this.props.setFavoritesPage("tag")
+                            break
+                        case "subscriptions":
+                            this.props.setSubscriptionsPage("tag")
+                            break
+                        case "search":
+                            this.props.setSearchPage("tag")
+                            break
+                        default:
+                            break
+                    }        
                     break
                 default:
                     console.log("WHAT THE FUCK DID YOU DO TO GET HERE")

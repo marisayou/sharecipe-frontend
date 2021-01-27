@@ -57,7 +57,7 @@ class RecipePreview extends Component {
                 this.props.addNestedUser(this.props.currentUser)
                 break
             case "tag":
-                this.props.addNestedTag(this.props.tag)
+                this.props.addNestedTag(this.props.currentTag)
                 break
             default:
                 console.log("SHOULDNT BE HERE!!)*H#Q(*RH(@UQFON")
@@ -121,8 +121,8 @@ class RecipePreview extends Component {
     }
 }
 
-const mapStateToProps = ({ user, currentUser, favorites, currentRecipe, menuPage, nested, homePage, userPage, favoritesPage, subscriptionsPage, allRecipesPage, searchPage }) => {
-    return { user, currentUser, favorites, currentRecipe, menuPage, nested, homePage, userPage, favoritesPage, subscriptionsPage, allRecipesPage, searchPage }
+const mapStateToProps = ({ user, currentUser, favorites, currentRecipe, currentTag, menuPage, nested, homePage, userPage, favoritesPage, subscriptionsPage, allRecipesPage, searchPage }) => {
+    return { user, currentUser, favorites, currentRecipe, currentTag, menuPage, nested, homePage, userPage, favoritesPage, subscriptionsPage, allRecipesPage, searchPage }
 }
 
 const mapDispatchToProps = dispatch => {

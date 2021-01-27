@@ -14,7 +14,8 @@ import {
     setRecipesPage,
     setFavoritesPage,
     setSubscriptionsPage,
-    setSearchPage
+    setSearchPage,
+    setUserPage
 } from '../redux/actions';
 
 class UserPage extends Component {
@@ -112,13 +113,18 @@ class UserPage extends Component {
         return (
             <React.Fragment>
                 <Container maxWidth="md">
-                    <Grid container item xs={12}>
-                        <Grid item className="back-btn" xs={1}>
-                            <IconButton onClick={this.handleBackButtonClick}>
-                                <ArrowBackIcon fontSize="large"/>
-                            </IconButton>
+
+                    {this.props.menuPage != "profile" ?
+                        <Grid container item xs={12}>
+                            <Grid item className="back-btn" xs={1}>
+                                <IconButton onClick={this.handleBackButtonClick}>
+                                    <ArrowBackIcon fontSize="large"/>
+                                </IconButton>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                        : 
+                        null
+                    }
                     <Grid container direction="column" alignItems="center">
                         {this.renderPage()}
                     </Grid>
@@ -140,7 +146,8 @@ const mapDispatchToProps = dispatch => {
         setRecipesPage: (page) => dispatch(setRecipesPage(page)),
         setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
         setSubscriptionsPage: (page) => dispatch(setSubscriptionsPage(page)),
-        setSearchPage: (page) => dispatch(setSearchPage(page))
+        setSearchPage: (page) => dispatch(setSearchPage(page)),
+        setUserPage: (page) => dispatch(setUserPage(page))
     }
 }
 
