@@ -18,7 +18,13 @@ import {
     setCurrentTag,
     setCurrentUser,
     addNestedUser,
-    popNestedUser
+    popNestedUser,
+    addNestedRecipe,
+    popNestedRecipe,
+    addNestedPage,
+    popNestedPage,
+    addNestedTag,
+    popNestedTag
 } from '../redux/actions';
 import '../css/RecipePage.css';
 
@@ -96,44 +102,66 @@ class RecipePage extends Component {
         })
     }
 
-    handleUsernameClick = async () => {
-        this.props.addNestedUser(this.props.currentRecipe.user)
+    handleUsernameClick = () => {
+        this.props.addNestedRecipe(this.props.currentRecipe)
+        this.props.addNestedPage("recipe")
         this.props.setCurrentUser(this.props.currentRecipe.user.id, this.props.menuPage, true)
     }
 
     handleBackButtonClick = () => {
-        console.log(this.props.menuPage)
-        switch (this.props.menuPage) {
-            case "home":
-                // check if we are in "nested user" state.
-                if (this.props.nested.isNested) {
+
+        // 1. check if we have nested page. 
+        //  if we do, pop and go to the right "page" in the stack.
+        // else:
+        //  go to the "menuPage" default.
+
+        if (this.props.nested.pageStack.length > 0)
+        {
+            // pop the previous page type. 
+            const prevPage = this.props.nested.pageStack[0]
+            this.props.popNestedPage()
+            switch (prevPage) {
+                case "user":
                     const prevUser = this.props.nested.userStack[0]
-                    console.log(prevUser)
                     this.props.popNestedUser()
-                    this.props.setCurrentUser(prevUser.id, this.props.menuPage, this.props.nested.isNested)
-                } else {
+                    this.props.setCurrentUser(prevUser.id, this.props.menuPage)
+                    break
+                case "tag":
+                    const prevTag = this.props.nested.tagStack[0]
+                    this.props.popNestedTag()
+                    this.props.setCurrentTag(prevTag)
+                    break
+                default:
+                    console.log("WHAT THE FUCK DID YOU DO TO GET HERE")
+                    // really shouldn't be here...
                     this.props.setHomePage("default")
-                }
-                break
-            case "profile":
-                this.props.setUserPage("default")
-                break
-            case "recipes":
-                this.props.setRecipesPage("default")
-                break
-            case "favorites":
-                this.props.setFavoritesPage("default")
-                break
-            case "subscriptions":
-                this.props.setSubscriptionsPage("default")
-                break
-            case "search":
-                this.props.setSearchPage("default")
-                break
-            default:
-                break
+            }
         }
-        //this.props.setCurrentRecipe(null)
+        else
+        {
+            switch (this.props.menuPage) {
+                case "home":
+                    this.props.setHomePage("default")
+                    break
+                case "profile":
+                    this.props.setUserPage("default")
+                    break
+                case "recipes":
+                    this.props.setRecipesPage("default")
+                    break
+                case "favorites":
+                    this.props.setFavoritesPage("default")
+                    break
+                case "subscriptions":
+                    this.props.setSubscriptionsPage("default")
+                    break
+                case "search":
+                    this.props.setSearchPage("default")
+                    break
+                default:
+                    break
+            }
+        }
     }
 
     handleDeleteButtonClick = async () => {
@@ -202,7 +230,7 @@ class RecipePage extends Component {
                         <Grid item xs={10}><h1 id="recipe-title">{this.props.title}</h1></Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button onClick={this.handleUsernameClick}>{!this.props.nested.isNested ? this.props.currentRecipe.user.username :null}</Button>
+                        <Button onClick={this.handleUsernameClick}>{!this.props.nested.userStack.length != 0 ? this.props.currentRecipe.user.username :null}</Button>
                     </Grid>
                     <Grid container item justify="center">
                         <IconButton onClick={this.handleFavoriteClick}>
@@ -313,6 +341,12 @@ const mapDispatchToProps = dispatch => {
         setCurrentUser: (userId, menuPage, isNested) => dispatch(setCurrentUser(userId, menuPage, isNested)),
         addNestedUser: (user) => dispatch(addNestedUser(user)),
         popNestedUser: () => dispatch(popNestedUser()),
+        addNestedRecipe: (recipe) => dispatch(addNestedRecipe(recipe)),
+        popNestedRecipe: () => dispatch(popNestedRecipe()),
+        addNestedPage: (page) => dispatch(addNestedPage(page)),
+        popNestedPage: () => dispatch(popNestedPage()),
+        addNestedTag: (tag) => dispatch(addNestedTag(tag)),
+        popNestedTag: () => dispatch(popNestedTag())
     }
 }
 

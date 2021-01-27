@@ -29,7 +29,10 @@ const initialState = {
     searchTags: [],
     nested: {
         "isNested": false,
-        "userStack": []
+        "userStack": [],
+        "recipeStack": [],
+        "pageStack": [],
+        "tagStack": [],
     },
 }
 
@@ -106,6 +109,8 @@ function subscriptionsReducer(state = initialState.subscriptions, action) {
 }
 
 function nestedStateReducer(state = initialState.nested, action) {
+    console.log(action.type)
+    console.log(action.payload)
     switch (action.type) {
         case "GET_NESTED_STATE":
             return action.payload
@@ -116,6 +121,18 @@ function nestedStateReducer(state = initialState.nested, action) {
             return {...state, "userStack": [action.payload, ...state.userStack]}
         case "POP_NESTED_USER":
             return {...state, "userStack": state.userStack.slice(1)}
+        case "PUSH_NESTED_RECIPE":
+            return {...state, "recipeStack": [action.payload, ...state.recipeStack]}
+        case "POP_NESTED_RECIPE":
+            return {...state, "recipeStack": state.recipeStack.slice(1)}
+        case "PUSH_PAGE":
+            return {...state, "pageStack": [action.payload, ...state.pageStack]}
+        case "POP_PAGE": 
+            return {...state, "pageStack": state.pageStack.slice(1)}
+        case "PUSH_TAG":
+            return {...state, "tagStack": [action.payload, ...state.tagStack]}
+        case "POP_TAG":
+            return {...state, "tagStack": state.tagStack.slice(1)}
         default:
             return state
     }

@@ -11,16 +11,63 @@ import {
     setSubscriptionsPage,
     setSearchPage,
     favorite, 
-    unfavorite 
+    unfavorite,
+    addNestedPage,
+    addNestedTag,
+    addNestedUser
 } from '../redux/actions';
 
 class RecipePreview extends Component {
 
+    getCurrentPageType = (menuPage, homePage, userPage, favoritesPage, subscriptionsPage, allRecipesPage, searchPage) =>
+    {
+        switch (menuPage) {
+            case "home":
+                return homePage
+            case "profile":
+                return userPage
+            case "recipes":
+                return allRecipesPage
+            case "favorites":
+                return favoritesPage
+            case "subscriptions":
+                return subscriptionsPage
+            case "search":
+                return searchPage
+            default:
+                return homePage
+        }
+    }
     handleClickReadMore = async () => {
         console.log(this.props.menuPage)
+        const currentPage = this.getCurrentPageType(
+            this.props.menuPage,
+            this.props.homePage,
+            this.props.userPage,
+            this.props.favoritesPage,
+            this.props.subscriptionsPage,
+            this.props.allRecipesPage,
+            this.props.searchPage
+        )
+        console.log(currentPage)
+        this.props.addNestedPage(currentPage)
+
+        switch(currentPage) {
+            case "user":
+                this.props.addNestedUser(this.props.currentUser)
+                break
+            case "tag":
+                this.props.addNestedTag(this.props.tag)
+                break
+            default:
+                console.log("SHOULDNT BE HERE!!)*H#Q(*RH(@UQFON")
+                break
+        }
+
         await this.props.setCurrentRecipe(this.props.recipe)
         switch(this.props.menuPage) {
             case "home":
+                //this.props.addNestedPage("")
                 this.props.setHomePage("recipe")
                 break
             case "profile":
@@ -74,8 +121,8 @@ class RecipePreview extends Component {
     }
 }
 
-const mapStateToProps = ({ user, favorites, currentRecipe, menuPage }) => {
-    return { user, favorites, currentRecipe, menuPage }
+const mapStateToProps = ({ user, currentUser, favorites, currentRecipe, menuPage, nested, homePage, userPage, favoritesPage, subscriptionsPage, allRecipesPage, searchPage }) => {
+    return { user, currentUser, favorites, currentRecipe, menuPage, nested, homePage, userPage, favoritesPage, subscriptionsPage, allRecipesPage, searchPage }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -88,7 +135,10 @@ const mapDispatchToProps = dispatch => {
         setSubscriptionsPage: (page) => dispatch(setSubscriptionsPage(page)),
         setSearchPage: (page) => dispatch(setSearchPage(page)),
         favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),
-        unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId))
+        unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId)),
+        addNestedPage: (page) => dispatch(addNestedPage(page)),
+        addNestedTag: (tag) => dispatch(addNestedTag(tag)),
+        addNestedUser: (user) => dispatch(addNestedUser(user))
     }
 }
 

@@ -279,3 +279,36 @@ export const addNestedUser = (user) => ({
 export const popNestedUser = (user) => ({
     type: "POP_NESTED_USER",
 })
+
+// add a nested recipe
+export const addNestedRecipe = (recipe) => ({
+    type: "PUSH_NESTED_RECIPE",
+    payload: recipe
+})
+
+// pop a nested recipe
+export const popNestedRecipe = () => ({
+    type: "POP_NESTED_RECIPE",
+})
+
+// add a nested page type
+export const addNestedPage = (page) => ({
+    type: "PUSH_PAGE",
+    payload: page
+})
+
+// pop a nested page
+export const popNestedPage = () => ({
+    type: "POP_PAGE",
+})
+
+// add a nested tag
+export const addNestedTag = (tag) => ({
+    type: "PUSH_TAG",
+    payload: tag
+})
+
+// pop a nested tag
+export const popNestedTag = () => ({
+    type: "POP_TAG"
+})
