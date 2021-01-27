@@ -123,12 +123,16 @@ class UserForm extends Component {
                         </form>
 
                         <Modal
+                            id="modal"
                             open={this.state.openModal}
                             onClose={this.handleCloseModal}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
                         >
-                            <div>
-                                <h2>Delete Account Confirmation</h2>
+                            <div id="modal-body">
+                                <h2>Delete Confirmation</h2>
                                 <p>Are you sure you want to delete your Sharecipe account?</p>
+                                <br/>
                                 <Button variant="outlined" onClick={this.handleCloseModal}>Cancel</Button>
                                 <Button variant="outlined" onClick={this.handleDeleteAccount}>Delete</Button>
                             </div>
