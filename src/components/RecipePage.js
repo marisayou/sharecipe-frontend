@@ -155,6 +155,30 @@ class RecipePage extends Component {
                             break
                     }        
                     break
+                case "default":
+                    switch (this.props.menuPage) {
+                        case "home":
+                            this.props.setHomePage("default")
+                            break
+                        case "profile":
+                            this.props.setUserPage("default")
+                            break
+                        case "recipes":
+                            this.props.setRecipesPage("default")
+                            break
+                        case "favorites":
+                            this.props.setFavoritesPage("default")
+                            break
+                        case "subscriptions":
+                            this.props.setSubscriptionsPage("default")
+                            break
+                        case "search":
+                            this.props.setSearchPage("default")
+                            break
+                        default:
+                            break
+                    } 
+                    break
                 default:
                     console.log("WHAT THE FUCK DID YOU DO TO GET HERE")
                     // really shouldn't be here...
