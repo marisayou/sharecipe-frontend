@@ -26,7 +26,10 @@ const initialState = {
     currentUser: null,
     
     searchTerm: null,
-    searchTags: [],  
+    searchTags: [],
+    nested: {
+        "isNested": false,
+    },
 }
 
 const rootReducer = combineReducers({
@@ -47,7 +50,8 @@ const rootReducer = combineReducers({
     homePage: homePageReducer,
     searchPage: searchPageReducer,
     searchTerm: searchTermReducer,
-    searchTags: searchTagsReducer
+    searchTags: searchTagsReducer,
+    nested: nestedStateReducer,
 })
 
 function screenWidthReducer(state = initialState.screenWidth, action) {
@@ -95,6 +99,19 @@ function subscriptionsReducer(state = initialState.subscriptions, action) {
             return [...state, action.payload]
         case "DELETE_SUBSCRIPTION":
             return state.filter(sub => sub.id !== action.payload)
+        default:
+            return state
+    }
+}
+
+function nestedStateReducer(state = initialState.nested, action) {
+    switch (action.type) {
+        case "GET_NESTED_STATE":
+            return action.payload
+        case "SET_NESTED_STATE":
+            return {
+                "isNested": action.payload.isNested
+            }
         default:
             return state
     }
@@ -237,7 +254,7 @@ function currentUserReducer(state = initialState.currentUser, action) {
                 id: action.payload.user.id,
                 name: action.payload.user.name, 
                 username: action.payload.user.username,
-                subscribers: action.payload.user.subscriber_count
+                subscribers: action.payload.user.subscriber_count,
             }
         case "ADD_SUBSCRIPTION":
             return {...state, subscribers: state.subscribers + 1}

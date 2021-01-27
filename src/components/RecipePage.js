@@ -95,7 +95,7 @@ class RecipePage extends Component {
     }
 
     handleUsernameClick = async () => {
-        this.props.setCurrentUser(this.props.currentRecipe.user.id, this.props.menuPage)
+        this.props.setCurrentUser(this.props.currentRecipe.user.id, this.props.menuPage, true)
     }
 
     handleBackButtonClick = () => {
@@ -176,6 +176,7 @@ class RecipePage extends Component {
         console.log(this.props.currentRecipe)
         console.log(this.props.user)
         console.log(this.props.favorites)
+        console.log(this.props.nested)
         return (
             <React.Fragment>
                 <Grid container item className="container" direction="column" xs={12} md={9} alignItems="center">
@@ -189,7 +190,7 @@ class RecipePage extends Component {
                         <Grid item xs={10}><h1 id="recipe-title">{this.props.title}</h1></Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button onClick={this.handleUsernameClick}>{this.props.currentRecipe.user ? this.props.currentRecipe.user.username :null}</Button>
+                        <Button onClick={this.handleUsernameClick}>{!this.props.nested.isNested ? this.props.currentRecipe.user.username :null}</Button>
                     </Grid>
                     <Grid container item justify="center">
                         <IconButton onClick={this.handleFavoriteClick}>
@@ -278,9 +279,9 @@ class RecipePage extends Component {
     }
 }
 
-const mapStateToProps = ({ user, favorites, currentRecipe, menuPage }) => {
+const mapStateToProps = ({ user, favorites, currentRecipe, menuPage, nested }) => {
     const { id, title, description, ingredients, instructions, tags } = currentRecipe
-    return { user, favorites, currentRecipe, menuPage, id, title, description, ingredients, instructions, tags }
+    return { user, favorites, currentRecipe, menuPage, id, title, description, ingredients, instructions, tags, nested }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -297,7 +298,7 @@ const mapDispatchToProps = dispatch => {
         unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId)),
         addComment: (userId, recipeId, comment) => dispatch(addComment(userId, recipeId, comment)),
         setCurrentTag: (tagName) => dispatch(setCurrentTag(tagName)),
-        setCurrentUser: (userId, menuPage) => dispatch(setCurrentUser(userId, menuPage))
+        setCurrentUser: (userId, menuPage, isNested) => dispatch(setCurrentUser(userId, menuPage, isNested))
     }
 }
 

@@ -29,7 +29,7 @@ class UserPreview extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-    return { setCurrentUser: (userId) => dispatch(setCurrentUser(userId, "subscriptions"))}
+    return { setCurrentUser: (userId) => dispatch(setCurrentUser(userId, "subscriptions", false))}
 }
 
 export default connect(null, mapDispatchToProps)(UserPreview)

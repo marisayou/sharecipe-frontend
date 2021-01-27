@@ -60,7 +60,7 @@ class App extends Component {
   renderPage = () => {
     switch (this.state.route) {
       case "Profile": 
-        this.props.setCurrentUser(this.props.user.id, "profile")
+        this.props.setCurrentUser(this.props.user.id, "profile", false)
         this.props.setMenuPage("profile")
         return <UserPage selectMenuItem={this.selectMenuItem}/>
       case "Favorites":
@@ -190,7 +190,7 @@ const mapDispatchToProps = dispatch => {
     setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
     setSubscriptionsPage: (page) => dispatch(setSubscriptionsPage(page)),
     setSearchPage: (page) => dispatch(setSearchPage(page)),
-    setCurrentUser: (userId, page) => dispatch(setCurrentUser(userId, page))
+    setCurrentUser: (userId, page, isNested) => dispatch(setCurrentUser(userId, page, isNested))
   }
 }
 

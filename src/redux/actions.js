@@ -80,11 +80,14 @@ export const deleteRecipe = (id) => {
 // determine which recipe page to render using its id 
 export const setCurrentRecipe = (recipe) => ({ type: "SET_CURRENT_RECIPE", payload: recipe })
 
-export const setCurrentUser = (userId, menuPage) => {
+export const setCurrentUser = (userId, menuPage, isNested) => {
     return function(dispatch) {
         fetch('http://localhost:3000/users/' + userId)
         .then(res => res.json())
         .then(user => dispatch({ type: "SET_CURRENT_USER", payload: user }))
+        .then(() => dispatch({ type: "SET_NESTED_STATE", payload: {
+            "isNested": isNested
+        }}))
         .then(() => {
             switch (menuPage) {
                 case "home":
