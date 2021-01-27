@@ -21,3 +21,10 @@
 #add-ingredient-btn {
     width: 100%;
 }
+
+#image-helper-text {
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 4px;
+    color: rgba(0, 0, 0, 0.54);
+}

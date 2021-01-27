@@ -13,7 +13,9 @@ class RecipeForm extends Component {
             { ingredient: "", wholeNum: "", fracNum: "", unit: "" } 
         ],
         instructions: "",
-        tags: []
+        tags: [],
+        image: "",
+        requiredWarning: false
     }
 
     componentDidMount() {
@@ -40,15 +42,32 @@ class RecipeForm extends Component {
 
     handleRecipeFormSubmit = (e) => {
         e.preventDefault()
-        const { title, description, ingredients, instructions } = this.state
-        const recipe = { title, description, ingredients, instructions }
-        const tags = this.state.tags.split(" ").filter(tag => tag !== "")
-        
-        if (this.props.currentRecipe) {
-            this.props.editRecipe(recipe, tags, this.props.currentRecipe.id)
-        } else {
-            this.props.addNewRecipe(this.props.user.id, recipe, tags)
+
+        if (!this.props.currentRecipe && document.querySelector('input[type="file"]').files.length === 0) {
+            this.setState({ requiredWarning: true })
+            return
         }
+        
+        const { title, description, ingredients, instructions } = this.state
+        const recipe = JSON.stringify({ title, description, ingredients, instructions })
+
+        let formData = new FormData()
+        formData.append('recipe', recipe)
+        formData.append('tags', this.state.tags)
+        formData.append('image', document.querySelector('input[type="file"]').files[0])
+
+        if (this.props.currentRecipe) {
+            this.props.editRecipe(this.props.currentRecipe.id, formData)
+        } else {
+            formData.append('user_id', this.props.user.id)
+            this.props.addNewRecipe(formData)
+        }
+
+        // if (this.props.currentRecipe) {
+        //     this.props.editRecipe(recipe, tags, this.props.currentRecipe.id, image)
+        // } else {
+        //     this.props.addNewRecipe(this.props.user.id, recipe, tags, image)
+        // }
     }
 
     ingredientFields = () => {
@@ -149,6 +168,11 @@ class RecipeForm extends Component {
         this.setState({ [inputField]: e.target.value })
     }
 
+    displayChosenFile = (e) => {
+        const path = e.target.value.split('\\')
+        this.setState({image: path[path.length - 1]})
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -179,6 +203,27 @@ class RecipeForm extends Component {
                                     rows={3} 
                                     required 
                                 />
+                            </Grid>
+                            <br /><br />
+                            <Grid container item direction="row" xs={12} justify="center">
+                                <Grid container item xs={12} justify="center">
+                                    <Button variant="outlined" component="label">
+                                        Upload Image
+                                        <input type="file" accept=".jpg,.jpeg,.png" hidden onChange={this.displayChosenFile}/>
+                                    </Button>
+                                </Grid>
+                                <Grid container item xs={12} justify="center">
+                                    
+                                    {this.state.image === "" ? 
+                                        (this.props.currentRecipe ? 
+                                            <p id="image-helper-text">Change image</p> : 
+                                            <p id="image-helper-text" style={this.state.requiredWarning ? {color: "red"} : null}>
+                                                Select an image
+                                                <span className="MuiFormLabel-asterisk MuiInputLabel-asterisk"> *</span>
+                                            </p>) 
+                                        : 
+                                        <p id="image-helper-text">{this.state.image}</p>}
+                                </Grid>
                             </Grid>
                             <br />
                             <Grid container item direction="row" xs={12} justify="center">
@@ -247,8 +292,8 @@ const mapDispatchToProps = dispatch => {
     return {
         setUserPage: (page) => dispatch(setUserPage(page)),
         setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
-        addNewRecipe: (userId, recipe, tags) => dispatch(addNewRecipe(userId, recipe, tags)),
-        editRecipe: (recipe, tags, recipeId) => dispatch(editRecipe(recipe, tags, recipeId))
+        addNewRecipe: (formData) => dispatch(addNewRecipe(formData)),
+        editRecipe: (recipeId, formData) => dispatch(editRecipe(recipeId, formData))
     }
 }
 

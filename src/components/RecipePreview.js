@@ -53,7 +53,6 @@ class RecipePreview extends Component {
     }
 
     render() {
-        console.log(this.props.recipe)
         return (
             <Grid container item xs={12} direction="column">
                 <Card variant="outlined">

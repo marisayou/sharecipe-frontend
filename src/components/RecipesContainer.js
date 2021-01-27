@@ -7,7 +7,6 @@ import RecipePreview from './RecipePreview';
 class RecipesContainer extends Component {
 
     componentDidMount() {
-        console.log(this.props.menuPage)
         switch (this.props.menuPage) {
             case "home":
                 if (this.props.homePage !== "user") {

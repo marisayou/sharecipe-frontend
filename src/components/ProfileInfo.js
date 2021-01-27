@@ -20,7 +20,6 @@ class ProfileInfo extends Component {
     }
 
     render() {
-        console.log(this.props.subscriptions)
         return (
             <Grid container item spacing={1} direction="column" xs={12} md={9} alignItems="center" >
                 <Grid container item xs={12} spacing={2} direction="row">

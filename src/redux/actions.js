@@ -40,15 +40,14 @@ export const getUserRecipes = (id) => {
 }
 
 // add a new recipe
-export const addNewRecipe = (user_id, recipe, tags) => {
+export const addNewRecipe = (formData) => {
     return function(dispatch) {
         fetch('http://localhost:3000/recipes', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ user_id, recipe, tags })
+            body: formData
         })
         .then(res => res.json())
         .then(recipe => dispatch({ type: "ADD_NEW_RECIPE", payload: { recipe, page: "recipe" }}))
@@ -56,18 +55,17 @@ export const addNewRecipe = (user_id, recipe, tags) => {
 }
 
 // edit a recipe
-export const editRecipe = (recipe, tags, recipeId) => {
+export const editRecipe = (recipeId, formData) => {
     return function(dispatch) {
         fetch('http://localhost:3000/recipes/' + recipeId, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ recipe, tags })
+            body: formData
         })
         .then(res => res.json())
-        .then(rec => dispatch({ type: "EDIT_RECIPE", payload: {recipe: { id: recipeId, recipe: rec.recipe, comments: rec.comments, tags: rec.tags }, page: "recipe"}}))
+        .then(recipe => dispatch({ type: "EDIT_RECIPE", payload: {recipe , page: "recipe"}}))
     }
 }
 
@@ -93,7 +91,7 @@ export const setCurrentUser = (userId, menuPage) => {
                     dispatch({ type: "SET_HOME_PAGE", payload: "user" })
                     break
                 case "profile":
-                    dispatch({ type: "SET_USER_PAGE", payload: "user" })
+                    dispatch({ type: "SET_USER_PAGE", payload: "default" })
                     break
                 case "recipes":
                     dispatch({ type: "SET_RECIPES_PAGE", payload: "user" })

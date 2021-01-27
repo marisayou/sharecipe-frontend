@@ -60,7 +60,7 @@ class App extends Component {
   renderPage = () => {
     switch (this.state.route) {
       case "Profile": 
-        this.props.setCurrentUser(this.props.user.id, "default")
+        this.props.setCurrentUser(this.props.user.id, "profile")
         this.props.setMenuPage("profile")
         return <UserPage selectMenuItem={this.selectMenuItem}/>
       case "Favorites":
@@ -80,6 +80,7 @@ class App extends Component {
         this.props.setSearchPage("default")
         return <SearchResults />
       default:
+        console.log("default")
         this.props.setMenuPage("home")
         this.props.setHomePage("default")
         return <Home />

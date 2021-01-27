@@ -41,7 +41,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log(this.props.homePage)
         return (
             <React.Fragment>
                 <Container maxWidth="md">

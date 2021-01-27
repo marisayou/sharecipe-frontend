@@ -197,11 +197,15 @@ class RecipePage extends Component {
                             color={this.props.favorites.includes(this.props.currentRecipe.id) ? "error" : "inherit"}/>
                         </IconButton>
                     </Grid>
+                    
                     <Grid id="tags" item container xs={12}>
                         {this.renderTags()}
                     </Grid>
                     <Grid id="description" item container xs={12}>
                         {this.renderDescription()}
+                    </Grid>
+                    <Grid item container xs={12}>
+                        <img className="recipe-image" src={this.props.currentRecipe.image_url} />
                     </Grid>
                     <br/>
                     <Grid id="ingredients-instructions" container item xs={12}>
@@ -217,8 +221,8 @@ class RecipePage extends Component {
                             {this.renderInstructions()}
                         </Grid>
                     </Grid>
-
-                    {this.props.menuPage === "profile" ?
+                    <br />
+                    {this.props.currentRecipe.user.id === this.props.user.id ?
                         (<Grid className="btn-container" container item justify="center">
                             <Button variant="outlined" 
                                 onClick={() => this.props.setUserPage("form")}
@@ -233,6 +237,7 @@ class RecipePage extends Component {
                         </Grid>) :
                         null
                     }
+
                     <br />
                     <Grid container item xs={12}>
                         <Grid item>

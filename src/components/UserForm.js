@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Button, Grid, TextField, Modal } from "@material-ui/core";
 import { deleteUser } from '../redux/actions';
 import '../css/UserForm.css';
 
@@ -10,7 +10,8 @@ class UserForm extends Component {
         name: this.props.user ? this.props.user.name : "",
         username: this.props.user ? this.props.user.username : "",
         password: "",
-        passwordConfirmation: ""
+        passwordConfirmation: "",
+        openModal: false
     }
 
     handleSubmit = (e) => {
@@ -52,6 +53,14 @@ class UserForm extends Component {
     handleInputChange = (e) => {
         const inputField = e.target.getAttribute('name')
         this.setState({ [inputField]: e.target.value})
+    }
+
+    handleOpenModal = () => {
+        this.setState({openModal: true})
+    }
+
+    handleCloseModal = () => {
+        this.setState({openModal: false})
     }
 
     handleDeleteAccount = () => {
@@ -104,15 +113,27 @@ class UserForm extends Component {
                                 </Grid>
                                 {this.props.form === "Settings" ? 
                                 (<Grid className="btn-container" container item direction="row" justify="center">
-                                    <Button variant="outlined" onClick={this.handleDeleteAccount}>Delete Account</Button>
+                                    <Button variant="outlined" onClick={this.handleOpenModal}>Delete Account</Button>
                                 </Grid>) :
                                 null}
 
                                 <br/>
                                 
-
                             </Grid>
                         </form>
+
+                        <Modal
+                            open={this.state.openModal}
+                            onClose={this.handleCloseModal}
+                        >
+                            <div>
+                                <h2>Delete Account Confirmation</h2>
+                                <p>Are you sure you want to delete your Sharecipe account?</p>
+                                <Button variant="outlined" onClick={this.handleCloseModal}>Cancel</Button>
+                                <Button variant="outlined" onClick={this.handleDeleteAccount}>Delete</Button>
+                            </div>
+                        </Modal>
+
                         {this.props.form === "Sign In" ? 
                         (
                             <Grid container item direction="row" justify="center">

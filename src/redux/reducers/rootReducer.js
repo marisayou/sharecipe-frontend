@@ -62,11 +62,12 @@ function screenWidthReducer(state = initialState.screenWidth, action) {
 function userReducer(state = initialState.user, action) {
     switch (action.type) {
         case "UPDATE_USER_INFO":
+            console.log(action.payload)
             return { 
                 id: action.payload.user.id,
                 name: action.payload.user.name, 
                 username: action.payload.user.username,
-                subscribers: action.payload.user.subscriber_counts
+                subscribers: action.payload.user.subscriber_count
             }
         case "LOGOUT":
             return null
@@ -102,8 +103,16 @@ function subscriptionsReducer(state = initialState.subscriptions, action) {
 function recipesReducer(state = initialState.recipes, action) {
     switch (action.type) {
         case "GET_USER_RECIPES":
+            console.log(action.payload)
             return action.payload.map(rec => {
-                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
+                return {
+                    id: rec.id, 
+                    ...rec.recipe, 
+                    comments: rec.comments, 
+                    tags: rec.tags, 
+                    user: rec.user, 
+                    image_url: rec.image_url
+                }
             })
         case "DELETE_RECIPE":
             const updatedRecipes = [...state]
@@ -112,17 +121,38 @@ function recipesReducer(state = initialState.recipes, action) {
             return updatedRecipes
         case "GET_RECIPES":
             const recipes = action.payload.map(rec => {
-                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
+                return {
+                    id: rec.id, 
+                    ...rec.recipe, 
+                    comments: rec.comments, 
+                    tags: rec.tags, 
+                    user: rec.user, 
+                    image_url: rec.image_url
+                }
             })
             return recipes
         case "GET_SEARCH_RESULTS":
             const search_recipes = action.payload.recipes.map(rec => {
-                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
+                return {
+                    id: rec.id, 
+                    ...rec.recipe, 
+                    comments: rec.comments, 
+                    tags: rec.tags, 
+                    user: rec.user, 
+                    image_url: rec.image_url
+                }            
             })
             return search_recipes
         case "SET_CURRENT_USER":
             const user_recipes = action.payload.recipes.map(rec => {
-                return {id: rec.id, ...JSON.parse(rec.recipe), comments: rec.comments, tags: rec.tags, user: rec.user}
+                return {
+                    id: rec.id, 
+                    ...rec.recipe, 
+                    comments: rec.comments, 
+                    tags: rec.tags, 
+                    user: rec.user, 
+                    image_url: rec.image_url
+                }            
             })
             return user_recipes
         case "LOGOUT":
@@ -225,9 +255,25 @@ function currentRecipeReducer(state = initialState.currentRecipe, action) {
         case "SET_CURRENT_RECIPE":
             return action.payload
         case "ADD_NEW_RECIPE":
-            return {id: action.payload.recipe.id, ...JSON.parse(action.payload.recipe.recipe), comments: action.payload.recipe.comments, tags: action.payload.recipe.tags}
+            const newRecipe = action.payload.recipe
+            return {
+                id: newRecipe.id, 
+                ...newRecipe.recipe, 
+                comments: newRecipe.comments, 
+                tags: newRecipe.tags, 
+                user: newRecipe.user,
+                image_url: newRecipe.image_url
+            }
         case "EDIT_RECIPE":
-            return {id: action.payload.recipe.id, ...JSON.parse(action.payload.recipe.recipe), comments: action.payload.recipe.comments, tags: action.payload.recipe.tags}
+            const updatedRecipe = action.payload.recipe
+            return {
+                id: updatedRecipe.id, 
+                ...updatedRecipe.recipe, 
+                comments: updatedRecipe.comments, 
+                tags: updatedRecipe.tags, 
+                user: updatedRecipe.user,
+                image_url: updatedRecipe.image_url
+            }
         case "DELETE_RECIPE":
             return null
         case "ADD_COMMENT":
