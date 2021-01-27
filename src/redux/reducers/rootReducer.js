@@ -26,7 +26,8 @@ const initialState = {
     currentUser: null,
     
     searchTerm: null,
-    searchTags: [],  
+    searchUsers: [],
+    searchTags: []
 }
 
 const rootReducer = combineReducers({
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
     homePage: homePageReducer,
     searchPage: searchPageReducer,
     searchTerm: searchTermReducer,
+    searchUsers: searchUsersReducer,
     searchTags: searchTagsReducer
 })
 
@@ -144,6 +146,7 @@ function recipesReducer(state = initialState.recipes, action) {
             })
             return search_recipes
         case "SET_CURRENT_USER":
+            console.log(action.payload)
             const user_recipes = action.payload.recipes.map(rec => {
                 return {
                     id: rec.id, 
@@ -309,6 +312,8 @@ function favoritesPageReducer(state = initialState.favoritesPage, action) {
     switch (action.type) {
         case "SET_FAVORITES_PAGE":
             return action.payload
+        case "LOGOUT":
+            return null
         default:
             return state
     }
@@ -318,6 +323,8 @@ function searchPageReducer(state = initialState.searchPage, action) {
     switch (action.type) {
         case "SET_SEARCH_PAGE":
             return action.payload
+        case "LOGOUT":
+            return null
         default:
             return state
     }
@@ -327,7 +334,20 @@ function searchTermReducer(state = initialState.searchTerm, action) {
     switch (action.type) {
         case "SET_SEARCH_TERM":
             return action.payload
+        case "LOGOUT":
+            return null
         default: 
+            return state
+    }
+}
+
+function searchUsersReducer(state=initialState.searchUsers, action) {
+    switch (action.type) {
+        case "GET_SEARCH_RESULTS":
+            return action.payload.users
+        case "LOGOUT":
+            return []
+        default:
             return state
     }
 }
@@ -336,6 +356,8 @@ function searchTagsReducer(state = initialState.searchTags, action) {
     switch (action.type) {
         case "GET_SEARCH_RESULTS":
             return action.payload.tags
+        case "LOGOUT":
+            return []
         default:
             return state
     }

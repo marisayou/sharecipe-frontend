@@ -4,6 +4,7 @@ import { Container, Grid } from "@material-ui/core";
 import TagPage from './TagPage';
 import RecipePage from './RecipePage';
 import SearchRecipes from './SearchRecipes';
+import SearchUsers from './SearchUsers';
 import SearchTags from './SearchTags';
 import UserPage from './UserPage';
 
@@ -25,6 +26,7 @@ class SearchResults extends Component {
                                 <h1>Search Results</h1>
                             </Grid>
                             <SearchTags />
+                            <SearchUsers />
                             <SearchRecipes />
                         </Grid>
                     </React.Fragment>
