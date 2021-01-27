@@ -16,7 +16,9 @@ import {
     unfavorite,
     addComment,
     setCurrentTag,
-    setCurrentUser
+    setCurrentUser,
+    addNestedUser,
+    popNestedUser
 } from '../redux/actions';
 import '../css/RecipePage.css';
 
@@ -95,13 +97,23 @@ class RecipePage extends Component {
     }
 
     handleUsernameClick = async () => {
+        this.props.addNestedUser(this.props.currentRecipe.user)
         this.props.setCurrentUser(this.props.currentRecipe.user.id, this.props.menuPage, true)
     }
 
     handleBackButtonClick = () => {
+        console.log(this.props.menuPage)
         switch (this.props.menuPage) {
             case "home":
-                this.props.setHomePage("default")
+                // check if we are in "nested user" state.
+                if (this.props.nested.isNested) {
+                    const prevUser = this.props.nested.userStack[0]
+                    console.log(prevUser)
+                    this.props.popNestedUser()
+                    this.props.setCurrentUser(prevUser.id, this.props.menuPage, this.props.nested.isNested)
+                } else {
+                    this.props.setHomePage("default")
+                }
                 break
             case "profile":
                 this.props.setUserPage("default")
@@ -121,7 +133,7 @@ class RecipePage extends Component {
             default:
                 break
         }
-        this.props.setCurrentRecipe(null)
+        //this.props.setCurrentRecipe(null)
     }
 
     handleDeleteButtonClick = async () => {
@@ -298,7 +310,9 @@ const mapDispatchToProps = dispatch => {
         unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId)),
         addComment: (userId, recipeId, comment) => dispatch(addComment(userId, recipeId, comment)),
         setCurrentTag: (tagName) => dispatch(setCurrentTag(tagName)),
-        setCurrentUser: (userId, menuPage, isNested) => dispatch(setCurrentUser(userId, menuPage, isNested))
+        setCurrentUser: (userId, menuPage, isNested) => dispatch(setCurrentUser(userId, menuPage, isNested)),
+        addNestedUser: (user) => dispatch(addNestedUser(user)),
+        popNestedUser: () => dispatch(popNestedUser()),
     }
 }
 

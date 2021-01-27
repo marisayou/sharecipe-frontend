@@ -29,6 +29,7 @@ const initialState = {
     searchTags: [],
     nested: {
         "isNested": false,
+        "userStack": []
     },
 }
 
@@ -109,9 +110,12 @@ function nestedStateReducer(state = initialState.nested, action) {
         case "GET_NESTED_STATE":
             return action.payload
         case "SET_NESTED_STATE":
-            return {
-                "isNested": action.payload.isNested
-            }
+            return {...state, "isNested": action.payload.isNested}
+        case "PUSH_NESTED_USER":
+            console.log(action.payload)
+            return {...state, "userStack": [action.payload, ...state.userStack]}
+        case "POP_NESTED_USER":
+            return {...state, "userStack": state.userStack.slice(1)}
         default:
             return state
     }

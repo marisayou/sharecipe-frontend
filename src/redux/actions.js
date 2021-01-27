@@ -268,3 +268,14 @@ export const getSearchResults = (searchTerm) => {
         .then(results => dispatch({ type: "GET_SEARCH_RESULTS", payload: results }))
     }
 }
+
+// add a nested user state
+export const addNestedUser = (user) => ({
+    type: "PUSH_NESTED_USER",
+    payload: user
+})
+
+// pop a nested user
+export const popNestedUser = (user) => ({
+    type: "POP_NESTED_USER",
+})
