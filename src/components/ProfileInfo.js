@@ -27,7 +27,9 @@ class ProfileInfo extends Component {
                         <Grid id="profile-username-div" item xs={12} sm={4}>
                             <h1>{this.props.currentUser.username}</h1>
                         </Grid>
-                        
+                        <Grid id="profile-name-div" item xs={12} sm={4}>
+                            <h3>{this.props.currentUser.name}</h3>
+                        </Grid>
                         <Grid id="profile-stats" container item xs={12}>
 
                             <Grid container item xs={6} direction="column">

@@ -64,28 +64,37 @@ class App extends Component {
           this.props.setCurrentUser(this.props.user.id, "profileDefault")
         }
         this.props.setMenuPage("profile")
-        // this.props.setUserPage("default")
         return <ProfilePage selectMenuItem={this.selectMenuItem}/>
       case "Favorites":
         this.props.setMenuPage("favorites")
-        this.props.setFavoritesPage("default")
+        if (this.props.nested.pageStack.length === 0) {
+          this.props.setFavoritesPage("default")
+        }
         return <FavoritesPage />
       case "Subscriptions":
         this.props.setMenuPage("subscriptions")
-        this.props.setSubscriptionsPage("default")
+        if (this.props.nested.pageStack.length === 0) {
+          this.props.setSubscriptionsPage("default")
+        }
         return <SubscriptionsPage />
       case "Browse Recipes":
         this.props.setMenuPage("recipes")
-        this.props.setRecipesPage("default")
+        if (this.props.nested.pageStack.length === 0) {
+          this.props.setRecipesPage("default")
+        }
         return <AllRecipesPage />
       case "Search":
         this.props.setMenuPage("search")
-        this.props.setSearchPage("default")
+        if (this.props.nested.pageStack.length === 0) {
+          this.props.setSearchPage("default")
+        }
         return <SearchResults />
       default:
         console.log("default")
         this.props.setMenuPage("home")
-        this.props.setHomePage("default")
+        if (this.props.nested.pageStack.length === 0) {
+          this.props.setHomePage("default")
+        }
         return <Home />
     }
   }
