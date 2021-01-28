@@ -16,7 +16,7 @@ class RecipesContainer extends Component {
                 }
                 break
             case "profile":
-                if (this.props.userPage !== "user") {
+                if (this.props.userPage !== "user" && this.props.userPage !== "default") {
                     this.props.userPage !== "tag" ?
                         this.props.getUserRecipes(this.props.user.id) :
                         this.props.getTagRecipes(this.props.currentTag)

@@ -1,6 +1,6 @@
 #appbar {
     z-index: -1;
-    background-color: rgb(255, 255, 255);
+    background-color: #5a8fad;
 }
 
 #topbar-container {
@@ -14,7 +14,7 @@
 
 #search-bar {
     border-width: 1px;
-    border-color: black;
+    border-color: #617f91;
     border-style: solid;
     border-radius: 25px;
     margin-top: 8px;
@@ -24,7 +24,7 @@
     padding-bottom: 10px;
     padding-left: 20px;
     padding-right: 20px;
-    
+    background-color: #96c2db;
 }
 
 @media (max-width: 900px) {

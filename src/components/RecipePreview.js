@@ -16,6 +16,7 @@ import {
     addNestedTag,
     addNestedUser
 } from '../redux/actions';
+import '../css/RecipePreview.css';
 
 class RecipePreview extends Component {
 
@@ -39,7 +40,7 @@ class RecipePreview extends Component {
         }
     }
     handleClickReadMore = async () => {
-        console.log(this.props.menuPage)
+        console.log("CLICK READ MORE")
         const currentPage = this.getCurrentPageType(
             this.props.menuPage,
             this.props.homePage,
@@ -50,40 +51,39 @@ class RecipePreview extends Component {
             this.props.searchPage
         )
         console.log(currentPage)
-        this.props.addNestedPage(currentPage)
+        await this.props.addNestedPage(currentPage)
 
         switch(currentPage) {
             case "user":
-                this.props.addNestedUser(this.props.currentUser)
+                await this.props.addNestedUser(this.props.currentUser)
                 break
             case "tag":
-                this.props.addNestedTag(this.props.currentTag)
+                await this.props.addNestedTag(this.props.currentTag)
                 break
             default:
-                console.log("SHOULDNT BE HERE!!)*H#Q(*RH(@UQFON")
                 break
         }
 
         await this.props.setCurrentRecipe(this.props.recipe)
         switch(this.props.menuPage) {
             case "home":
-                //this.props.addNestedPage("")
-                this.props.setHomePage("recipe")
+                await this.props.setHomePage("recipe")
                 break
             case "profile":
-                this.props.setUserPage("recipe")
+                console.log("HERE")
+                await this.props.setUserPage("recipe")
                 break
             case "recipes":
-                this.props.setRecipesPage("recipe")
+                await this.props.setRecipesPage("recipe")
                 break
             case "favorites":
-                this.props.setFavoritesPage("recipe")
+                await this.props.setFavoritesPage("recipe")
                 break
             case "subscriptions":
-                this.props.setSubscriptionsPage("recipe")
+                await this.props.setSubscriptionsPage("recipe")
                 break
             case "search":
-                this.props.setSearchPage("recipe")
+                await this.props.setSearchPage("recipe")
                 break
             default:
                 return
@@ -100,21 +100,33 @@ class RecipePreview extends Component {
     }
 
     render() {
+        console.log(this.props.recipe)
         return (
             <Grid container item xs={12} direction="column">
-                <Card variant="outlined">
-                    <CardHeader title={this.props.recipe.title} />
-                    <CardContent>
-                        <Typography variant="body2" component="p">
-                            {this.props.recipe.description}
-                        </Typography>
-                    </CardContent>
-                    <CardActions >
-                        <IconButton onClick={this.handleFavoriteClick}>
-                            <FavoriteIcon color={this.props.favorites.includes(this.props.recipe.id) ? "error" : "inherit"}/>
-                        </IconButton>
-                        <Button size="small" onClick={this.handleClickReadMore}>Read More</Button>
-                    </CardActions>
+                <Card 
+                    variant="outlined" 
+                    style={{
+                        backgroundImage: `url(${this.props.recipe.image_url})`, 
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center'
+                    }} 
+                >
+                    <div className="overlay text">                        
+                        <CardHeader title={this.props.recipe.title} />
+                        <CardContent>
+                            <Typography variant="body2" component="p">
+                                {this.props.recipe.description}
+                            </Typography>
+                        </CardContent>
+                        <CardActions >
+                            <IconButton onClick={this.handleFavoriteClick}>
+                                <FavoriteIcon color={this.props.favorites.includes(this.props.recipe.id) ? "error" : "inherit"}/>
+                            </IconButton>
+                            <Button size="small" onClick={this.handleClickReadMore}>Read More</Button>
+                        </CardActions>
+                    </div>
+
                 </Card>
             </Grid>
         )

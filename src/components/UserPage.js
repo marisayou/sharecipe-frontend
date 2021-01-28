@@ -20,35 +20,34 @@ import {
 
 class UserPage extends Component {
 
-    handleBackButtonClick = () => {
-        console.log(this.props)
+    handleBackButtonClick = async () => {
         if (this.props.nested.pageStack.length > 0)
         {
             // pop the previous page type. 
             const prevPage = this.props.nested.pageStack[0]
-            this.props.popNestedPage()
+            await this.props.popNestedPage()
             switch (prevPage) {
                 case "recipe":
                     const prevRecipe = this.props.nested.recipeStack[0]
-                    this.props.setCurrentRecipe(prevRecipe)
+                    await this.props.setCurrentRecipe(prevRecipe)
                     switch(this.props.menuPage) {
                         case "home":
-                            this.props.setHomePage("recipe")
+                            await this.props.setHomePage("recipe")
                             break
                         case "profile":
-                            this.props.setUserPage("recipe")
+                            await this.props.setUserPage("recipe")
                             break
                         case "recipes":
-                            this.props.setRecipesPage("recipe")
+                            await this.props.setRecipesPage("recipe")
                             break
                         case "favorites":
-                            this.props.setFavoritesPage("recipe")
+                            await this.props.setFavoritesPage("recipe")
                             break
                         case "subscriptions":
-                            this.props.setSubscriptionsPage("recipe")
+                            await this.props.setSubscriptionsPage("recipe")
                             break
                         case "search":
-                            this.props.setSearchPage("recipe")
+                            await this.props.setSearchPage("recipe")
                             break
                         default:
                             return
@@ -57,7 +56,7 @@ class UserPage extends Component {
                 default:
                     console.log("WHAT THE FUCK DID YOU DO TO GET HERE")
                     // really shouldn't be here...
-                    this.props.setHomePage("default")
+                    await this.props.setHomePage("default")
                     break
             }
         }
@@ -65,22 +64,22 @@ class UserPage extends Component {
         {
             switch (this.props.menuPage) {
                 case "home":
-                    this.props.setHomePage("default")
+                    await this.props.setHomePage("default")
                     break
                 case "profile":
-                    this.props.setUserPage("default")
+                    await this.props.setUserPage("default")
                     break
                 case "recipes":
-                    this.props.setRecipesPage("default")
+                    await this.props.setRecipesPage("default")
                     break
                 case "favorites":
-                    this.props.setFavoritesPage("default")
+                    await this.props.setFavoritesPage("default")
                     break
                 case "subscriptions":
-                    this.props.setSubscriptionsPage("default")
+                    await this.props.setSubscriptionsPage("default")
                     break
                 case "search":
-                    this.props.setSearchPage("default")
+                    await this.props.setSearchPage("default")
                     break
                 default:
                     break
@@ -88,47 +87,23 @@ class UserPage extends Component {
         }
     }
 
-    renderPage = () => {
-        switch (this.props.userPage) {
-            case "form":
-                return <RecipeForm />
-            case "recipe":
-                return <RecipePage /> 
-            case "tag":
-                return <TagPage />
-            default:
-                return (
-                    <React.Fragment>
-                        <Grid container item xs={12} justify="center">
-                            <ProfileInfo selectMenuItem={this.props.selectMenuItem}/>
-                        </Grid>
-                        <br />
-                        <RecipesContainer/>
-                    </React.Fragment>
-                )   
-        }
-    }
-
     render() {
         return (
             <React.Fragment>
-                <Container maxWidth="md">
-
-                    {this.props.menuPage != "profile" ?
-                        <Grid container item xs={12}>
-                            <Grid item className="back-btn" xs={1}>
-                                <IconButton onClick={this.handleBackButtonClick}>
-                                    <ArrowBackIcon fontSize="large"/>
-                                </IconButton>
-                            </Grid>
-                        </Grid>
-                        : 
-                        null
-                    }
-                    <Grid container direction="column" alignItems="center">
-                        {this.renderPage()}
+                {this.props.userPage !== "default" ?
+                (<Grid container item xs={12} md={9}>
+                    <Grid item className="back-btn" xs={1}>
+                        <IconButton onClick={this.handleBackButtonClick}>
+                            <ArrowBackIcon fontSize="large"/>
+                        </IconButton>
                     </Grid>
-                </Container>
+                </Grid>) :
+                null}
+                <Grid container item xs={12} justify="center">
+                    <ProfileInfo selectMenuItem={this.props.selectMenuItem}/>
+                </Grid>
+                <br />
+                <RecipesContainer/>
             </React.Fragment>
         )
     }

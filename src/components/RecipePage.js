@@ -10,7 +10,6 @@ import {
     setFavoritesPage,
     setSubscriptionsPage,
     setSearchPage,
-    setCurrentRecipe, 
     deleteRecipe, 
     favorite,
     unfavorite,
@@ -51,28 +50,29 @@ class RecipePage extends Component {
         })
     }
 
-    handleTagClick = (tagName) => {
-        this.props.addNestedPage("recipe")
-        this.props.addNestedRecipe(this.props.currentRecipe)
-        this.props.setCurrentTag(tagName)
+    handleTagClick = async (tagName) => {
+        await this.props.addNestedPage("recipe")
+        await this.props.addNestedRecipe(this.props.currentRecipe)
+        await this.props.setCurrentTag(tagName)
+        console.log(this.props.menuPage)
         switch (this.props.menuPage) {
             case "home":
-                this.props.setHomePage("tag")
+                await this.props.setHomePage("tag")
                 break
             case "profile":
-                this.props.setUserPage("tag")
+                await this.props.setUserPage("tag")
                 break
             case "recipes":
-                this.props.setRecipesPage("tag")
+                await this.props.setRecipesPage("tag")
                 break
             case "favorites":
-                this.props.setFavoritesPage("tag")
+                await this.props.setFavoritesPage("tag")
                 break
             case "subscriptions":
-                this.props.setSubscriptionsPage("tag")
+                await this.props.setSubscriptionsPage("tag")
                 break
             case "search":
-                this.props.setSearchPage("tag")
+                await this.props.setSearchPage("tag")
                 break
             default:
                 return
@@ -104,52 +104,47 @@ class RecipePage extends Component {
         })
     }
 
-    handleUsernameClick = () => {
-        this.props.addNestedRecipe(this.props.currentRecipe)
-        this.props.addNestedPage("recipe")
-        this.props.setCurrentUser(this.props.currentRecipe.user.id, this.props.menuPage, true)
+    handleUsernameClick = async () => {
+        console.log("HANDLE USERNAME CLICK")
+        await this.props.setCurrentUser(this.props.currentRecipe.user.id, this.props.menuPage)
+        await this.props.addNestedRecipe(this.props.currentRecipe)
+        await this.props.addNestedPage("recipe")
     }
 
-    handleBackButtonClick = () => {
-
-        // 1. check if we have nested page. 
-        //  if we do, pop and go to the right "page" in the stack.
-        // else:
-        //  go to the "menuPage" default.
-
+    handleBackButtonClick = async () => {
         if (this.props.nested.pageStack.length > 0)
         {
             // pop the previous page type. 
             const prevPage = this.props.nested.pageStack[0]
-            this.props.popNestedPage()
+            await this.props.popNestedPage()
             switch (prevPage) {
                 case "user":
                     const prevUser = this.props.nested.userStack[0]
-                    this.props.popNestedUser()
-                    this.props.setCurrentUser(prevUser.id, this.props.menuPage)
+                    await this.props.popNestedUser()
+                    await this.props.setCurrentUser(prevUser.id, this.props.menuPage)
                     break
                 case "tag":
                     const prevTag = this.props.nested.tagStack[0]
-                    this.props.popNestedTag()
-                    this.props.setCurrentTag(prevTag)
+                    await this.props.popNestedTag()
+                    await this.props.setCurrentTag(prevTag)
                     switch (this.props.menuPage) {
                         case "home":
-                            this.props.setHomePage("tag")
+                            await this.props.setHomePage("tag")
                             break
                         case "profile":
-                            this.props.setUserPage("tag")
+                            await this.props.setUserPage("tag")
                             break
                         case "recipes":
-                            this.props.setRecipesPage("tag")
+                            await this.props.setRecipesPage("tag")
                             break
                         case "favorites":
-                            this.props.setFavoritesPage("tag")
+                            await this.props.setFavoritesPage("tag")
                             break
                         case "subscriptions":
-                            this.props.setSubscriptionsPage("tag")
+                            await this.props.setSubscriptionsPage("tag")
                             break
                         case "search":
-                            this.props.setSearchPage("tag")
+                            await this.props.setSearchPage("tag")
                             break
                         default:
                             break
@@ -158,22 +153,22 @@ class RecipePage extends Component {
                 case "default":
                     switch (this.props.menuPage) {
                         case "home":
-                            this.props.setHomePage("default")
+                            await this.props.setHomePage("default")
                             break
                         case "profile":
-                            this.props.setUserPage("default")
+                            await this.props.setUserPage("default")
                             break
                         case "recipes":
-                            this.props.setRecipesPage("default")
+                            await this.props.setRecipesPage("default")
                             break
                         case "favorites":
-                            this.props.setFavoritesPage("default")
+                            await this.props.setFavoritesPage("default")
                             break
                         case "subscriptions":
-                            this.props.setSubscriptionsPage("default")
+                            await this.props.setSubscriptionsPage("default")
                             break
                         case "search":
-                            this.props.setSearchPage("default")
+                            await this.props.setSearchPage("default")
                             break
                         default:
                             break
@@ -182,7 +177,7 @@ class RecipePage extends Component {
                 default:
                     console.log("WHAT THE FUCK DID YOU DO TO GET HERE")
                     // really shouldn't be here...
-                    this.props.setHomePage("default")
+                    await this.props.setHomePage("default")
             }
         }
         else
@@ -263,7 +258,7 @@ class RecipePage extends Component {
     render() {
         console.log(this.props.currentRecipe)
         console.log(this.props.user)
-        console.log(this.props.favorites)
+        console.log(this.props.userPage)
         console.log(this.props.nested)
         return (
             <React.Fragment>
@@ -275,10 +270,12 @@ class RecipePage extends Component {
                                 <ArrowBackIcon fontSize="large"/>
                             </IconButton>
                         </Grid>
-                        <Grid item xs={10}><h1 id="recipe-title">{this.props.title}</h1></Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button onClick={this.handleUsernameClick}>{!this.props.nested.userStack.length != 0 ? this.props.currentRecipe.user.username :null}</Button>
+                        <h1 id="recipe-title">{this.props.title}</h1>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button onClick={this.handleUsernameClick}>{ this.props.currentRecipe.user.username }</Button>
                     </Grid>
                     <Grid container item justify="center">
                         <IconButton onClick={this.handleFavoriteClick}>
@@ -367,9 +364,9 @@ class RecipePage extends Component {
     }
 }
 
-const mapStateToProps = ({ user, favorites, currentRecipe, menuPage, nested }) => {
+const mapStateToProps = ({ userPage, user, favorites, currentRecipe, menuPage, nested }) => {
     const { id, title, description, ingredients, instructions, tags } = currentRecipe
-    return { user, favorites, currentRecipe, menuPage, id, title, description, ingredients, instructions, tags, nested }
+    return { userPage, user, favorites, currentRecipe, menuPage, id, title, description, ingredients, instructions, tags, nested }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -380,13 +377,12 @@ const mapDispatchToProps = dispatch => {
         setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
         setSubscriptionsPage: (page) => dispatch(setSubscriptionsPage(page)),
         setSearchPage: (page) => dispatch(setSearchPage(page)),
-        setCurrentRecipe: (recipe) => dispatch(setCurrentRecipe(recipe)),
         deleteRecipe: (id) => dispatch(deleteRecipe(id)),
         favorite: (recipeId, userId) => dispatch(favorite(recipeId, userId)),
         unfavorite: (recipeId, userId) => dispatch(unfavorite(recipeId, userId)),
         addComment: (userId, recipeId, comment) => dispatch(addComment(userId, recipeId, comment)),
         setCurrentTag: (tagName) => dispatch(setCurrentTag(tagName)),
-        setCurrentUser: (userId, menuPage, isNested) => dispatch(setCurrentUser(userId, menuPage, isNested)),
+        setCurrentUser: (userId, menuPage) => dispatch(setCurrentUser(userId, menuPage)),
         addNestedUser: (user) => dispatch(addNestedUser(user)),
         popNestedUser: () => dispatch(popNestedUser()),
         addNestedRecipe: (recipe) => dispatch(addNestedRecipe(recipe)),

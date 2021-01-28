@@ -4,7 +4,7 @@ import Menu from './Menu';
 import { AppBar, Grid, InputBase, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import '../css/TopBar.css';
-import { setSearchTerm, getSearchResults } from '../redux/actions';
+import { setSearchTerm, getSearchResults, resetNested } from '../redux/actions';
 
 class TopBar extends Component {
 
@@ -18,6 +18,13 @@ class TopBar extends Component {
 
   handleSearchSubmit = (e) => {
     e.preventDefault()
+
+    if (this.state.search.replace(" ", "") === "") { 
+      this.setState({ search: "" })
+      return 
+    }
+    
+    this.props.resetNested()
     // const searchTerms = this.state.search.split(" ").filter(w => w !== "")
     this.props.getSearchResults(this.state.search)
     this.props.setSearchTerm(this.state.search)
@@ -102,7 +109,8 @@ const mapStateToProps = ({ screenWidth }) => {
 const mapDispatchToProps = dispatch => {
   return {
     setSearchTerm: (searchTerm) => dispatch(setSearchTerm(searchTerm)),
-    getSearchResults: (searchTerm) => dispatch(getSearchResults(searchTerm))
+    getSearchResults: (searchTerm) => dispatch(getSearchResults(searchTerm)),
+    resetNested: () => dispatch(resetNested())
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button } from "@material-ui/core";
-import { setSearchPage, setCurrentTag } from '../redux/actions';
+import { setSearchPage, setCurrentTag, addNestedPage } from '../redux/actions';
 import '../css/SearchResults.css'
 
 class SearchTags extends Component {
@@ -23,8 +23,9 @@ class SearchTags extends Component {
     }
 
     handleTagClick = async (tagName) => {
+        await this.props.addNestedPage("default")
         await this.props.setCurrentTag(tagName)
-        this.props.setSearchPage("tag")
+        await this.props.setSearchPage("tag")
     }
 
     render() {
@@ -46,7 +47,8 @@ const mapStateToProps = ({ searchTags, searchTerm }) => {
 const mapDispatchToProps = dispatch => {
     return { 
         setSearchPage: (page) => dispatch(setSearchPage(page)),
-        setCurrentTag: (tagName) => dispatch(setCurrentTag(tagName))
+        setCurrentTag: (tagName) => dispatch(setCurrentTag(tagName)),
+        addNestedPage: (page) => dispatch(addNestedPage(page))
     }
 } 
 

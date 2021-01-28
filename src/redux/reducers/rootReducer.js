@@ -28,7 +28,6 @@ const initialState = {
     searchTerm: null,
     searchTags: [],
     nested: {
-        "isNested": false,
         "userStack": [],
         "recipeStack": [],
         "pageStack": [],
@@ -109,15 +108,8 @@ function subscriptionsReducer(state = initialState.subscriptions, action) {
 }
 
 function nestedStateReducer(state = initialState.nested, action) {
-    console.log(action.type)
-    console.log(action.payload)
     switch (action.type) {
-        case "GET_NESTED_STATE":
-            return action.payload
-        case "SET_NESTED_STATE":
-            return {...state, "isNested": action.payload.isNested}
         case "PUSH_NESTED_USER":
-            console.log(action.payload)
             return {...state, "userStack": [action.payload, ...state.userStack]}
         case "POP_NESTED_USER":
             return {...state, "userStack": state.userStack.slice(1)}
@@ -133,6 +125,14 @@ function nestedStateReducer(state = initialState.nested, action) {
             return {...state, "tagStack": [action.payload, ...state.tagStack]}
         case "POP_TAG":
             return {...state, "tagStack": state.tagStack.slice(1)}
+        case "RESET_NESTED":
+        case "LOGOUT":
+            return {
+                "userStack": [],
+                "recipeStack": [],
+                "pageStack": [],
+                "tagStack": [],
+            }
         default:
             return state
     }
@@ -141,7 +141,6 @@ function nestedStateReducer(state = initialState.nested, action) {
 function recipesReducer(state = initialState.recipes, action) {
     switch (action.type) {
         case "GET_USER_RECIPES":
-            console.log(action.payload)
             return action.payload.map(rec => {
                 return {
                     id: rec.id, 
@@ -182,6 +181,7 @@ function recipesReducer(state = initialState.recipes, action) {
             })
             return search_recipes
         case "SET_CURRENT_USER":
+            console.log(action.payload)
             const user_recipes = action.payload.recipes.map(rec => {
                 return {
                     id: rec.id, 
@@ -214,6 +214,7 @@ function favoritesReducer(state = initialState.favorites, action) {
 }
 
 function menuPageReducer(state = initialState.menuPage, action) {
+    console.log(action.type, action.payload)
     switch (action.type) {
         case "SET_MENU_PAGE":
             return action.payload
@@ -227,6 +228,7 @@ function menuPageReducer(state = initialState.menuPage, action) {
 function homePageReducer(state = initialState.homePage, action) {
     switch (action.type) {
         case "SET_HOME_PAGE":
+            console.log(action.payload)
             return action.payload
         case "LOGOUT":
             return null
@@ -238,6 +240,7 @@ function homePageReducer(state = initialState.homePage, action) {
 function userPageReducer(state = initialState.userPage, action) {
     switch (action.type) {
         case "SET_USER_PAGE":
+            console.log(action);
             return action.payload
         case "ADD_NEW_RECIPE":
             return action.payload.page
@@ -245,6 +248,35 @@ function userPageReducer(state = initialState.userPage, action) {
             return action.payload.page
         case "LOGOUT":
             return null
+        default:
+            return state
+    }
+}
+
+function allRecipesPageReducer(state = initialState.allRecipesPage, action) {
+    switch (action.type) {
+        case "SET_RECIPES_PAGE":
+            return action.payload
+        case "LOGOUT":
+            return null
+        default:
+            return state
+    }
+}
+
+function favoritesPageReducer(state = initialState.favoritesPage, action) {
+    switch (action.type) {
+        case "SET_FAVORITES_PAGE":
+            return action.payload
+        default:
+            return state
+    }
+}
+
+function searchPageReducer(state = initialState.searchPage, action) {
+    switch (action.type) {
+        case "SET_SEARCH_PAGE":
+            return action.payload
         default:
             return state
     }
@@ -326,35 +358,6 @@ function currentRecipeReducer(state = initialState.currentRecipe, action) {
 function currentTagReducer(state = initialState.currentTag, action) {
     switch (action.type) {
         case "SET_CURRENT_TAG":
-            return action.payload
-        default:
-            return state
-    }
-}
-
-function allRecipesPageReducer(state = initialState.allRecipesPage, action) {
-    switch (action.type) {
-        case "SET_RECIPES_PAGE":
-            return action.payload
-        case "LOGOUT":
-            return null
-        default:
-            return state
-    }
-}
-
-function favoritesPageReducer(state = initialState.favoritesPage, action) {
-    switch (action.type) {
-        case "SET_FAVORITES_PAGE":
-            return action.payload
-        default:
-            return state
-    }
-}
-
-function searchPageReducer(state = initialState.searchPage, action) {
-    switch (action.type) {
-        case "SET_SEARCH_PAGE":
             return action.payload
         default:
             return state

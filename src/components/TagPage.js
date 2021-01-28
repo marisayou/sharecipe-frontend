@@ -16,36 +16,37 @@ import {
 
 class TagPage extends Component {
 
-    handleBackButtonClick = () => {
-        console.log(this.props)
+    handleBackButtonClick = async () => {
         if (this.props.nested.pageStack.length > 0) {
             const prevPage = this.props.nested.pageStack[0]
-            this.props.popNestedPage()
+            await this.props.popNestedPage()
 
             switch (prevPage) {
                 case 'recipe':
+                    
                     const prevRecipe = this.props.nested.recipeStack[0]
-                    this.props.popNestedRecipe()
-                    this.props.setCurrentRecipe(prevRecipe)
+                    await this.props.popNestedRecipe()
+                    await this.props.setCurrentRecipe(prevRecipe)
 
                     switch(this.props.menuPage) {
                         case "home":
-                            this.props.setHomePage("recipe")
+                            await this.props.setHomePage("recipe")
                             break
                         case "profile":
-                            this.props.setUserPage("recipe")
+                            await this.props.setUserPage("recipe")
                             break
                         case "recipes":
-                            this.props.setRecipesPage("recipe")
+                            await this.props.setRecipesPage("recipe")
                             break
                         case "favorites":
-                            this.props.setFavoritesPage("recipe")
+                            console.log("!!!!!!")
+                            await this.props.setFavoritesPage("recipe")
                             break
                         case "subscriptions":
-                            this.props.setSubscriptionsPage("recipe")
+                            await this.props.setSubscriptionsPage("recipe")
                             break
                         case "search":
-                            this.props.setSearchPage("recipe")
+                            await this.props.setSearchPage("recipe")
                             break
                         default:
                             return
@@ -57,22 +58,22 @@ class TagPage extends Component {
         } else {
             switch(this.props.menuPage) {
                 case "home":
-                    this.props.setHomePage("default")
+                    await this.props.setHomePage("default")
                     break
                 case "profile":
-                    this.props.setUserPage("default")
+                    await this.props.setUserPage("default")
                     break
                 case "recipes":
-                    this.props.setRecipesPage("default")
+                    await this.props.setRecipesPage("default")
                     break
                 case "favorites":
-                    this.props.setFavoritesPage("default")
+                    await this.props.setFavoritesPage("default")
                     break
                 case "subscriptions":
-                    this.props.setSubscriptionsPage("default")
+                    await this.props.setSubscriptionsPage("default")
                     break
                 case "search":
-                    this.props.setSearchPage("default")
+                    await this.props.setSearchPage("default")
                     break
                 default:
                     return
@@ -81,7 +82,6 @@ class TagPage extends Component {
     }
 
     render() {
-        console.log(this.props.currentTag)
         return (
             <React.Fragment>
                 <Grid item>

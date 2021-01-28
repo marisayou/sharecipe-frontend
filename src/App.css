@@ -50,3 +50,8 @@ form {
 .signup-link {
     text-decoration: underline;
 }
+
+.back-btn {
+    position: absolute;
+    padding-top: 12px;
+}

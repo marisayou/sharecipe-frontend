@@ -14,6 +14,7 @@ class Home extends Component {
     }    
 
     renderPage = () => {
+        console.log(this.props.homePage)
         switch (this.props.homePage) {
             case "recipe":
                 return <RecipePage /> 

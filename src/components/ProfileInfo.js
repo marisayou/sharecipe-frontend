@@ -13,7 +13,6 @@ class ProfileInfo extends Component {
     }
 
     handleSubscribeClick = () => {
-
         this.props.subscriptions.map(sub => sub.id).includes(this.props.currentUser.id) ? 
             this.props.unsubscribe(this.props.user.id, this.props.currentUser.id) :
             this.props.subscribe(this.props.user.id, this.props.currentUser.id)

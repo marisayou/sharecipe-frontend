@@ -16,7 +16,7 @@ import {
 } from './redux/actions.js';
 import UserForm from './components/UserForm';
 import Home from './components/Home';
-import UserPage from './components/UserPage';
+import ProfilePage from './components/ProfilePage';
 import FavoritesPage from './components/FavoritesPage';
 import SubscriptionsPage from './components/SubscriptionsPage';
 import AllRecipesPage from './components/AllRecipesPage';
@@ -58,11 +58,15 @@ class App extends Component {
   }
 
   renderPage = () => {
+    console.log("APP", this.state.route)
     switch (this.state.route) {
       case "Profile": 
-        this.props.setCurrentUser(this.props.user.id, "profile", false)
+        if (this.props.nested.pageStack.length === 0){
+          this.props.setCurrentUser(this.props.user.id, "profile")
+        }
         this.props.setMenuPage("profile")
-        return <UserPage selectMenuItem={this.selectMenuItem}/>
+        this.props.setUserPage("default")
+        return <ProfilePage selectMenuItem={this.selectMenuItem}/>
       case "Favorites":
         this.props.setMenuPage("favorites")
         this.props.setFavoritesPage("default")
@@ -147,6 +151,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.props.nested)
     return (
       <div className="App">
         {this.props.user ? <TopBar selectMenuItem={this.selectMenuItem}/> : null}
@@ -174,8 +179,8 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ user }) => {
-  return { user }
+const mapStateToProps = ({ user, nested }) => {
+  return { user, nested }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -190,7 +195,7 @@ const mapDispatchToProps = dispatch => {
     setFavoritesPage: (page) => dispatch(setFavoritesPage(page)),
     setSubscriptionsPage: (page) => dispatch(setSubscriptionsPage(page)),
     setSearchPage: (page) => dispatch(setSearchPage(page)),
-    setCurrentUser: (userId, page, isNested) => dispatch(setCurrentUser(userId, page, isNested))
+    setCurrentUser: (userId, page) => dispatch(setCurrentUser(userId, page))
   }
 }
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Toolbar, Grid, Drawer, Button, List, Divider, ListItem, ListItemText } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
+import { resetNested } from '../redux/actions';
 
 class Menu extends Component {
   state = {
@@ -23,6 +24,7 @@ class Menu extends Component {
         {["Home", "Profile", "Favorites", "Subscriptions", "Recipes"].map((text) => (
           <ListItem button key={text} 
             onClick={() => {
+              this.props.resetNested()
               this.props.selectMenuItem(text)
             }}
           >
@@ -82,4 +84,10 @@ const mapStateToProps = ({ user, screenWidth }) => {
   return { user, screenWidth }
 }
 
-export default connect(mapStateToProps)(Menu)
+const mapDispatchToProps = dispatch => {
+  return {
+    resetNested: () => dispatch(resetNested())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu)
