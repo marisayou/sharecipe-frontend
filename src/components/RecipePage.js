@@ -271,7 +271,7 @@ class RecipePage extends Component {
                             </IconButton>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={9} md={11}>
                         <h1 id="recipe-title">{this.props.title}</h1>
                     </Grid>
                     <Grid item xs={12}>

@@ -34,6 +34,18 @@ p {
     padding-top: 20px;
 }
 
+.btn-container button {
+    border-color: #dd7454;
+    color: #dd7454;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.btn-container button:hover {
+    background-color: #dd7454;
+    color: white;
+}
+
 form {
     width: 100%;
 }
@@ -54,4 +66,10 @@ form {
 .back-btn {
     position: absolute;
     padding-top: 12px;
+}
+
+.no-recipes {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
 }

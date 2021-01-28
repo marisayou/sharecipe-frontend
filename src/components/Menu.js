@@ -28,7 +28,7 @@ class Menu extends Component {
               this.props.selectMenuItem(text)
             }}
           >
-            <ListItemText primary={text} />
+            <ListItemText primary={text.toUpperCase()} />
           </ListItem>
         ))}    
       </List>
@@ -36,7 +36,7 @@ class Menu extends Component {
       <List>
         {["Settings", "Logout"].map((text) => (
           <ListItem button key={text} onClick={() => { this.props.selectMenuItem(text) }}>
-            <ListItemText primary={text} />
+            <ListItemText primary={text.toUpperCase()} />
           </ListItem>
         ))}
       </List>

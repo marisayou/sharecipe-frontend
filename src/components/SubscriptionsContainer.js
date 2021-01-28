@@ -6,6 +6,9 @@ import UserPreview from './UserPreview';
 class SubscriptionsContainer extends Component {
 
     renderUserPreviews = () => {
+        if (this.props.subscriptions.length === 0) {
+            return <p className="no-recipes">You haven't subscribed to any users yet!</p>
+        }
         return this.props.subscriptions.map((user, idx) => {
             return <UserPreview key={idx} user={user} />
         })

@@ -1,15 +1,3 @@
-
-#profile-photo-container {
-    width: 100%;
-}
-
-#profile-photo {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-}
-
 #profile-username-div {
     height: min-content;
     display: flex;
@@ -24,11 +12,17 @@
     text-align: center;
 } 
 
-#profile-name {
-    margin-left: 16px;
-    margin-bottom: 0;
-}
-
 #user-bio { 
     margin-left: 16px;
+}
+
+#profile-name-div {
+    position: absolute;
+    margin-top: 50px;
+    text-align: center;
+}
+
+#profile-stats {
+    margin-top: 35px;
+    color: #dd7454;
 }

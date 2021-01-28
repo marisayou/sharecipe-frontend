@@ -146,7 +146,7 @@ export const getRecipes = (type, param) => {
         let resource
         switch (type) {
             case "home":
-                resource = 'http://localhost:3000/recipes/newest'
+                resource = 'http://localhost:3000/recipes/featured'
                 break
             case "recipes":
                 resource = 'http://localhost:3000/recipes'

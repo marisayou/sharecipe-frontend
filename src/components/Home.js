@@ -27,7 +27,7 @@ class Home extends Component {
                     <React.Fragment>
                         <Grid container direction="column" alignItems="center">
                             <Grid item>
-                                <h1>Welcome, {this.props.user.name}!</h1>
+                                <h1>Welcome, {this.props.user ? this.props.user.name : null}!</h1>
                             </Grid>
                             <Grid item>
                                 <h3>This week's featured recipes</h3>

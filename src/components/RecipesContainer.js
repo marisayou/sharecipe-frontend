@@ -69,6 +69,21 @@ class RecipesContainer extends Component {
     }
 
     renderRecipePreviews = () => {
+        if (this.props.recipes.length === 0) {
+            switch (this.props.menuPage) {
+                case "profile":
+                    if (this.props.userPage === "default") {
+                        return <p className="no-recipes">You don't have any recipes yet!</p>
+                    }
+                    break
+                case "favorites":
+                    if (this.props.favoritesPage === "default") {
+                        return <p className="no-recipes">You don't have any favorite recipes yet!</p>
+                    }
+                    break
+                default: return
+            }
+        }
         return this.props.recipes.map((recipe, idx) => {
             return <RecipePreview key={idx} recipe={recipe}/>
         })
@@ -76,7 +91,7 @@ class RecipesContainer extends Component {
 
     render() {
         return (
-            <Grid className="container" container item xs={12} spacing={1}>
+            <Grid className="container" container item xs={12} spacing={1} justify="center">
                 {this.renderRecipePreviews()}
             </Grid>
         )
