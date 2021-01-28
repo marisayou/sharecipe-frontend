@@ -175,9 +175,9 @@ class RecipePage extends Component {
                     } 
                     break
                 default:
-                    console.log("WHAT THE FUCK DID YOU DO TO GET HERE")
                     // really shouldn't be here...
                     await this.props.setHomePage("default")
+                    break
             }
         }
         else
@@ -308,7 +308,7 @@ class RecipePage extends Component {
                         </Grid>
                     </Grid>
                     <br />
-                    {this.props.currentRecipe.user.id === this.props.user.id ?
+                    {this.props.currentRecipe.user.id === this.props.user.id && this.props.menuPage === "profile" ?
                         (<Grid className="btn-container" container item justify="center">
                             <Button variant="outlined" 
                                 onClick={() => this.props.setUserPage("form")}

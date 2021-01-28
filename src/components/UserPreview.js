@@ -10,10 +10,9 @@ class UserPreview extends Component {
     }
 
     render() {
-        console.log(this.props.user)
         return (
             <Grid container item xs={12} direction="column">
-                <Card variant="outlined">
+                <Card variant="outlined" style={{borderColor: "#f8a186bb"}}>
                     <CardHeader title={this.props.user.username} 
                         subheader={`${this.props.user.name} - 
                         ${this.props.user.recipes_count} ${this.props.user.recipes_count === 1 ? "recipe" : "recipes"} - 

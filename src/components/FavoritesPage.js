@@ -23,7 +23,9 @@ class FavoritesPage extends Component {
                         <Grid item>
                             <h1>Favorites</h1>
                         </Grid>
-                        <RecipesContainer/>
+                        <Grid container item xs={12} md={9} justify="center">
+                            <RecipesContainer/>
+                        </Grid>
                     </React.Fragment>
                 )   
         }

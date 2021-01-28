@@ -25,17 +25,17 @@ class Home extends Component {
             default:
                 return (
                     <React.Fragment>
-                        <Container maxWidth="md">
-                            <Grid container direction="column" alignItems="center">
-                                <Grid item>
-                                    <h1>Welcome, {this.props.user ? this.props.user.name : ""}</h1>
-                                </Grid>
-                                <Grid item>
-                                    <h3>Here are the newest recipes!</h3>
-                                </Grid>
+                        <Grid container direction="column" alignItems="center">
+                            <Grid item>
+                                <h1>Welcome, {this.props.user.name}!</h1>
+                            </Grid>
+                            <Grid item>
+                                <h3>This week's featured recipes</h3>
+                            </Grid>
+                            <Grid container item xs={12} md={9} justify="center">
                                 <RecipesContainer />
                             </Grid>
-                        </Container>
+                        </Grid>
                     </React.Fragment>
                 )   
         }

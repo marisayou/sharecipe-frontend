@@ -58,14 +58,13 @@ class App extends Component {
   }
 
   renderPage = () => {
-    console.log("APP", this.state.route)
     switch (this.state.route) {
       case "Profile": 
         if (this.props.nested.pageStack.length === 0){
-          this.props.setCurrentUser(this.props.user.id, "profile")
+          this.props.setCurrentUser(this.props.user.id, "profileDefault")
         }
         this.props.setMenuPage("profile")
-        this.props.setUserPage("default")
+        // this.props.setUserPage("default")
         return <ProfilePage selectMenuItem={this.selectMenuItem}/>
       case "Favorites":
         this.props.setMenuPage("favorites")
@@ -75,7 +74,7 @@ class App extends Component {
         this.props.setMenuPage("subscriptions")
         this.props.setSubscriptionsPage("default")
         return <SubscriptionsPage />
-      case "Recipes":
+      case "Browse Recipes":
         this.props.setMenuPage("recipes")
         this.props.setRecipesPage("default")
         return <AllRecipesPage />
@@ -117,7 +116,6 @@ class App extends Component {
   }
 
   handleAuthFetch = (data, request, method) => {
-    console.log(request)
     fetch(request, {
       method: method,
       headers: { 

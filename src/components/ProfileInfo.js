@@ -51,7 +51,7 @@ class ProfileInfo extends Component {
                     </Grid>
                 </Grid>
 
-                {this.props.currentUser.id === this.props.user.id ? 
+                {this.props.currentUser.id === this.props.user.id && this.props.menuPage === "profile" ? 
                 (<Grid container item direction="row" justify="center">
                     <Grid container item className="btn-container" justify="center">
                         
@@ -69,7 +69,9 @@ class ProfileInfo extends Component {
                         </Button> 
                         
                     </Grid>
-                </Grid>) : 
+                </Grid>) : null}
+                
+                {this.props.currentUser.id !== this.props.user.id ?
                 (<Grid container item direction="row" justify="center">
                     <Grid container item className="btn-container" justify="center">
                         
@@ -82,7 +84,7 @@ class ProfileInfo extends Component {
                         </Button>
                         
                     </Grid>
-                </Grid>)}
+                </Grid>) : null}
             </Grid>
         )
     }

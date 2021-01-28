@@ -19,7 +19,7 @@ class SearchResults extends Component {
                 return <TagPage />
             default:
                 return (
-                    <React.Fragment>
+                    <Grid container item xs={12} md={9}>
                         <Grid container item xs={12} justify="center">
                             <Grid item>
                                 <h1>Search Results</h1>
@@ -27,7 +27,7 @@ class SearchResults extends Component {
                             <SearchTags />
                             <SearchRecipes />
                         </Grid>
-                    </React.Fragment>
+                    </Grid>
                 )   
         }
     }

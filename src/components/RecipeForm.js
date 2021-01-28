@@ -40,7 +40,7 @@ class RecipeForm extends Component {
         
     }
 
-    handleRecipeFormSubmit = (e) => {
+    handleRecipeFormSubmit = async (e) => {
         e.preventDefault()
 
         if (!this.props.currentRecipe && document.querySelector('input[type="file"]').files.length === 0) {
@@ -57,17 +57,11 @@ class RecipeForm extends Component {
         formData.append('image', document.querySelector('input[type="file"]').files[0])
 
         if (this.props.currentRecipe) {
-            this.props.editRecipe(this.props.currentRecipe.id, formData)
+            await this.props.editRecipe(this.props.currentRecipe.id, formData)
         } else {
             formData.append('user_id', this.props.user.id)
-            this.props.addNewRecipe(formData)
+            await this.props.addNewRecipe(formData)
         }
-
-        // if (this.props.currentRecipe) {
-        //     this.props.editRecipe(recipe, tags, this.props.currentRecipe.id, image)
-        // } else {
-        //     this.props.addNewRecipe(this.props.user.id, recipe, tags, image)
-        // }
     }
 
     ingredientFields = () => {

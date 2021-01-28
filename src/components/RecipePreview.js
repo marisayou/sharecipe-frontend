@@ -40,7 +40,6 @@ class RecipePreview extends Component {
         }
     }
     handleClickReadMore = async () => {
-        console.log("CLICK READ MORE")
         const currentPage = this.getCurrentPageType(
             this.props.menuPage,
             this.props.homePage,
@@ -50,7 +49,6 @@ class RecipePreview extends Component {
             this.props.allRecipesPage,
             this.props.searchPage
         )
-        console.log(currentPage)
         await this.props.addNestedPage(currentPage)
 
         switch(currentPage) {
@@ -90,6 +88,14 @@ class RecipePreview extends Component {
         }
     }
 
+    renderDescription = () => {
+        const description = this.props.recipe.description
+        if (description.length <= 125) {
+            return description
+        }
+        return description.substring(0, 125) + '...'
+    }
+
     handleFavoriteClick = () => {
         const recipeId = this.props.recipe.id
         const userId = this.props.user.id
@@ -113,17 +119,17 @@ class RecipePreview extends Component {
                     }} 
                 >
                     <div className="overlay text">                        
-                        <CardHeader title={this.props.recipe.title} />
+                        <CardHeader title={this.props.recipe.title} subheader={this.props.recipe.user.username}/>
                         <CardContent>
                             <Typography variant="body2" component="p">
-                                {this.props.recipe.description}
+                                {this.renderDescription()}
                             </Typography>
                         </CardContent>
                         <CardActions >
                             <IconButton onClick={this.handleFavoriteClick}>
                                 <FavoriteIcon color={this.props.favorites.includes(this.props.recipe.id) ? "error" : "inherit"}/>
                             </IconButton>
-                            <Button size="small" onClick={this.handleClickReadMore}>Read More</Button>
+                            <Button color="inherit" onClick={this.handleClickReadMore}>Read More</Button>
                         </CardActions>
                     </div>
 

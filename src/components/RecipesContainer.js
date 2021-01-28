@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid } from "@material-ui/core";
-import { getUserRecipes, getRecipes, getTagRecipes } from '../redux/actions';
+import { 
+    getUserRecipes, 
+    getRecipes, 
+    getTagRecipes, 
+    getSearchResults 
+} from '../redux/actions';
 import RecipePreview from './RecipePreview';
 
 class RecipesContainer extends Component {
 
     componentDidMount() {
+        console.log(this.props.currentUser)
         switch (this.props.menuPage) {
             case "home":
                 if (this.props.homePage !== "user") {
@@ -14,12 +20,19 @@ class RecipesContainer extends Component {
                         this.props.getRecipes("home", null) :
                         this.props.getTagRecipes(this.props.currentTag)
                 }
+                else {
+                    this.props.getUserRecipes(this.props.currentUser.id)
+                }
                 break
             case "profile":
+                console.log(this.props.userPage)
                 if (this.props.userPage !== "user" && this.props.userPage !== "default") {
                     this.props.userPage !== "tag" ?
                         this.props.getUserRecipes(this.props.user.id) :
                         this.props.getTagRecipes(this.props.currentTag)
+                }
+                else if (this.props.userPage === "default") {
+                    this.props.getUserRecipes(this.props.user.id)
                 }
                 break
             case "recipes":
@@ -28,6 +41,9 @@ class RecipesContainer extends Component {
                         this.props.getRecipes("recipes", this.props.user.id) :
                         this.props.getTagRecipes(this.props.currentTag)
                 }
+                else {
+                    this.props.getUserRecipes(this.props.currentUser.id)
+                }
                 break
             case "favorites":
                 if (this.props.favoritesPage !== "user") {
@@ -35,10 +51,16 @@ class RecipesContainer extends Component {
                         this.props.getRecipes("favorites", this.props.user.id) :
                         this.props.getTagRecipes(this.props.currentTag)
                 }
+                else {
+                    this.props.getUserRecipes(this.props.currentUser.id)
+                }
                 break
             case "search":
                 if (this.props.searchPage === "tag") {
                     this.props.getTagRecipes(this.props.currentTag)
+                }
+                else if (this.props.searchPage === "default") {
+                    this.props.getSearchResults(this.props.searchTerm)
                 }
                 break
             default:
@@ -54,22 +76,23 @@ class RecipesContainer extends Component {
 
     render() {
         return (
-            <Grid className="container" container item xs={12} md={9} spacing={1}>
+            <Grid className="container" container item xs={12} spacing={1}>
                 {this.renderRecipePreviews()}
             </Grid>
         )
     }
 }
 
-const mapStateToProps = ({ user, menuPage, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag }) => {
-    return { user, menuPage, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag }
+const mapStateToProps = ({ user, currentUser, menuPage, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag, searchTerm }) => {
+    return { user, currentUser, menuPage, recipes, homePage, userPage, allRecipesPage, favoritesPage, searchPage, currentTag, searchTerm }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         getUserRecipes: (userId) => dispatch(getUserRecipes(userId)),
         getRecipes: (type, userId) => dispatch(getRecipes(type, userId)),
-        getTagRecipes: (tagName) => dispatch(getTagRecipes(tagName))
+        getTagRecipes: (tagName) => dispatch(getTagRecipes(tagName)),
+        getSearchResults: (searchTerm) => dispatch(getSearchResults(searchTerm))
     }
 }
 

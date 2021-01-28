@@ -94,6 +94,9 @@ export const setCurrentUser = (userId, menuPage) => {
                 case "profile":
                     dispatch({ type: "SET_USER_PAGE", payload: "user" })
                     break
+                case "profileDefault":
+                    dispatch({ type: "SET_USER_PAGE", payload: "default" })
+                    break
                 case "recipes":
                     dispatch({ type: "SET_RECIPES_PAGE", payload: "user" })
                     break

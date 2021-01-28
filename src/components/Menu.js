@@ -21,7 +21,7 @@ class Menu extends Component {
       onKeyDown={() => this.toggleDrawer(false)}
     >
       <List>
-        {["Home", "Profile", "Favorites", "Subscriptions", "Recipes"].map((text) => (
+        {["Home", "Profile", "Favorites", "Subscriptions", "Browse Recipes"].map((text) => (
           <ListItem button key={text} 
             onClick={() => {
               this.props.resetNested()
@@ -63,8 +63,13 @@ class Menu extends Component {
     return (
       <Toolbar>
         <Grid container item direction="row">
-          {["Home", "Profile", "Favorites", "Recipes", "Settings", "Logout"].map((text) => (
-            <Button key={text} onClick={() => {this.props.selectMenuItem(text)}}>{text}</Button>
+          {["Home", "Profile", "Favorites", "Subscriptions", "Browse Recipes", "Settings", "Logout"].map((text) => (
+            <Button color="inherit" key={text} onClick={() => {
+              this.props.resetNested()
+              this.props.selectMenuItem(text)}
+            }>
+              {text}
+            </Button>
           ))}
         </Grid>
       </Toolbar>
@@ -74,7 +79,7 @@ class Menu extends Component {
   render() {
     return (
       <React.Fragment>
-        {this.props.screenWidth < 900 ? this.smallScreenMenu() : this.largeScreenMenu()}
+        {this.props.screenWidth < 1150 ? this.smallScreenMenu() : this.largeScreenMenu()}
       </React.Fragment>
     )
   }

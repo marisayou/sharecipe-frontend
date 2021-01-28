@@ -8,12 +8,12 @@ class SearchRecipes extends Component {
 
     render() {
         return (
-            <Grid container item direction="row" alignItems="flex-end">
+            <Grid container item xs={12} direction="row" alignItems="flex-end">
                 <Grid item xs={12}>
                     <h3 className="search-header">Recipes</h3>
                 </Grid>
                 {this.props.recipes.length === 0 ? 
-                    <Grid item className="no-results">
+                    <Grid item xs={12} className="no-results">
                         <p>No matches found for "{this.props.searchTerm}"</p>
                     </Grid> :
                     <RecipesContainer />

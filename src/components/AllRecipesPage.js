@@ -22,7 +22,9 @@ class AllRecipesPage extends Component {
                         <Grid item>
                             <h1>All Recipes</h1>
                         </Grid>
-                        <RecipesContainer/>
+                        <Grid container item xs={12} md={9} justify="center">
+                            <RecipesContainer/>
+                        </Grid>
                     </React.Fragment>
                 )   
         }

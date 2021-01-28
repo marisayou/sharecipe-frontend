@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RecipeForm from './RecipeForm';
-import { Container, Grid, IconButton } from "@material-ui/core";
+import { Grid, IconButton } from "@material-ui/core";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ProfileInfo from './ProfileInfo';
 import RecipesContainer from './RecipesContainer';
-import RecipePage from './RecipePage';
-import TagPage from './TagPage';
 import {
     popNestedPage,
     setCurrentRecipe,
@@ -54,7 +51,6 @@ class UserPage extends Component {
                     }
                     break
                 default:
-                    console.log("WHAT THE FUCK DID YOU DO TO GET HERE")
                     // really shouldn't be here...
                     await this.props.setHomePage("default")
                     break
@@ -90,7 +86,8 @@ class UserPage extends Component {
     render() {
         return (
             <React.Fragment>
-                {this.props.userPage !== "default" ?
+                {this.props.menuPage !== "profile" || 
+                (this.props.menuPage === "profile" && this.props.userPage !== "default") ?
                 (<Grid container item xs={12} md={9}>
                     <Grid item className="back-btn" xs={1}>
                         <IconButton onClick={this.handleBackButtonClick}>
@@ -103,7 +100,9 @@ class UserPage extends Component {
                     <ProfileInfo selectMenuItem={this.props.selectMenuItem}/>
                 </Grid>
                 <br />
-                <RecipesContainer/>
+                <Grid container item xs={12} md={9} justify="center">
+                    <RecipesContainer/>
+                </Grid>
             </React.Fragment>
         )
     }

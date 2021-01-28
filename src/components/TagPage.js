@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Button } from "@material-ui/core";
+import { Grid, IconButton } from "@material-ui/core";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RecipesContainer from './RecipesContainer';
 import {
     setHomePage,
@@ -84,13 +85,15 @@ class TagPage extends Component {
     render() {
         return (
             <React.Fragment>
-                <Grid item>
-                    <h1>#{this.props.currentTag}</h1>
+                <Grid container item xs={12} md={9}>
+                    <Grid item className="back-btn" xs={1}>
+                        <IconButton onClick={this.handleBackButtonClick}>
+                            <ArrowBackIcon fontSize="large"/>
+                        </IconButton>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <Button variant="outlined" onClick={this.handleBackButtonClick}>
-                        Back to {this.props.menuPage}
-                    </Button>
+                <Grid item xs={12}>
+                    <h1>#{this.props.currentTag}</h1>
                 </Grid>
                 <br />
                 <RecipesContainer/>

@@ -335,6 +335,7 @@ function currentRecipeReducer(state = initialState.currentRecipe, action) {
                 image_url: newRecipe.image_url
             }
         case "EDIT_RECIPE":
+            console.log(action.payload.recipe)
             const updatedRecipe = action.payload.recipe
             return {
                 id: updatedRecipe.id, 
